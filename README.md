@@ -13,7 +13,8 @@
 [Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
 
 
-##GitHub Repo References
+## GitHub Repo References
+
 [Simplest Software for Bluetooth](https://www.youtube.com/watch?v=eePqTX-07oo)
   BS - I have this setup but cannot test (since I don't have the nano).  The biggest issue is this will give us 2 joysticks, but no button controls.  Might be able to add them in or something.
 
