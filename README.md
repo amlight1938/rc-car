@@ -1,6 +1,6 @@
 # rc-car
 
-### Parts
+## Parts
 
 [Motors](https://www.amazon.com/dp/B0DB28GC7B?smid=A2DSPVS66G15B3&ref_=chk_typ_imgToDp&th=1)
 
