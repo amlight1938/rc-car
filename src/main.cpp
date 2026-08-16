@@ -7,6 +7,10 @@ const int rightMotorPin = 4;
 unsigned long lastCommandReceivedTime = 0;
 const unsigned long COMMAND_TIMEOUT_MS = 1000;
 
+// the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
+// Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
+// Priority - this allows us to assign priority to each task (logging, control)
+// Specify core use - specify which core (0,1) to run this task on so we can separate it from bluetooth task
 void controlTask(void* params){
     Serial.begin(115200);
     pinMode(leftMotorPin, OUTPUT);
@@ -49,7 +53,8 @@ void controlTask(void* params){
 
 void setup() {
     //create and run the task
-    xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0);
+    // task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
+    xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0); 
 }
 
 void loop() {
