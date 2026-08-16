@@ -2,6 +2,8 @@
 
 const int leftMotorPinForward = A1;
 const int leftMotorPinReverse = A2;
+const int leftMotorPinSpeed = D8;
+const int ledPin = D10;
 
 //used for bluetooth failsafe
 unsigned long lastCommandReceivedTime = 0;
@@ -15,6 +17,8 @@ void controlTask(void* params){
     Serial.begin(115200);
     pinMode(leftMotorPinForward, OUTPUT);
     pinMode(leftMotorPinReverse, OUTPUT);
+    pinMode(leftMotorPinSpeed, OUTPUT);
+    pinMode(ledPin, OUTPUT);
 
     //set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
@@ -23,15 +27,22 @@ void controlTask(void* params){
         static int totalLoops = 0;
         int leftMotorOutputForward = 0;
         int leftMotorOutputReverse = 0;
-        if(totalLoops <= 1000){
+        int leftMotorOutputSpeed = 0;
+        if(totalLoops <= 100){
             leftMotorOutputForward = 0;
             leftMotorOutputReverse = 0;
-        } else if(totalLoops > 1000 && totalLoops <= 2000){
-            leftMotorOutputForward = 50;
+            leftMotorOutputSpeed = 0;
+            analogWrite(ledPin,0);
+        } else if(totalLoops > 100 && totalLoops <= 200){
+            leftMotorOutputForward = 255;
             leftMotorOutputReverse = 0;
-        } else if(totalLoops > 2000 && totalLoops <= 3000){
+            leftMotorOutputSpeed = 150;
+            analogWrite(ledPin,255);
+        } else if(totalLoops > 200 && totalLoops <= 300){
             leftMotorOutputForward = 0;
-            leftMotorOutputReverse = 50;
+            leftMotorOutputReverse = 255;
+            leftMotorOutputSpeed = 150;
+            analogWrite(ledPin,120);
         } else {
             totalLoops = 0;
         }
@@ -41,6 +52,7 @@ void controlTask(void* params){
         //update pin outs for motors
         analogWrite(leftMotorPinForward, leftMotorOutputForward);
         analogWrite(leftMotorPinReverse, leftMotorOutputReverse);
+        analogWrite(leftMotorPinSpeed, leftMotorOutputSpeed);
 
         //print only every 10 iterations (100ms)
         static int counter = 0;
