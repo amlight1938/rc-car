@@ -1,10 +1,7 @@
 #include <Arduino.h>
 
-const int leftMotorPinForward = 3;
-const int leftMotorPinReverse = 4;
-
-const int rightMotorPinForward = 5;
-const int rightMotorPinReverse = 6;
+const int leftMotorPinForward = A1;
+const int leftMotorPinReverse = A2;
 
 //used for bluetooth failsafe
 unsigned long lastCommandReceivedTime = 0;
@@ -18,44 +15,40 @@ void controlTask(void* params){
     Serial.begin(115200);
     pinMode(leftMotorPinForward, OUTPUT);
     pinMode(leftMotorPinReverse, OUTPUT);
-    pinMode(rightMotorPinForward, OUTPUT);
-    pinMode(rightMotorPinReverse, OUTPUT);
 
     //set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while(true){
-        int leftControllerValue = 5; //some bluetooth library call
-        int rightControllerValue = 5; //some bluetooth library call
-        //update lastCommandReceivedTime = millis() when bluetooth call is successful
-        
-        //failsafe to make sure motors dont continue with their last reading if bluetooth loses connection
+        static int totalLoops = 0;
         int leftMotorOutputForward = 0;
         int leftMotorOutputReverse = 0;
-        int rightMotorOutputForward = 0;
-        int rightMotorOutputReverse = 0;
-        //if current time - last command time is below the command timeout threshold, then update motors
-        //otherwise, set motor outputs to 0
-        if (millis() - lastCommandReceivedTime <= COMMAND_TIMEOUT_MS){
-            leftMotorOutputForward = map(leftControllerValue, 0, 4095, 0, 255);
-            leftMotorOutputReverse = map(leftControllerValue, 0, 4095, 0, 255);
-            rightMotorOutputForward = map(rightControllerValue, 0, 4095, 0, 255);
-            rightMotorOutputReverse = map(rightControllerValue, 0, 4095, 0, 255);
+        if(totalLoops <= 1000){
+            leftMotorOutputForward = 0;
+            leftMotorOutputReverse = 0;
+        } else if(totalLoops > 1000 && totalLoops <= 2000){
+            leftMotorOutputForward = 50;
+            leftMotorOutputReverse = 0;
+        } else if(totalLoops > 2000 && totalLoops <= 3000){
+            leftMotorOutputForward = 0;
+            leftMotorOutputReverse = 50;
+        } else {
+            totalLoops = 0;
         }
+        
+        totalLoops++;
 
         //update pin outs for motors
         analogWrite(leftMotorPinForward, leftMotorOutputForward);
         analogWrite(leftMotorPinReverse, leftMotorOutputReverse);
-        analogWrite(rightMotorPinForward, rightMotorOutputForward);
-        analogWrite(rightMotorPinReverse, rightMotorOutputReverse);
 
         //print only every 10 iterations (100ms)
         static int counter = 0;
         if (++counter >= 10){
-            Serial.print("Left motor input: ");
-            Serial.println(leftControllerValue);
-            Serial.print("Right motor input: ");
-            Serial.println(rightControllerValue);
+            Serial.print("Left motor forward input: ");
+            Serial.println(leftMotorOutputForward);
+            Serial.print("Left motor reverse input: ");
+            Serial.println(leftMotorOutputReverse);
             counter = 0;
         }
 
