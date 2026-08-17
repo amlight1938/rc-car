@@ -12,6 +12,7 @@
 
 [Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
 
+[RC Car 3D Print Designs] (https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
 
 ## GitHub Repo References
 
