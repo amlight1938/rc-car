@@ -8,11 +8,9 @@
 
 [Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
 
-[Arduino Nano ESP32](https://store-usa.arduino.cc/products/nano-esp32?srsltid=AfmBOopJ1Aj2__Zg6dhXaFx1dD8lo0dxV4tcI7LpXrdvpagKfwcIVVGV)
+[Elegoo ESP32](https://www.amazon.com/dp/B0D8T53CQ5?lv=shuf&channelId=500&plpRedirect=mhFallback)
 
-[Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
-
-[RC Car 3D Print Designs](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
+[RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
 
 ## GitHub Repo References
 
@@ -24,3 +22,11 @@
 
 [More complex software for B/t](https://github.com/ricardoquesada/bluepad32/tree/main)
   BS - I am not sure how to set this up (at least with VSCode).  This should be able to get alot more buttons working though.
+
+
+
+## OBE
+
+[Arduino Nano ESP32](https://store-usa.arduino.cc/products/nano-esp32?srsltid=AfmBOopJ1Aj2__Zg6dhXaFx1dD8lo0dxV4tcI7LpXrdvpagKfwcIVVGV)
+
+[Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
