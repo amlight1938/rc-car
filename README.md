@@ -1,5 +1,11 @@
 # rc-car
 
+## Microcontroller
+
+[Elegoo ESP32](https://www.amazon.com/dp/B0D8T53CQ5?lv=shuf&channelId=500&plpRedirect=mhFallback)
+
+[ESP32 documentation](https://www.espboards.dev/esp32/esp32doit-devkit-v1/)
+
 ## Parts
 
 [Motors](https://www.amazon.com/dp/B0DB28GC7B?smid=A2DSPVS66G15B3&ref_=chk_typ_imgToDp&th=1)
@@ -8,7 +14,7 @@
 
 [Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
 
-[Elegoo ESP32](https://www.amazon.com/dp/B0D8T53CQ5?lv=shuf&channelId=500&plpRedirect=mhFallback)
+
 
 [RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
 
