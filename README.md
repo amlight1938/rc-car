@@ -2,7 +2,7 @@
 
 ## Circuit Schematic
 
-![Schematic](DAR-C circuit schematic.JPG)
+![Schematic]("DAR-C circuit schematic.JPG")
 
 See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.net/) to edit 
 
