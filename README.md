@@ -1,5 +1,11 @@
 # rc-car
 
+## Circuit Schematic
+
+![Schematic](DAR-C circuit schematic.JPG)
+
+See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.net/) to edit 
+
 ## Microcontroller
 
 [Elegoo ESP32](https://www.amazon.com/dp/B0D8T53CQ5?lv=shuf&channelId=500&plpRedirect=mhFallback)
