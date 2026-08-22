@@ -1,13 +1,51 @@
 #include <Arduino.h>
 
-const int leftMotorPinForward = A1;
-const int leftMotorPinReverse = A2;
-const int leftMotorPinSpeed = D8;
-const int ledPin = D10;
+
+
+const int speedControlPin = 4;
+
+class Motor {
+  public:
+    Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
+      : _plusPin(plusPin), _minusPin(minusPin), _speedPin(speedPin) {
+    }
+
+    void begin() {
+      pinMode(_plusPin, OUTPUT);
+      pinMode(_minusPin, OUTPUT);
+      pinMode(_speedPin, OUTPUT);
+    }
+
+    void spin(uint8_t plusValue, uint8_t minusValue, uint8_t speedValue) {
+      digitalWrite(_plusPin, plusValue);
+      digitalWrite(_minusPin, minusValue);
+      analogWrite(_speedPin, speedValue);
+    }
+
+    void stop() {
+      spin(0, 0, 0);
+    }
+
+  private:
+    uint8_t _plusPin;
+    uint8_t _minusPin;
+    uint8_t _speedPin;
+};
 
 //used for bluetooth failsafe
 unsigned long lastCommandReceivedTime = 0;
 const unsigned long COMMAND_TIMEOUT_MS = 1000;
+
+Motor leftMotor(27, 14, 13);
+Motor rightMotor(25, 33, 32);
+
+const int leftMotorPinForward = 27;
+const int leftMotorPinReverse = 14;
+const int leftMotorPinSpeed = 13;
+
+const int rightMotorPinForward = 25;
+const int rightMotorPinReverse = 33;
+const int rightMotorPinSpeed = 32;
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -18,34 +56,17 @@ void controlTask(void* params){
     pinMode(leftMotorPinForward, OUTPUT);
     pinMode(leftMotorPinReverse, OUTPUT);
     pinMode(leftMotorPinSpeed, OUTPUT);
-    pinMode(ledPin, OUTPUT);
+
+    pinMode(rightMotorPinForward, OUTPUT);
+    pinMode(rightMotorPinReverse, OUTPUT);
+    pinMode(rightMotorPinSpeed, OUTPUT);
+    
+    pinMode(speedControlPin, INPUT);
 
     //set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
-    while(true){
-        static int totalLoops = 0;
-        int leftMotorOutputForward = 0;
-        int leftMotorOutputReverse = 0;
-        int leftMotorOutputSpeed = 0;
-        if(totalLoops <= 100){
-            leftMotorOutputForward = 0;
-            leftMotorOutputReverse = 0;
-            leftMotorOutputSpeed = 0;
-            analogWrite(ledPin,0);
-        } else if(totalLoops > 100 && totalLoops <= 200){
-            leftMotorOutputForward = 255;
-            leftMotorOutputReverse = 0;
-            leftMotorOutputSpeed = 150;
-            analogWrite(ledPin,255);
-        } else if(totalLoops > 200 && totalLoops <= 300){
-            leftMotorOutputForward = 0;
-            leftMotorOutputReverse = 255;
-            leftMotorOutputSpeed = 150;
-            analogWrite(ledPin,120);
-        } else {
-            totalLoops = 0;
-        }
+
         
         totalLoops++;
 
