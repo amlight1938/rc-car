@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <BLEGamepadClient.h>
 
 class Motor
 {
@@ -11,25 +12,43 @@ public:
 		pinMode(_speedPin, OUTPUT);
 	}
 
-	void spin(uint8_t plusValue, uint8_t minusValue, uint8_t speedValue)
-	{
-		digitalWrite(_plusPin, plusValue);
-		digitalWrite(_minusPin, minusValue);
+	void spin(bool forward, uint8_t speedValue) 
+	{   
+        _lastSpeedValue = speedValue;
+
+        if(speedValue == 0){
+            analogWrite(_speedPin, speedValue);
+            return;
+        }
+
+        if(forward){
+            digitalWrite(_plusPin, 1);
+		    digitalWrite(_minusPin, 0);
+        }else{
+            digitalWrite(_plusPin, 0);
+		    digitalWrite(_minusPin, 1);
+        }
+		
 		analogWrite(_speedPin, speedValue);
 	}
 
 	void stop()
 	{
-		spin(0, 0, 0);
+		spin(true, 0);
 	}
+
+    bool isStopped(){
+        return _lastSpeedValue == 0;
+    }
 
 private:
 	uint8_t _plusPin;
 	uint8_t _minusPin;
 	uint8_t _speedPin;
+    uint8_t _lastSpeedValue;
 };
 
-const int speedControlPin = 4;
+XboxController controller;
 
 Motor leftMotor(27, 14, 13);
 Motor rightMotor(25, 33, 32);
@@ -41,27 +60,61 @@ Motor rightMotor(25, 33, 32);
 void controlTask(void *params)
 {
 	Serial.begin(115200);
-
-	pinMode(speedControlPin, INPUT);
+    controller.begin();
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
 
 	while (true)
 	{
-		int speedControl = analogRead(speedControlPin);
-		Serial.print("Speed Input = ");
-		Serial.print(speedControl);
-		speedControl = map(speedControl, 0, 4095, 0, 255);
-		Serial.print("   Speed Output = ");
-		Serial.println(speedControl);
+        if (controller.isConnected())
+        {
+            XboxControlsState s;
+            controller.read(&s);
 
-		leftMotor.spin(1, 0, speedControl);
-		rightMotor.spin(1, 0, speedControl);
+            // Serial.printf("lstick: %.2f,%.2f, rstick: %.2f,%.2f\n",
+            //               s.leftStickX, s.leftStickY, s.rightStickX, s.rightStickY);
+            
+            int speedControlLeft = s.leftStickY * 1000;
+            int speedControlRight = s.rightStickY * 1000;
+
+            speedControlLeft = map(std::abs(speedControlLeft), 0, 1000, 0, 255);
+            speedControlRight = map(std::abs(speedControlRight), 0, 1000, 0, 255);
+
+            Serial.print("Speed Input L = ");
+            Serial.print(s.leftStickY);
+            Serial.print("   Speed Output L = ");
+            Serial.print(speedControlLeft);
+            Serial.print("Speed Input R = ");
+            Serial.print(s.rightStickY);
+            Serial.print("   Speed Output R = ");
+            Serial.println(speedControlRight);
+
+            if (s.leftStickY < -0.08){
+                leftMotor.spin(false, speedControlLeft);
+            }else if (s.leftStickY > 0.08){
+                leftMotor.spin(true, speedControlLeft);
+            }else if (!leftMotor.isStopped()){
+                Serial.println("left stopping");
+                leftMotor.stop();
+            }
+
+            if (s.rightStickY < -0.08){
+                rightMotor.spin(false, speedControlRight);
+            }else if (s.rightStickY > 0.08){
+                rightMotor.spin(true, speedControlRight);
+            }else if (!rightMotor.isStopped()){
+                Serial.println("right stopping");
+                rightMotor.stop();
+            }
+            
+        }else
+        {
+            Serial.println("controller not connected");
+        }
 
 		// schedule the when the task should wake up and run another loop
-		// vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
-		delay(5);
+		vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(100));
 	}
 }
 
