@@ -90,6 +90,9 @@ void controlTask(void *params)
 
         if (controller.isConnected())
         {
+            // keeping the bluetooth LED high once connected
+            digitalWrite(bluetoothLedPin, HIGH);
+
             // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
