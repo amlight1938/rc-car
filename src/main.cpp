@@ -59,7 +59,7 @@ Motor rightMotor(25, 33, 32);
 
 // declaring pins for the LED outputs and standby control to arm/disarm the motors
 const int stbyPin = 26;
-const int bluetoothLedPin = 2;
+const int bluetoothLedPin = 12;
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
