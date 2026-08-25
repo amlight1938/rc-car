@@ -52,10 +52,14 @@ private:
     uint8_t _lastSpeedValue;
 };
 
+// instantiating the bluetooth controller and motors
 XboxController controller;
-
 Motor leftMotor(27, 14, 13);
 Motor rightMotor(25, 33, 32);
+
+// declaring pins for the LED outputs and standby control to arm/disarm the motors
+const int stbyPin = 26;
+const int bluetoothLedPin = 2;
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -64,36 +68,53 @@ Motor rightMotor(25, 33, 32);
 void controlTask(void *params)
 {
     Serial.begin(115200);
+
+    // initializing all utilized pins as outputs or inputs
     controller.begin();
+    pinMode(stbyPin, OUTPUT);
+    pinMode(bluetoothLedPin, OUTPUT);
+
+    // setting up the standby state for the motor controller
+    bool stbyState = LOW;
+    int stbyDelay = 500;
+    int lastStbyToggle = -stbyDelay;
+
+    // setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
+    bool blinkState = LOW;
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while (true)
     {
+
         if (controller.isConnected())
         {
+            // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
 
+            // toggling the standby LED and motor controller based on controller inputs
+            if (s.leftBumper = true && millis() > (stbyDelay + lastStbyToggle)) {
+                digitalWrite(stbyPin, stbyState);
+                stbyState = !stbyState;
+                lastStbyToggle = millis();
+            }
+
+            // mapping the controller joystick inputs (0 to 1) to a PWM output
             int speedControlLeft = s.leftStickY * 1000;
             int speedControlRight = s.rightStickY * 1000;
             speedControlLeft = map(std::abs(speedControlLeft), 0, 1000, 0, 255);
             speedControlRight = map(std::abs(speedControlRight), 0, 1000, 0, 255);
 
-            // Serial.print("Speed Input L = ");
-            // Serial.print(s.leftStickY);
-            // Serial.print("   Speed Output L = ");
-            // Serial.print(speedControlLeft);
-            // Serial.print("Speed Input R = ");
-            // Serial.print(s.rightStickY);
-            // Serial.print("   Speed Output R = ");
-            // Serial.println(speedControlRight);
+            // including a deadzone of 0.08 in each direction
+            static const double deadzone = 0.08;
 
-            if (s.leftStickY < -0.08)
+            // powering the left motor based on controller inputs
+            if (s.leftStickY < -deadzone)
             {
                 leftMotor.spin(false, speedControlLeft);
-            }else if (s.leftStickY > 0.08)
+            }else if (s.leftStickY > deadzone)
             {
                 leftMotor.spin(true, speedControlLeft);
             }else if (!leftMotor.isStopped())
@@ -102,10 +123,11 @@ void controlTask(void *params)
                 leftMotor.stop();
             }
 
-            if (s.rightStickY < -0.08)
+            // powering the right motor based on controller inputs
+            if (s.rightStickY < -deadzone)
             {
                 rightMotor.spin(false, speedControlRight);
-            }else if (s.rightStickY > 0.08)
+            }else if (s.rightStickY > deadzone)
             {
                 rightMotor.spin(true, speedControlRight);
             }else if (!rightMotor.isStopped())
@@ -116,6 +138,11 @@ void controlTask(void *params)
         }else
         {
             Serial.println("controller not connected");
+
+            // causing the bluetooth LED to blink while searching for a controller
+            // blinking will occur at a frequency based on the task schedule period
+            digitalWrite(bluetoothLedPin, blinkState);
+            blinkState = !blinkState;
         }
 
         // schedule the when the task should wake up and run another loop
