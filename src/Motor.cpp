@@ -9,6 +9,21 @@ Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
     pinMode(_speedPin, OUTPUT);
 }
 
+void Motor::control(double stickY, int speedControl)
+{
+    if (stickY < -DEADZONE)
+    {
+        this->spin(false, speedControl);
+    }else if (stickY > DEADZONE)
+    {
+        this->spin(true, speedControl);
+    }else if (!this->isStopped())
+    {
+        Serial.println("left stopping");
+        this->stop();
+    }
+}
+
 void Motor::spin(bool forward, uint8_t speedValue)
 {
     _lastSpeedValue = speedValue;

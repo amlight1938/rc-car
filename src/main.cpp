@@ -3,11 +3,6 @@
 #include "Motor.h"
 #include "Pins.h"
 
-// instantiating the bluetooth controller and motors
-XboxController controller;
-Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
-Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
-
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
 // Priority - this allows us to assign priority to each task (logging, control)
@@ -16,8 +11,13 @@ void controlTask(void *params)
 {
     Serial.begin(115200);
 
-    // initializing all utilized pins as outputs or inputs
+    // instantiating the bluetooth controller and motors
+    XboxController controller;
     controller.begin();
+    Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
+    Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
+
+    // initializing all utilized pins as outputs or inputs
     pinMode(STBY_PIN, OUTPUT);
     pinMode(BT_LED_PIN, OUTPUT);
 
@@ -34,7 +34,6 @@ void controlTask(void *params)
 
     while (true)
     {
-
         if (controller.isConnected())
         {
             // keeping the bluetooth LED high once connected
@@ -57,32 +56,9 @@ void controlTask(void *params)
             speedControlLeft = map(std::abs(speedControlLeft), 0, 1000, 0, 255);
             speedControlRight = map(std::abs(speedControlRight), 0, 1000, 0, 255);
 
-            // including a Motor::DEADZONE of 0.08 in each direction
             // powering the left motor based on controller inputs
-            if (s.leftStickY < -Motor::DEADZONE)
-            {
-                leftMotor.spin(false, speedControlLeft);
-            }else if (s.leftStickY > Motor::DEADZONE)
-            {
-                leftMotor.spin(true, speedControlLeft);
-            }else if (!leftMotor.isStopped())
-            {
-                Serial.println("left stopping");
-                leftMotor.stop();
-            }
-
-            // powering the right motor based on controller inputs
-            if (s.rightStickY < -Motor::DEADZONE)
-            {
-                rightMotor.spin(false, speedControlRight);
-            }else if (s.rightStickY > Motor::DEADZONE)
-            {
-                rightMotor.spin(true, speedControlRight);
-            }else if (!rightMotor.isStopped())
-            {
-                Serial.println("right stopping");
-                rightMotor.stop();
-            }
+            leftMotor.control(s.leftStickY, speedControlLeft);
+            rightMotor.control(s.rightStickY, speedControlRight);
         }else
         {
             Serial.println("controller not connected");
