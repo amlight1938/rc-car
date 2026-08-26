@@ -23,31 +23,36 @@ void controlTask(void *params)
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
-    int stbyDelay = 500;
-    int lastStbyToggle = -stbyDelay;
+    unsigned long stbyDelay = 500;
+    unsigned long lastStbyToggle = 0;
 
     // setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
+    unsigned long blinkDuration = 500; //500 ms on, 500 off
     bool blinkState = LOW;
+    unsigned long lastBlinkSwitch = 0;
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while (true)
-    {
+    {   
+        unsigned long currentTime = millis();
+
         if (controller.isConnected())
         {
             // keeping the bluetooth LED high once connected
-            digitalWrite(BT_LED_PIN, HIGH);
+            blinkState = HIGH;
+            digitalWrite(BT_LED_PIN, blinkState);
 
             // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
 
             // toggling the standby LED and motor controller based on controller inputs
-            if (s.leftBumper == true && millis() > (stbyDelay + lastStbyToggle)) {
-                digitalWrite(STBY_PIN, stbyState);
+            if (s.leftBumper == true && currentTime > (stbyDelay + lastStbyToggle)) {
                 stbyState = !stbyState;
-                lastStbyToggle = millis();
+                digitalWrite(STBY_PIN, stbyState);
+                lastStbyToggle = currentTime;
             }
 
             // mapping the controller joystick inputs (0 to 1) to a PWM output
@@ -61,12 +66,18 @@ void controlTask(void *params)
             rightMotor.control(s.rightStickY, speedControlRight);
         }else
         {
+            leftMotor.stop();
+            rightMotor.stop();
+
             Serial.println("controller not connected");
 
-            // causing the bluetooth LED to blink while searching for a controller
-            // blinking will occur at a frequency based on the task schedule period
-            digitalWrite(BT_LED_PIN, blinkState);
-            blinkState = !blinkState;
+            if (currentTime - lastBlinkSwitch > blinkDuration){
+                // causing the bluetooth LED to blink while searching for a controller
+                // blinking will occur at a frequency based blinkDuration
+                lastBlinkSwitch = currentTime;
+                digitalWrite(BT_LED_PIN, blinkState);
+                blinkState = !blinkState;
+            }
         }
 
         // schedule the when the task should wake up and run another loop
