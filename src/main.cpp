@@ -1,65 +1,12 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
-
-class Motor
-{
-public:
-    Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
-        : _plusPin(plusPin), _minusPin(minusPin), _speedPin(speedPin)
-    {
-        pinMode(_plusPin, OUTPUT);
-        pinMode(_minusPin, OUTPUT);
-        pinMode(_speedPin, OUTPUT);
-    }
-
-    void spin(bool forward, uint8_t speedValue)
-    {
-        _lastSpeedValue = speedValue;
-
-        if (speedValue == 0)
-        {
-            analogWrite(_speedPin, speedValue);
-            return;
-        }
-
-        if (forward)
-        {
-            digitalWrite(_plusPin, 1);
-            digitalWrite(_minusPin, 0);
-        }else
-        {
-            digitalWrite(_plusPin, 0);
-            digitalWrite(_minusPin, 1);
-        }
-
-        analogWrite(_speedPin, speedValue);
-    }
-
-    void stop()
-    {
-        spin(true, 0);
-    }
-
-    bool isStopped()
-    {
-        return _lastSpeedValue == 0;
-    }
-
-private:
-    uint8_t _plusPin;
-    uint8_t _minusPin;
-    uint8_t _speedPin;
-    uint8_t _lastSpeedValue;
-};
+#include "Motor.h"
+#include "Pins.h"
 
 // instantiating the bluetooth controller and motors
 XboxController controller;
-Motor leftMotor(27, 14, 13);
-Motor rightMotor(25, 33, 32);
-
-// declaring pins for the LED outputs and standby control to arm/disarm the motors
-const int stbyPin = 26;
-const int bluetoothLedPin = 12;
+Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
+Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -71,8 +18,8 @@ void controlTask(void *params)
 
     // initializing all utilized pins as outputs or inputs
     controller.begin();
-    pinMode(stbyPin, OUTPUT);
-    pinMode(bluetoothLedPin, OUTPUT);
+    pinMode(STBY_PIN, OUTPUT);
+    pinMode(BT_LED_PIN, OUTPUT);
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -91,15 +38,15 @@ void controlTask(void *params)
         if (controller.isConnected())
         {
             // keeping the bluetooth LED high once connected
-            digitalWrite(bluetoothLedPin, HIGH);
+            digitalWrite(BT_LED_PIN, HIGH);
 
             // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
 
             // toggling the standby LED and motor controller based on controller inputs
-            if (s.leftBumper = true && millis() > (stbyDelay + lastStbyToggle)) {
-                digitalWrite(stbyPin, stbyState);
+            if (s.leftBumper == true && millis() > (stbyDelay + lastStbyToggle)) {
+                digitalWrite(STBY_PIN, stbyState);
                 stbyState = !stbyState;
                 lastStbyToggle = millis();
             }
@@ -110,14 +57,12 @@ void controlTask(void *params)
             speedControlLeft = map(std::abs(speedControlLeft), 0, 1000, 0, 255);
             speedControlRight = map(std::abs(speedControlRight), 0, 1000, 0, 255);
 
-            // including a deadzone of 0.08 in each direction
-            static const double deadzone = 0.08;
-
+            // including a Motor::DEADZONE of 0.08 in each direction
             // powering the left motor based on controller inputs
-            if (s.leftStickY < -deadzone)
+            if (s.leftStickY < -Motor::DEADZONE)
             {
                 leftMotor.spin(false, speedControlLeft);
-            }else if (s.leftStickY > deadzone)
+            }else if (s.leftStickY > Motor::DEADZONE)
             {
                 leftMotor.spin(true, speedControlLeft);
             }else if (!leftMotor.isStopped())
@@ -127,10 +72,10 @@ void controlTask(void *params)
             }
 
             // powering the right motor based on controller inputs
-            if (s.rightStickY < -deadzone)
+            if (s.rightStickY < -Motor::DEADZONE)
             {
                 rightMotor.spin(false, speedControlRight);
-            }else if (s.rightStickY > deadzone)
+            }else if (s.rightStickY > Motor::DEADZONE)
             {
                 rightMotor.spin(true, speedControlRight);
             }else if (!rightMotor.isStopped())
@@ -144,7 +89,7 @@ void controlTask(void *params)
 
             // causing the bluetooth LED to blink while searching for a controller
             // blinking will occur at a frequency based on the task schedule period
-            digitalWrite(bluetoothLedPin, blinkState);
+            digitalWrite(BT_LED_PIN, blinkState);
             blinkState = !blinkState;
         }
 
@@ -156,7 +101,7 @@ void controlTask(void *params)
 void setup()
 {
     // create and run the task
-    //  task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
+    // task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
     xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0);
 }
 
