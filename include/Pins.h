@@ -9,6 +9,6 @@ const uint8_t L_MOTOR_PLUS_PIN = 27;
 const uint8_t L_MOTOR_MINUS_PIN = 14;
 const uint8_t L_MOTOR_SPEED_PIN = 13;
 
-const uint8_t R_MOTOR_PLUS_PIN = 25;
-const uint8_t R_MOTOR_MINUS_PIN = 33;
+const uint8_t R_MOTOR_PLUS_PIN = 33;
+const uint8_t R_MOTOR_MINUS_PIN = 25;
 const uint8_t R_MOTOR_SPEED_PIN = 32;

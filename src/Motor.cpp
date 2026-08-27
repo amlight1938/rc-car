@@ -1,33 +1,42 @@
 #include "Motor.h"
 #include "Arduino.h"
 
+
+// Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin) : Motor(plusPin, minusPin, speedPin, "Motor"){}
+
 Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
     : _plusPin(plusPin), _minusPin(minusPin), _speedPin(speedPin)
-{
+{   
     pinMode(_plusPin, OUTPUT);
     pinMode(_minusPin, OUTPUT);
     pinMode(_speedPin, OUTPUT);
 }
 
-void Motor::control(double stickY)
+void Motor::control(double stickY, double stickX)
 {
-    // mapping the controller joystick inputs (0 to 1) to a PWM output
-    int speedControl = stickY * 1000;
-    speedControl = map(std::abs(speedControl), 0, 1000, 0, 255);
+    if ( -DEADZONE <= stickX && stickX <= DEADZONE){
+        stickX = 0.0;
+    }
+    if ( -DEADZONE <= stickY && stickY <= DEADZONE){
+        stickY = 0.0;
+    }
 
-    if (stickY < -DEADZONE)
-    {
-        this->spin(false, speedControl);
+    if ( stickY == 0.0 && stickX == 0.0){
+        if (!this->isStopped()){
+            this->stop();
+            Serial.println("stopping");
+        }
+        return;
     }
-    else if (stickY > DEADZONE)
-    {
-        this->spin(true, speedControl);
-    }
-    else if (!this->isStopped())
-    {
-        Serial.println("left stopping");
-        this->stop();
-    }
+
+    int speedControl = stickY + (MOTOR_TURN_GAIN * stickX);
+
+    bool forward = speedControl > 0;
+
+    // mapping the controller joystick inputs (0 to 1) to a PWM output
+    speedControl = map(std::abs(speedControl * 1000), 0, 1000, 0, 255);
+
+    this->spin(forward, speedControl);
 }
 
 void Motor::spin(bool forward, uint8_t speedValue)

@@ -58,8 +58,8 @@ void controlTask(void *params)
             }
 
             // powering the left motor based on controller inputs
-            leftMotor.control(s.leftStickY);
-            rightMotor.control(s.rightStickY);
+            leftMotor.control(s.leftStickY, s.rightStickX);
+            rightMotor.control(s.leftStickY, -s.rightStickX); //negative right stick look at motor.control equation
         }else
         {
             leftMotor.stop();
