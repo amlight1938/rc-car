@@ -26,7 +26,7 @@ See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.ne
 
 ## Part Dimensions
 
-Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires
+Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
 
 2 bread boards edge to edge: 108mm x 82mm x 10mm
 
