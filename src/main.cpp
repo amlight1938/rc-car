@@ -1,65 +1,95 @@
 #include <Arduino.h>
-
-//hi
-
-const int leftMotorPin = 3;
-const int rightMotorPin = 4;
-
-//used for bluetooth failsafe
-unsigned long lastCommandReceivedTime = 0;
-const unsigned long COMMAND_TIMEOUT_MS = 1000;
+#include <BLEGamepadClient.h>
+#include "Motor.h"
+#include "Pins.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
 // Priority - this allows us to assign priority to each task (logging, control)
 // Specify core use - specify which core (0,1) to run this task on so we can separate it from bluetooth task
-void controlTask(void* params){
+void controlTask(void *params)
+{
     Serial.begin(115200);
-    pinMode(leftMotorPin, OUTPUT);
-    pinMode(rightMotorPin, OUTPUT);
 
-    //set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
+    // instantiating the bluetooth controller and motors
+    XboxController controller;
+    controller.begin();
+    Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
+    Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
+
+    // initializing all utilized pins as outputs or inputs
+    pinMode(STBY_PIN, OUTPUT);
+    pinMode(BT_LED_PIN, OUTPUT);
+
+    // setting up the standby state for the motor controller
+    bool stbyState = LOW;
+    unsigned long stbyDelay = 500;
+    unsigned long lastStbyToggle = 0;
+
+    // setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
+    unsigned long blinkDuration = 500; //500 ms on, 500 off
+    bool blinkState = LOW;
+    unsigned long lastBlinkSwitch = 0;
+
+    // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
-    while(true){
-        int leftMotorValue = 5; //some bluetooth library call
-        int rightMotorValue = 5; //some bluetooth library call
-        //update lastCommandReceivedTime = millis() when bluetooth call is successful
-        
-        //failsafe to make sure motors dont continue with their last reading if bluetooth loses connection
-        int leftOut = 0;
-        int rightOut = 0;
-        if (millis() - lastCommandReceivedTime >= COMMAND_TIMEOUT_MS){
-            leftOut = map(leftMotorValue, 0, 4095, 0, 255);
-            rightOut = map(rightMotorValue, 0, 4095, 0, 255);
-        }
+    while (true)
+    {   
+        unsigned long currentTime = millis();
 
-        //update pin outs for motors
-        analogWrite(leftMotorPin, leftOut);
-        analogWrite(rightMotorPin, rightOut);
+        if (controller.isConnected())
+        {
+            // keeping the bluetooth LED high once connected
+            if (blinkState == LOW){
+                blinkState = HIGH;
+                digitalWrite(BT_LED_PIN, blinkState);
+            }
 
-        //print only every 10 iterations (100ms)
-        static int counter = 0;
-        if (++counter >= 10){
-            Serial.print("Left motor input: ");
-            Serial.println(leftMotorValue);
-            Serial.print("Right motor input: ");
-            Serial.println(rightMotorValue);
-            counter = 0;
+            // gathering the controller inputs
+            XboxControlsState s;
+            controller.read(&s);
+
+            // toggling the standby LED and motor controller based on controller inputs
+            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay) {
+                stbyState = !stbyState;
+                digitalWrite(STBY_PIN, stbyState);
+                lastStbyToggle = currentTime;
+            }
+
+            // powering the left motor based on controller inputs
+            leftMotor.control(s.leftStickY);
+            rightMotor.control(s.rightStickY);
+        }else
+        {
+            leftMotor.stop();
+            rightMotor.stop();
+
+            Serial.println("controller not connected");
+
+            // causing the bluetooth LED to blink while searching for a controller
+            // blinking will occur at a frequency based blinkDuration
+            if (currentTime - lastBlinkSwitch > blinkDuration){
+                lastBlinkSwitch = currentTime;
+                digitalWrite(BT_LED_PIN, blinkState);
+                blinkState = !blinkState;
+            }
         }
 
         // schedule the when the task should wake up and run another loop
-        vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
+        vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(100));
     }
 }
 
-void setup() {
-    //create and run the task
+void setup()
+{
+    // create and run the task
     // task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
-    xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0); 
+    xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0);
 }
 
-void loop() {
+void loop()
+{
     // kill the arduino default loop task since we are running a deterministic time scheduler task
     vTaskDelete(NULL);
 }
