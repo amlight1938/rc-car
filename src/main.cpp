@@ -41,29 +41,25 @@ void controlTask(void *params)
         if (controller.isConnected())
         {
             // keeping the bluetooth LED high once connected
-            blinkState = HIGH;
-            digitalWrite(BT_LED_PIN, blinkState);
+            if (blinkState == LOW){
+                blinkState = HIGH;
+                digitalWrite(BT_LED_PIN, blinkState);
+            }
 
             // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
 
             // toggling the standby LED and motor controller based on controller inputs
-            if (s.leftBumper == true && currentTime > (stbyDelay + lastStbyToggle)) {
+            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay) {
                 stbyState = !stbyState;
                 digitalWrite(STBY_PIN, stbyState);
                 lastStbyToggle = currentTime;
             }
 
-            // mapping the controller joystick inputs (0 to 1) to a PWM output
-            int speedControlLeft = s.leftStickY * 1000;
-            int speedControlRight = s.rightStickY * 1000;
-            speedControlLeft = map(std::abs(speedControlLeft), 0, 1000, 0, 255);
-            speedControlRight = map(std::abs(speedControlRight), 0, 1000, 0, 255);
-
             // powering the left motor based on controller inputs
-            leftMotor.control(s.leftStickY, speedControlLeft);
-            rightMotor.control(s.rightStickY, speedControlRight);
+            leftMotor.control(s.leftStickY);
+            rightMotor.control(s.rightStickY);
         }else
         {
             leftMotor.stop();
@@ -71,9 +67,9 @@ void controlTask(void *params)
 
             Serial.println("controller not connected");
 
+            // causing the bluetooth LED to blink while searching for a controller
+            // blinking will occur at a frequency based blinkDuration
             if (currentTime - lastBlinkSwitch > blinkDuration){
-                // causing the bluetooth LED to blink while searching for a controller
-                // blinking will occur at a frequency based blinkDuration
                 lastBlinkSwitch = currentTime;
                 digitalWrite(BT_LED_PIN, blinkState);
                 blinkState = !blinkState;

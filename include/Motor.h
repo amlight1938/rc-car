@@ -7,7 +7,7 @@ class Motor
 public:
     Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin);
 
-    void control(double stickY, int speedControl);
+    void control(double stickY);
 
     void stop();
 
