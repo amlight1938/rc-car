@@ -53,3 +53,7 @@ BS - I believe edge to edge will be easier to work with, but tip to tail might b
 [Arduino Nano ESP32](https://store-usa.arduino.cc/products/nano-esp32?srsltid=AfmBOopJ1Aj2__Zg6dhXaFx1dD8lo0dxV4tcI7LpXrdvpagKfwcIVVGV)
 
 [Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
+
+
+## Bugs to work on
+- Rising edge detection for left bumper arming
