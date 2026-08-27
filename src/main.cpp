@@ -27,7 +27,7 @@ void controlTask(void *params)
     unsigned long lastStbyToggle = 0;
 
     // setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
-    unsigned long blinkDuration = 500; //500 ms on, 500 off
+    unsigned long blinkDuration = 500; // 500 ms on, 500 off
     bool blinkState = LOW;
     unsigned long lastBlinkSwitch = 0;
 
@@ -35,13 +35,14 @@ void controlTask(void *params)
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while (true)
-    {   
+    {
         unsigned long currentTime = millis();
 
         if (controller.isConnected())
         {
             // keeping the bluetooth LED high once connected
-            if (blinkState == LOW){
+            if (blinkState == LOW)
+            {
                 blinkState = HIGH;
                 digitalWrite(BT_LED_PIN, blinkState);
             }
@@ -51,7 +52,8 @@ void controlTask(void *params)
             controller.read(&s);
 
             // toggling the standby LED and motor controller based on controller inputs
-            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay) {
+            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+            {
                 stbyState = !stbyState;
                 digitalWrite(STBY_PIN, stbyState);
                 lastStbyToggle = currentTime;
@@ -59,8 +61,9 @@ void controlTask(void *params)
 
             // powering the left motor based on controller inputs
             leftMotor.control(s.leftStickY, s.rightStickX);
-            rightMotor.control(s.leftStickY, -s.rightStickX); //negative right stick look at motor.control equation
-        }else
+            rightMotor.control(s.leftStickY, -s.rightStickX); // negative right stick to account for chirality differences for the motors
+        }
+        else
         {
             leftMotor.stop();
             rightMotor.stop();
@@ -69,7 +72,8 @@ void controlTask(void *params)
 
             // causing the bluetooth LED to blink while searching for a controller
             // blinking will occur at a frequency based blinkDuration
-            if (currentTime - lastBlinkSwitch > blinkDuration){
+            if (currentTime - lastBlinkSwitch > blinkDuration)
+            {
                 lastBlinkSwitch = currentTime;
                 digitalWrite(BT_LED_PIN, blinkState);
                 blinkState = !blinkState;

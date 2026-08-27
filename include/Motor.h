@@ -6,7 +6,6 @@ class Motor
 {
 public:
     Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin);
-    // Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin, std::string motor_name);
 
     void control(double stickY, double stickX);
 
@@ -14,7 +13,7 @@ public:
 
 private:
     static constexpr double DEADZONE = 0.08;
-    static constexpr double MOTOR_TURN_GAIN = 0.05;
+    static constexpr double MOTOR_TURN_GAIN = 0.15;
 
     void spin(bool forward, uint8_t speedValue);
 
