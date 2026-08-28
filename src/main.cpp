@@ -14,6 +14,7 @@ void controlTask(void *params)
     // instantiating the bluetooth controller and motors
     XboxController controller;
     controller.begin();
+
     Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
@@ -40,11 +41,10 @@ void controlTask(void *params)
 
         if (controller.isConnected())
         {
-            // keeping the bluetooth LED high once connected
-            if (blinkState == LOW){
-                blinkState = HIGH;
-                digitalWrite(BT_LED_PIN, blinkState);
-            }
+            //TODO: check with state machine
+            blinkState = HIGH;
+            digitalWrite(BT_LED_PIN, blinkState);
+
 
             // gathering the controller inputs
             XboxControlsState s;
@@ -58,15 +58,18 @@ void controlTask(void *params)
             }
 
             // powering the left motor based on controller inputs
-            leftMotor.control(s.leftStickY, s.rightStickX);
-            rightMotor.control(s.leftStickY, -s.rightStickX); //negative right stick look at motor.control equation
+            if (stbyState){
+                leftMotor.control(s.leftStickY, s.rightStickX);
+                rightMotor.control(s.leftStickY, -s.rightStickX); //negative right stick look at motor.control equation
+            }
         }else
         {
+            //TODO: check with state machine
+            //if was connected and now not {
             leftMotor.stop();
             rightMotor.stop();
-
-            Serial.println("controller not connected");
-
+            //}
+            
             // causing the bluetooth LED to blink while searching for a controller
             // blinking will occur at a frequency based blinkDuration
             if (currentTime - lastBlinkSwitch > blinkDuration){

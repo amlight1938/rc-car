@@ -2,8 +2,6 @@
 #include "Arduino.h"
 
 
-// Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin) : Motor(plusPin, minusPin, speedPin, "Motor"){}
-
 Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
     : _plusPin(plusPin), _minusPin(minusPin), _speedPin(speedPin)
 {   
@@ -12,30 +10,27 @@ Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
     pinMode(_speedPin, OUTPUT);
 }
 
-void Motor::control(double stickY, double stickX)
+void Motor::control(double leftStickY, double rightStickX)
 {
-    if ( -DEADZONE <= stickX && stickX <= DEADZONE){
-        stickX = 0.0;
+    if ( -DEADZONE <= leftStickY && leftStickY <= DEADZONE){
+        leftStickY = 0.0;
     }
-    if ( -DEADZONE <= stickY && stickY <= DEADZONE){
-        stickY = 0.0;
+    if ( -DEADZONE <= rightStickX && rightStickX <= DEADZONE){
+        rightStickX = 0.0;
     }
-
-    if ( stickY == 0.0 && stickX == 0.0){
+    
+    if (leftStickY == 0.0 && rightStickX == 0.0){
         if (!this->isStopped()){
             this->stop();
-            Serial.println("stopping");
         }
         return;
     }
-
-    int speedControl = stickY + (MOTOR_TURN_GAIN * stickX);
-
+    
+    double speedControl = leftStickY + (MOTOR_TURN_GAIN * rightStickX);
     bool forward = speedControl > 0;
-
-    // mapping the controller joystick inputs (0 to 1) to a PWM output
-    speedControl = map(std::abs(speedControl * 1000), 0, 1000, 0, 255);
-
+    int max_output = (std::abs(leftStickY) > 0)*1000 + (std::abs(rightStickX) > 0)*MOTOR_TURN_GAIN*1000;
+    // map() internally converts doubles to long and will truncate decimals. This is okay for human control
+    speedControl = map(std::abs(speedControl * 1000), 0, max_output, 0, 255); 
     this->spin(forward, speedControl);
 }
 
