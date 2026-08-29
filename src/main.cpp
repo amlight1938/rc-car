@@ -28,7 +28,7 @@ void controlTask(void *params)
     unsigned long lastStbyToggle = 0;
 
     // setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
-    unsigned long blinkDuration = 500; //500 ms on, 500 off
+    unsigned long blinkDuration = 500; // 500 ms on, 500 off
     bool blinkState = LOW;
     unsigned long lastBlinkSwitch = 0;
 
@@ -36,43 +36,46 @@ void controlTask(void *params)
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while (true)
-    {   
+    {
         unsigned long currentTime = millis();
 
         if (controller.isConnected())
         {
-            //TODO: check with state machine
+            // TODO: check with state machine
             blinkState = HIGH;
             digitalWrite(BT_LED_PIN, blinkState);
-
 
             // gathering the controller inputs
             XboxControlsState s;
             controller.read(&s);
 
             // toggling the standby LED and motor controller based on controller inputs
-            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay) {
+            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+            {
                 stbyState = !stbyState;
                 digitalWrite(STBY_PIN, stbyState);
                 lastStbyToggle = currentTime;
             }
 
             // powering the left motor based on controller inputs
-            if (stbyState){
+            if (stbyState)
+            {
                 leftMotor.control(s.leftStickY, s.rightStickX);
-                rightMotor.control(s.leftStickY, -s.rightStickX); //negative right stick look at motor.control equation
+                rightMotor.control(s.leftStickY, -s.rightStickX); // negative right stick to account for chirality differences for the motors
             }
-        }else
+        }
+        else
         {
-            //TODO: check with state machine
-            //if was connected and now not {
+            // TODO: check with state machine
+            // if was connected and now not {
             leftMotor.stop();
             rightMotor.stop();
             //}
-            
+
             // causing the bluetooth LED to blink while searching for a controller
             // blinking will occur at a frequency based blinkDuration
-            if (currentTime - lastBlinkSwitch > blinkDuration){
+            if (currentTime - lastBlinkSwitch > blinkDuration)
+            {
                 lastBlinkSwitch = currentTime;
                 digitalWrite(BT_LED_PIN, blinkState);
                 blinkState = !blinkState;

@@ -12,7 +12,7 @@ public:
     void stop();
 
 private:
-    static constexpr double DEADZONE = 0.08;
+    static constexpr double DEADZONE = 0.15;
     static constexpr double MOTOR_TURN_GAIN = 0.5;
 
     void spin(bool forward, uint8_t speedValue);
