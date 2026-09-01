@@ -1,7 +1,10 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
+#include <MPU9250.h>
 #include "Motor.h"
 #include "Pins.h"
+
+MPU9250 imu;
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -18,9 +21,16 @@ void controlTask(void *params)
     Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
+    void print_roll_pitch_yaw();
+
     // initializing all utilized pins as outputs or inputs
     pinMode(STBY_PIN, OUTPUT);
     pinMode(BT_LED_PIN, OUTPUT);
+
+    pinMode(L_ENCODER_PHASE_A_PIN, INPUT);
+    pinMode(L_ENCODER_PHASE_B_PIN, INPUT);
+    pinMode(R_ENCODER_PHASE_A_PIN, INPUT);
+    pinMode(R_ENCODER_PHASE_B_PIN, INPUT);
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -32,6 +42,7 @@ void controlTask(void *params)
     unsigned long autonomousBlinkDuration = 200; // 200 ms on, 200 off
     bool btLedState = LOW;
     unsigned long lastBlinkSwitch = 0;
+
 
     // list of states the car can enter
     enum State
@@ -47,6 +58,17 @@ void controlTask(void *params)
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
+
+    // setting up the IMU
+    Wire.begin();
+    if (!imu.setup(0x68))
+    { // change to your own address
+        while (1)
+        {
+            Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
+            delay(5000);
+        }
+    }
 
     while (true)
     {
@@ -151,6 +173,20 @@ void controlTask(void *params)
             leftMotor.control(s.leftStickY, s.rightStickX);
             rightMotor.control(s.leftStickY, -s.rightStickX); // negative right stick to account for chirality differences for the motors
 
+            //reading out the encoder values for the left and right motors
+            int leftEncoderPhaseA = digitalRead(L_ENCODER_PHASE_A_PIN);
+            int leftEncoderPhaseB = digitalRead(L_ENCODER_PHASE_B_PIN);
+            int rightEncoderPhaseA = digitalRead(R_ENCODER_PHASE_A_PIN);
+            int rightEncoderPhaseB = digitalRead(R_ENCODER_PHASE_B_PIN);
+            Serial.print("Left Encoder Phase A: ");
+            Serial.print(leftEncoderPhaseA);
+            Serial.print("    Left Encoder Phase B: ");
+            Serial.print(leftEncoderPhaseB);
+            Serial.print("    Right Encoder Phase A: ");
+            Serial.print(rightEncoderPhaseA);
+            Serial.print("    Right Encoder Phase B: ");
+            Serial.println(rightEncoderPhaseB);
+
             break;
 
         case AUTONOMOUS:
@@ -190,6 +226,18 @@ void controlTask(void *params)
 
             // future autonomous capabilities go here
 
+            // imu readout testing
+            if (imu.update())
+            {
+                static uint32_t prev_ms = millis();
+                if (millis() > prev_ms + 25)
+                {
+
+                    print_roll_pitch_yaw();
+                    prev_ms = millis();
+                }
+            }
+
             break;
         }
 
@@ -209,4 +257,22 @@ void loop()
 {
     // kill the arduino default loop task since we are running a deterministic time scheduler task
     vTaskDelete(NULL);
+}
+
+void print_roll_pitch_yaw()
+{
+    Serial.print("Yaw: ");
+    Serial.print(imu.getYaw(), 2);
+    Serial.print("    Pitch: ");
+    Serial.print(imu.getPitch(), 2);
+    Serial.print("    Roll: ");
+    Serial.print(imu.getRoll(), 2);
+    Serial.print("    Temp: ");
+    Serial.print(imu.getTemperature(), 2);
+    Serial.print("    AccX: ");
+    Serial.print(imu.getAccX(), 2);
+    Serial.print("    AccY: ");
+    Serial.print(imu.getAccY(), 2);
+    Serial.print("    AccZ: ");
+    Serial.println(imu.getAccZ(), 2);
 }
