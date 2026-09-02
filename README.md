@@ -20,6 +20,8 @@ See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.ne
 
 [Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
 
+[IMU-MPU9250] (https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
+
 
 
 [RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
