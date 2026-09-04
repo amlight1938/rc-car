@@ -18,11 +18,15 @@ See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.ne
 
 [Battery](https://www.amazon.com/dp/B0FCFVWS1K?psc=1&smid=A3CTZBWJRYQEJA&ref_=chk_typ_imgToDp)
 
+[Battery Plug Male](https://www.amazon.com/T-Plug-T-Connectors-Deans-Style-BDHI-28/dp/B07MDGT5C1/)
+
 [Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
 
-[IMU-MPU9250] (https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
+[IMU-MPU9250](https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
 
 [RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
+
+We are primarily using 22awg solid wires for connections.  There are 20awg solid wires soldered to the battery adapter as a larger current step down.
 
 ## Part Dimensions
 
@@ -35,6 +39,8 @@ Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
 [Bluetooth Controller GitHub](https://github.com/tbekas/BLE-Gamepad-Client)
 
 [Bluetooth Controller Example Implimentation] (https://www.youtube.com/watch?v=eePqTX-07oo)
+
+[KiCad Download](https://www.kicad.org/download/windows/)
 
 
 ## Bugs to work on
