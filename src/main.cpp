@@ -82,6 +82,27 @@ void controlTask(void *params)
         }
     }
 
+     if (!imu.setup(0x68)) {  // change to your own address
+        while (1) {
+            Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
+            delay(5000);
+        }
+    }
+
+    // calibrate anytime you want to
+    Serial.println("Accel Gyro calibration will start in 5sec.");
+    Serial.println("Please leave the device still on the flat plane.");
+    imu.verbose(true);
+    delay(5000);
+    imu.calibrateAccelGyro();
+
+    Serial.println("Mag calibration will start in 5sec.");
+    Serial.println("Please Wave device in a figure eight until done.");
+    delay(5000);
+    imu.calibrateMag();
+
+    imu.verbose(false);
+
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
