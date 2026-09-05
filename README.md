@@ -38,7 +38,7 @@ Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
 
 [Bluetooth Controller GitHub](https://github.com/tbekas/BLE-Gamepad-Client)
 
-[Bluetooth Controller Example Implimentation] (https://www.youtube.com/watch?v=eePqTX-07oo)
+[Bluetooth Controller Example Implimentation](https://www.youtube.com/watch?v=eePqTX-07oo)
 
 [KiCad Download](https://www.kicad.org/download/windows/)
 
