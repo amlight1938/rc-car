@@ -189,14 +189,15 @@ void controlTask(void *params)
             rightMotor.control(s.leftStickY, -s.rightStickX); // negative right stick to account for chirality differences for the motors
 
             // reading out the encoder values for the left and right motors
-            Serial.print("Left Encoder Phase A: ");
-            Serial.print(digitalRead(L_ENCODER_PHASE_A_PIN));
-            Serial.print("    Left Encoder Phase B: ");
-            Serial.print(digitalRead(L_ENCODER_PHASE_B_PIN));
-            Serial.print("    Right Encoder Phase A: ");
-            Serial.print(digitalRead(R_ENCODER_PHASE_A_PIN));
-            Serial.print("    Right Encoder Phase B: ");
-            Serial.println(digitalRead(R_ENCODER_PHASE_B_PIN));
+            Serial.print(">input:");
+            Serial.println(s.leftStickY);
+            Serial.print(">outputA:");
+            Serial.println(digitalRead(L_ENCODER_PHASE_A_PIN));
+            Serial.print(">outputB:");
+            Serial.println(digitalRead(L_ENCODER_PHASE_B_PIN));
+
+            // Serial.print(digitalRead(R_ENCODER_PHASE_A_PIN));
+            // Serial.println(digitalRead(R_ENCODER_PHASE_B_PIN));
 
             break;
 
@@ -236,19 +237,6 @@ void controlTask(void *params)
             }
 
             // future autonomous capabilities go here
-
-            // imu readout testing
-            if (imu.update())
-            {
-                static uint32_t prev_ms = millis();
-                if (millis() > prev_ms + 25)
-                {
-                    print_roll_pitch_yaw();
-                    prev_ms = millis();
-                }
-            }
-
-            break;
         }
 
         // schedule the when the task should wake up and run another loop
