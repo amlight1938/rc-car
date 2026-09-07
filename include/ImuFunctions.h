@@ -1,24 +1,24 @@
 #pragma once
 
-#include <cstdint>
 #include <MPU9250.h>
 
 inline void print_roll_pitch_yaw(MPU9250 imu)
 {
-    Serial.print("Yaw: ");
-    Serial.print(imu.getYaw(), 2);
-    Serial.print("    Pitch: ");
-    Serial.print(imu.getPitch(), 2);
-    Serial.print("    Roll: ");
-    Serial.print(imu.getRoll(), 2);
-    Serial.print("    Temp: ");
-    Serial.print(imu.getTemperature(), 2);
-    Serial.print("    AccX: ");
-    Serial.print(imu.getAccX(), 2);
-    Serial.print("    AccY: ");
-    Serial.print(imu.getAccY(), 2);
-    Serial.print("    AccZ: ");
-    Serial.println(imu.getAccZ(), 2);
+    Serial.printf("Roll: %.2f  ", imu.getRoll());
+    Serial.printf("Pitch: %.2f  ", imu.getPitch());
+    Serial.printf("Yaw: %.2f  ", imu.getYaw());
+    Serial.printf("MagX: %.2f  ", imu.getMagX());
+    Serial.printf("MagY: %.2f  ", imu.getMagY());
+    Serial.printf("MagZ: %.2f  ", imu.getMagZ());
+    // Serial.print(imu.getTemperature(), 2);
+    // Serial.print("    AccX: ");
+    // Serial.print(imu.getAccX(), 2);
+    // Serial.print("    AccY: ");
+    // Serial.print(imu.getAccY(), 2);
+    // Serial.print("    AccZ: ");
+    // Serial.println(imu.getAccZ(), 2);
+
+    Serial.println();
 }
 
 inline void calibrate_imu(MPU9250 imu)
