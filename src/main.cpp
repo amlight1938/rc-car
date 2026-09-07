@@ -1,28 +1,11 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
 #include <MPU9250.h>
+#include "ImuFunctions.h"
 #include "Motor.h"
 #include "Pins.h"
 
 MPU9250 imu;
-
-void print_roll_pitch_yaw()
-{
-    Serial.print("Yaw: ");
-    Serial.print(imu.getYaw(), 2);
-    Serial.print("    Pitch: ");
-    Serial.print(imu.getPitch(), 2);
-    Serial.print("    Roll: ");
-    Serial.print(imu.getRoll(), 2);
-    Serial.print("    Temp: ");
-    Serial.print(imu.getTemperature(), 2);
-    Serial.print("    AccX: ");
-    Serial.print(imu.getAccX(), 2);
-    Serial.print("    AccY: ");
-    Serial.print(imu.getAccY(), 2);
-    Serial.print("    AccZ: ");
-    Serial.println(imu.getAccZ(), 2);
-}
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -66,6 +49,7 @@ void controlTask(void *params)
         DISARMED,
         MANUAL,
         AUTONOMOUS,
+        CALIBRATION
     };
 
     State currentState = PAIRING; // start in pairing mode
@@ -82,33 +66,21 @@ void controlTask(void *params)
         }
     }
 
-     if (!imu.setup(0x68)) {  // change to your own address
-        while (1) {
+    if (!imu.setup(0x68))
+    {
+        while (1)
+        {
             Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
             delay(5000);
         }
     }
-
-    // calibrate anytime you want to
-    Serial.println("Accel Gyro calibration will start in 5sec.");
-    Serial.println("Please leave the device still on the flat plane.");
-    imu.verbose(true);
-    delay(5000);
-    imu.calibrateAccelGyro();
-
-    Serial.println("Mag calibration will start in 5sec.");
-    Serial.println("Please Wave device in a figure eight until done.");
-    delay(5000);
-    imu.calibrateMag();
-
-    imu.verbose(false);
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
     while (true)
     {
-        XboxControlsState s;
+        XboxControlsState controllerState;
         unsigned long currentTime = millis();
 
         // enter pairing mode if controller disconnects
@@ -119,7 +91,7 @@ void controlTask(void *params)
         else
         {
             // gathering the controller inputs if controller is connected
-            controller.read(&s);
+            controller.read(&controllerState);
         }
 
         // performing unique actions based on the cars state
@@ -167,11 +139,19 @@ void controlTask(void *params)
             }
 
             // switching to MANUAL based on controller inputs
-            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
                 currentState = MANUAL; // always go straight to manual once stby button is toggled on
+            }
+
+            // switching to CALIBRATION based on controller inputs
+            if (controllerState.dpadDown == true && currentTime - lastStbyToggle > stbyDelay)
+            {
+                lastStbyToggle = currentTime;
+                lastState = currentState;
+                currentState = CALIBRATION;
             }
 
             break;
@@ -188,7 +168,7 @@ void controlTask(void *params)
             }
 
             // switching to DISARMED based on controller inputs
-            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
@@ -197,7 +177,7 @@ void controlTask(void *params)
             }
 
             // switching to AUTONOMOUS based on controller inputs
-            if (s.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
@@ -206,8 +186,8 @@ void controlTask(void *params)
             }
 
             // powering the motors with manual control
-            leftMotor.control(s.leftStickY, s.rightStickX);
-            rightMotor.control(s.leftStickY, -s.rightStickX); // negative right stick to account for chirality differences for the motors
+            leftMotor.control(controllerState.leftStickY, controllerState.rightStickX);
+            rightMotor.control(controllerState.leftStickY, -controllerState.rightStickX); // negative right stick to account for chirality differences for the motors
 
             // reading out the encoder values for the left and right motors
             Serial.print("Left Encoder Phase A: ");
@@ -239,7 +219,7 @@ void controlTask(void *params)
             }
 
             // switching to DISARMED based on controller inputs
-            if (s.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
@@ -248,7 +228,7 @@ void controlTask(void *params)
             }
 
             // switching to MANUAL based on controller inputs
-            if (s.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
@@ -264,10 +244,30 @@ void controlTask(void *params)
                 static uint32_t prev_ms = millis();
                 if (millis() > prev_ms + 25)
                 {
-                    print_roll_pitch_yaw();
+                    print_roll_pitch_yaw(imu);
                     prev_ms = millis();
                 }
             }
+
+            break;
+
+        case CALIBRATION:
+            // turning the both motors off when entering the state
+            leftMotor.stop();
+            rightMotor.stop();
+
+            // turning the bluetooth LED and Standby  off when calbrating
+            btLedState = LOW;
+            digitalWrite(BT_LED_PIN, btLedState);
+            stbyState = LOW;
+            digitalWrite(STBY_PIN, stbyState);
+
+            // calibrating the IMU
+            calibrate_imu(imu);
+
+            // returning to DISARMED after calibration is complete
+            lastState = currentState;
+            currentState = DISARMED;
 
             break;
         }
