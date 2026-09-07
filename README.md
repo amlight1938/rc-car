@@ -45,6 +45,9 @@ Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
 
 ## Bugs to work on
 - Rising edge detection for left bumper arming
+- 100ms controlTask should drop to 10ms when possible
+- get the calibration to allow the controlTask to continue looping
+- include LED blinking for the calibration
 
 
 
