@@ -18,13 +18,15 @@ See the DAR-C circuit schematic.drawio file in [draw.io](https://app.diagrams.ne
 
 [Battery](https://www.amazon.com/dp/B0FCFVWS1K?psc=1&smid=A3CTZBWJRYQEJA&ref_=chk_typ_imgToDp)
 
+[Battery Plug Male](https://www.amazon.com/T-Plug-T-Connectors-Deans-Style-BDHI-28/dp/B07MDGT5C1/)
+
 [Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
 
-[IMU-MPU9250] (https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
-
-
+[IMU-MPU9250](https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
 
 [RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
+
+We are primarily using 22awg solid wires for connections.  There are 20awg solid wires soldered to the battery adapter as a larger current step down.
 
 ## Part Dimensions
 
@@ -32,21 +34,17 @@ Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
 
 2 bread boards edge to edge: 108mm x 82mm x 10mm
 
-2 bread boards tip to tail: 155mm x 55mm x 10mm
-
-BS - I believe edge to edge will be easier to work with, but tip to tail might be better for the shape of the vehicle.
-
-
 ## GitHub Repo References
 
-[Simplest Software for Bluetooth](https://www.youtube.com/watch?v=eePqTX-07oo)
+[Bluetooth Controller GitHub](https://github.com/tbekas/BLE-Gamepad-Client)
 
-  BS - I have this setup but cannot test (since I don't have the nano).  The biggest issue is this will give us 2 joysticks, but no button controls.  Might be able to add them in or something.
+[Bluetooth Controller Example Implimentation](https://www.youtube.com/watch?v=eePqTX-07oo)
 
-  BS - I take the previous statement back, I think this does have full controls.  the controls example doesn't have them all, but the controlState.cpp does include them.
+[KiCad Download](https://www.kicad.org/download/windows/)
 
-[More complex software for B/t](https://github.com/ricardoquesada/bluepad32/tree/main)
-  BS - I am not sure how to set this up (at least with VSCode).  This should be able to get alot more buttons working though.
+
+## Bugs to work on
+- Rising edge detection for left bumper arming
 
 
 
@@ -56,6 +54,6 @@ BS - I believe edge to edge will be easier to work with, but tip to tail might b
 
 [Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
 
+[More complex software for B/t](https://github.com/ricardoquesada/bluepad32/tree/main)
+  BS - I am not sure how to set this up (at least with VSCode).
 
-## Bugs to work on
-- Rising edge detection for left bumper arming
