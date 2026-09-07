@@ -66,15 +66,6 @@ void controlTask(void *params)
         }
     }
 
-    if (!imu.setup(0x68))
-    {
-        while (1)
-        {
-            Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
-            delay(5000);
-        }
-    }
-
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
 
