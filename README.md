@@ -2,11 +2,11 @@
 
 ## Directory
 
-[Schematic](Design\Schematic)
+[Schematic](Design/Schematic)
 
-[Parts](Design\PartsList)
+[Parts](Design/PartsList)
 
-[Third Party Library Information](Design\ThirdPartyLibInfo)
+[Third Party Library Information](Design/ThirdPartyLibInfo)
 
 ## Bugs to work on
 - Rising edge detection for left bumper arming
