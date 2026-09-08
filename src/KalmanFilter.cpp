@@ -1,12 +1,9 @@
 #include "KalmanFilter.h"
-#include "Arduino.h"
 
-KalmanFilter::KalmanFilter(){}
+KalmanFilter::KalmanFilter() {}
 
 void KalmanFilter::iterate(double theta)
 {
-
-
 }
 
 double KalmanFilter::getX()
@@ -21,5 +18,5 @@ double KalmanFilter::getY()
 
 double KalmanFilter::getTheta()
 {
-    return _theta;
+    return theta;
 }

@@ -1,5 +1,4 @@
 #include "Motor.h"
-#include "Arduino.h"
 
 Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
     : _plusPin(plusPin), _minusPin(minusPin), _speedPin(speedPin)

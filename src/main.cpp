@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
 #include <MPU9250.h>
+#include <ArduinoEigen.h>
 #include "ImuFunctions.h"
 #include "Motor.h"
 #include "Pins.h"
@@ -20,15 +21,8 @@ void controlTask(void *params)
     Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
-    // initializing all utilized pins as outputs or inputs
-    pinMode(STBY_PIN, OUTPUT);
-    pinMode(BT_LED_PIN, OUTPUT);
-    pinMode(CAL_LED_PIN, OUTPUT);
-
-    pinMode(L_ENCODER_PHASE_A_PIN, INPUT);
-    pinMode(L_ENCODER_PHASE_B_PIN, INPUT);
-    pinMode(R_ENCODER_PHASE_A_PIN, INPUT);
-    pinMode(R_ENCODER_PHASE_B_PIN, INPUT);
+    // setting up pins and Inputs or Outputs
+    pinSetup();
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -128,6 +122,7 @@ void controlTask(void *params)
                 lastStbyToggle = currentTime;
                 lastState = currentState;
                 currentState = MANUAL; // always go straight to manual once stby button is toggled on
+                break;
             }
 
             // switching to CALIBRATION based on controller inputs
@@ -136,6 +131,7 @@ void controlTask(void *params)
                 lastStbyToggle = currentTime;
                 lastState = currentState;
                 currentState = CALIBRATION;
+                break;
             }
 
             break;
@@ -174,14 +170,11 @@ void controlTask(void *params)
             rightMotor.control(controllerState.leftStickY, -controllerState.rightStickX); // negative right stick to account for chirality differences for the motors
 
             // reading out the encoder values for the left and right motors
-            Serial.print("Left Encoder Phase A: ");
-            Serial.print(digitalRead(L_ENCODER_PHASE_A_PIN));
-            Serial.print("    Left Encoder Phase B: ");
-            Serial.print(digitalRead(L_ENCODER_PHASE_B_PIN));
-            Serial.print("    Right Encoder Phase A: ");
-            Serial.print(digitalRead(R_ENCODER_PHASE_A_PIN));
-            Serial.print("    Right Encoder Phase B: ");
-            Serial.println(digitalRead(R_ENCODER_PHASE_B_PIN));
+            Serial.printf("Left Encoder Phase A: %d", digitalRead(L_ENCODER_PHASE_A_PIN));
+            Serial.printf("Left Encoder Phase B: %d", digitalRead(L_ENCODER_PHASE_B_PIN));
+            Serial.printf("Right Encoder Phase A: %d", digitalRead(R_ENCODER_PHASE_A_PIN));
+            Serial.printf("Right Encoder Phase A: %d", digitalRead(R_ENCODER_PHASE_B_PIN));
+            Serial.println();
 
             break;
 
@@ -250,7 +243,6 @@ void controlTask(void *params)
             // returning to DISARMED after calibration is complete
             lastState = currentState;
             currentState = DISARMED;
-
             break;
         }
 

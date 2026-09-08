@@ -1,6 +1,7 @@
 #pragma once
 
-#include <cstdint>
+#include "Arduino.h"
+#include <ArduinoEigen.h>
 
 class KalmanFilter
 {
@@ -19,7 +20,7 @@ private:
     static constexpr uint8_t H[1][4] = {
         {0, 0, 1, 0}};
 
-    double _theta;
+    double theta;
     double X;
     double Y;
 };
