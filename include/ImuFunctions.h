@@ -23,13 +23,10 @@ inline void printImuData(MPU9250 &imu)
     Serial.printf("MagX: %.2f  ", imu.getMagX());
     Serial.printf("MagY: %.2f  ", imu.getMagY());
     Serial.printf("MagZ: %.2f  ", imu.getMagZ());
-    // Serial.print(imu.getTemperature(), 2);
-    // Serial.print("    AccX: ");
-    // Serial.print(imu.getAccX(), 2);
-    // Serial.print("    AccY: ");
-    // Serial.print(imu.getAccY(), 2);
-    // Serial.print("    AccZ: ");
-    // Serial.print(imu.getAccZ(), 2);
+    // Serial.printf("Temp: %.2f  ", imu.getTemperature());
+    // Serial.printf("AccX: %.2f  ", imu.getAccX());
+    // Serial.printf("AccY: %.2f  ", imu.getAccY());
+    // Serial.printf("AccZ: %.2f  ", imu.getAccZ());
 
     Serial.println();
 }
