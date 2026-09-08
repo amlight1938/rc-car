@@ -1,57 +1,14 @@
 # rc-car
 
+## Directory
 
-## Microcontroller
+[Schematic](Design\Schematic)
 
-[Elegoo ESP32](https://www.amazon.com/dp/B0D8T53CQ5?lv=shuf&channelId=500&plpRedirect=mhFallback)
+[Parts](Design\PartsList)
 
-[ESP32 documentation](https://www.espboards.dev/esp32/esp32doit-devkit-v1/)
-
-## Parts
-
-[Motors](https://www.amazon.com/dp/B0DB28GC7B?smid=A2DSPVS66G15B3&ref_=chk_typ_imgToDp&th=1)
-
-[Battery](https://www.amazon.com/dp/B0FCFVWS1K?psc=1&smid=A3CTZBWJRYQEJA&ref_=chk_typ_imgToDp)
-
-[Battery Plug Male](https://www.amazon.com/T-Plug-T-Connectors-Deans-Style-BDHI-28/dp/B07MDGT5C1/)
-
-[Motor Driver](https://www.amazon.com/dp/B0GSGGZ39F?psc=1&smid=A2U5NW7LLKYQ0G&ref_=chk_typ_imgToDp)
-
-[IMU-MPU9250](https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide/all)
-
-[RC Car 3D Print Design](https://www.tinkercad.com/things/47Z9w4BictA-rc-car-template/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fdesigns%2Fall&sharecode=sbzTbxtYG3wgvbyh8qcZ0lMcqWFFF9wqbeRjlP2IIGg)
-
-We are primarily using 22awg solid wires for connections.  There are 20awg solid wires soldered to the battery adapter as a larger current step down.
-
-## Part Dimensions
-
-Battery: 67mm x 37mm x 19mm (leave 1 end cap open for wires)
-
-2 bread boards edge to edge: 108mm x 82mm x 10mm
-
-## GitHub Repo References
-
-[Bluetooth Controller GitHub](https://github.com/tbekas/BLE-Gamepad-Client)
-
-[Bluetooth Controller Example Implimentation](https://www.youtube.com/watch?v=eePqTX-07oo)
-
-[KiCad Download](https://www.kicad.org/download/windows/)
-
+[Third Party Library Information](Design\ThirdPartyLibInfo)
 
 ## Bugs to work on
 - Rising edge detection for left bumper arming
 - 100ms controlTask should drop to 10ms when possible
 - get the calibration to allow the controlTask to continue looping
-- include LED blinking for the calibration
-
-
-
-## OBE
-
-[Arduino Nano ESP32](https://store-usa.arduino.cc/products/nano-esp32?srsltid=AfmBOopJ1Aj2__Zg6dhXaFx1dD8lo0dxV4tcI7LpXrdvpagKfwcIVVGV)
-
-[Arduino Nano ESP32 Documentation](https://docs.arduino.cc/hardware/nano-esp32/)
-
-[More complex software for B/t](https://github.com/ricardoquesada/bluepad32/tree/main)
-  BS - I am not sure how to set this up (at least with VSCode).
-
