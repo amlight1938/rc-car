@@ -131,7 +131,7 @@ void controlTask(void *params)
             }
 
             // switching to CALIBRATION based on controller inputs
-            if (controllerState.dpadDown == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.dpadDown == true && controllerState.buttonA == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
