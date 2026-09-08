@@ -2272,6 +2272,26 @@
 	)
 	(wire
 		(pts
+			(xy 134.62 125.73) (xy 132.08 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a03fa09-8c95-4a6a-928f-7d361c5c7b04")
+	)
+	(wire
+		(pts
+			(xy 144.78 125.73) (xy 142.24 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a845d32-456b-4c39-bf83-782ee1ee9843")
+	)
+	(wire
+		(pts
 			(xy 130.81 62.23) (xy 78.74 62.23)
 		)
 		(stroke
@@ -2792,6 +2812,16 @@
 	)
 	(wire
 		(pts
+			(xy 119.38 125.73) (xy 124.46 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db955c66-a58d-47b3-ab2d-5fe0723920c9")
+	)
+	(wire
+		(pts
 			(xy 153.67 72.39) (xy 151.13 72.39)
 		)
 		(stroke
@@ -3245,6 +3275,98 @@
 			(project "KiCadSchematic"
 				(path "/55b56745-09e9-475c-8da6-0b8488c57910"
 					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 128.27 125.73 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "47854f56-00ea-4436-bb01-4f39915b7e18")
+		(property "Reference" "D3"
+			(at 129.8575 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Yellow"
+			(at 129.8575 121.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 128.27 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 128.27 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 128.27 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 128.27 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4ce783e7-bea4-4d28-b3d6-0924374b5b4d")
+		)
+		(pin "2"
+			(uuid "c672bbc5-5f61-4622-8d77-a1cd045e72e7")
+		)
+		(instances
+			(project "KiCadSchematic"
+				(path "/55b56745-09e9-475c-8da6-0b8488c57910"
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -4201,6 +4323,85 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 144.78 125.73 90)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dc3212ef-f76d-49d4-9168-d2e83e76e69c")
+		(property "Reference" "#PWR013"
+			(at 151.13 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 146.05 121.92 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 144.78 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 144.78 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 144.78 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0c6c159f-666b-48dd-b234-0f107e99fd98")
+		)
+		(instances
+			(project "KiCadSchematic"
+				(path "/55b56745-09e9-475c-8da6-0b8488c57910"
+					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 60.96 125.73 270)
 		(mirror x)
@@ -4556,6 +4757,87 @@
 			(project "KiCadSchematic"
 				(path "/55b56745-09e9-475c-8da6-0b8488c57910"
 					(reference "BT1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 138.43 125.73 90)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f73ad1bb-77c9-4220-9878-264a17c7bfd3")
+		(property "Reference" "R3"
+			(at 138.43 119.38 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "330Ω"
+			(at 138.43 121.92 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 123.952 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 138.43 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "4bcc6dbe-a356-498b-bdf4-9bac9458b8f7")
+		)
+		(pin "1"
+			(uuid "f2e19517-b835-41ba-ac94-6b86b7d142d4")
+		)
+		(instances
+			(project "KiCadSchematic"
+				(path "/55b56745-09e9-475c-8da6-0b8488c57910"
+					(reference "R3")
 					(unit 1)
 				)
 			)

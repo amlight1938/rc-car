@@ -5,8 +5,6 @@
 #include "Motor.h"
 #include "Pins.h"
 
-MPU9250 imu;
-
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
 // Priority - this allows us to assign priority to each task (logging, control)
@@ -25,6 +23,7 @@ void controlTask(void *params)
     // initializing all utilized pins as outputs or inputs
     pinMode(STBY_PIN, OUTPUT);
     pinMode(BT_LED_PIN, OUTPUT);
+    pinMode(CAL_LED_PIN, OUTPUT);
 
     pinMode(L_ENCODER_PHASE_A_PIN, INPUT);
     pinMode(L_ENCODER_PHASE_B_PIN, INPUT);
@@ -55,16 +54,10 @@ void controlTask(void *params)
     State currentState = PAIRING; // start in pairing mode
     State lastState;
 
-    // setting up the IMU
+    // setting up I2C and starting the IMU
     Wire.begin();
-    if (!imu.setup(0x68))
-    { // change to your own address
-        while (1)
-        {
-            Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
-            delay(5000);
-        }
-    }
+    MPU9250 imu;
+    connectImu(imu);
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
@@ -138,7 +131,7 @@ void controlTask(void *params)
             }
 
             // switching to CALIBRATION based on controller inputs
-            if (controllerState.dpadDown == true && currentTime - lastStbyToggle > stbyDelay)
+            if (controllerState.dpadDown == true && controllerState.buttonA == true && currentTime - lastStbyToggle > stbyDelay)
             {
                 lastStbyToggle = currentTime;
                 lastState = currentState;
@@ -232,12 +225,7 @@ void controlTask(void *params)
             // imu readout testing
             if (imu.update())
             {
-                static uint32_t prev_ms = millis();
-                if (millis() > prev_ms + 25)
-                {
-                    print_roll_pitch_yaw(imu);
-                    prev_ms = millis();
-                }
+                printImuData(imu);
             }
 
             break;
@@ -253,8 +241,11 @@ void controlTask(void *params)
             stbyState = LOW;
             digitalWrite(STBY_PIN, stbyState);
 
-            // calibrating the IMU
-            calibrate_imu(imu);
+            // calibrating the IMUs Accelerometer and Gyroscope
+            calibrateImuAccelGyro(imu);
+
+            // calibrating the IMUs Magnetometer
+            calibrateImuMag(imu, CAL_LED_PIN);
 
             // returning to DISARMED after calibration is complete
             lastState = currentState;
@@ -264,7 +255,7 @@ void controlTask(void *params)
         }
 
         // schedule the when the task should wake up and run another loop
-        vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(100));
+        vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
     }
 }
 
