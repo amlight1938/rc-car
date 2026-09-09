@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
 #include <MPU9250.h>
+#include <ESP32Encoder.h>
 #include <ArduinoEigen.h>
 #include "ImuFunctions.h"
 #include "Motor.h"
@@ -18,11 +19,22 @@ void controlTask(void *params)
     XboxController controller;
     controller.begin();
 
+    // setting up pins as Inputs or Outputs
+    pinSetup();
+
+    // instantiating the motors from the motor class
     Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
-    // setting up pins and Inputs or Outputs
-    pinSetup();
+    // instantiating the motor encoders from the encoder class
+    ESP32Encoder leftEncoder;
+    ESP32Encoder rightEncoder;
+
+    // starting the count for each motor encoder
+    leftEncoder.attachFullQuad(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN); // 4x decoding
+    leftEncoder.setCount(0);
+    rightEncoder.attachFullQuad(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN); // 4x decoding
+    rightEncoder.setCount(0);
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -34,6 +46,14 @@ void controlTask(void *params)
     unsigned long autonomousBlinkDuration = 200; // 200 ms on, 200 off
     bool btLedState = LOW;
     unsigned long lastBlinkSwitch = 0;
+
+    unsigned long prevTime = millis();
+    double leftMotorCount = 0;
+    double rightMotorCount = 0;
+    double prevLeftMotorCount;
+    double prevRightMotorCount;
+    double triggerRate;
+    double velocity;
 
     // list of states the car can enter
     enum State
@@ -170,10 +190,23 @@ void controlTask(void *params)
             rightMotor.control(controllerState.leftStickY, -controllerState.rightStickX); // negative right stick to account for chirality differences for the motors
 
             // reading out the encoder values for the left and right motors
-            Serial.printf("Left Encoder Phase A: %d", digitalRead(L_ENCODER_PHASE_A_PIN));
-            Serial.printf("Left Encoder Phase B: %d", digitalRead(L_ENCODER_PHASE_B_PIN));
-            Serial.printf("Right Encoder Phase A: %d", digitalRead(R_ENCODER_PHASE_A_PIN));
-            Serial.printf("Right Encoder Phase A: %d", digitalRead(R_ENCODER_PHASE_B_PIN));
+            prevLeftMotorCount = leftMotorCount;
+            prevRightMotorCount = rightMotorCount;
+            leftMotorCount = -leftEncoder.getCount(); //left motor .getCount decreases as the car moves forward
+            rightMotorCount = rightEncoder.getCount(); //right motor .getCount increase as the car moves forward
+
+            // calculating number of triggers/millisecond then scaling to triggers/second
+            triggerRate = 1000 * (((leftMotorCount - prevLeftMotorCount) + (rightMotorCount - prevRightMotorCount) / 2) / (currentTime - prevTime));
+
+            // motor tests indicate 2772 triggers/axle rotation
+            // wheel diameter is 0.070m, therefore 0.2199m circumference
+            // 2772 triggers/0.2199m or 12605 (trig/m)
+            // (m/s) = (trig/s) / (trig/m)
+            velocity = triggerRate / 12605;
+
+            Serial.printf("Count %ld  ", leftMotorCount);
+            Serial.printf("Trig Rate %.3f  ", triggerRate);
+            Serial.printf("Vel %.3f", velocity);
             Serial.println();
 
             break;
@@ -246,7 +279,10 @@ void controlTask(void *params)
             break;
         }
 
-        // schedule the when the task should wake up and run another loop
+        // tracking the time at the previous loop for velocity calculations
+        prevTime = currentTime;
+
+        // schedule when the task should wake up and run another loop
         vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
     }
 }

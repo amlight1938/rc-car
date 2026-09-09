@@ -7,6 +7,13 @@
 ## Parts
 
 [Motors](https://www.amazon.com/dp/B0DB28GC7B?smid=A2DSPVS66G15B3&ref_=chk_typ_imgToDp&th=1)
+The motor purchased is the 12V 300RPM with a 7PPR "N20" Encoder Motor.  The gearbox seems to be 1:100 but its far from confirmed.
+Using an encoder setup with Quadrature, we read the trigger count over 20 axle rotations (to reduce error).
+20 Rot Counts were:  55400, 55420, 55470, 55460, 55430.  Average = 55436.
+Dividing by 20 gives: 2772 triggers per axle rotation.
+Dividing by 28 (7ppr*4 due to quadrature) gives: 99 motor rotations per axle rotation.
+This falls in line with the assumed 1:100 gear ratio.
+However, the nominal 1:100 gear ratio may not be mechanically accurate, and therefore, I will use the estimated 2772 triggers/axle rotation as the most accurate value.
 
 [Battery](https://www.amazon.com/dp/B0FCFVWS1K?psc=1&smid=A3CTZBWJRYQEJA&ref_=chk_typ_imgToDp)
 
