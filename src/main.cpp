@@ -1,9 +1,8 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
-#include <MPU9250.h>
 #include <ArduinoEigen.h>
 #include "Encoder.h"
-#include "ImuFunctions.h"
+#include "Imu.h"
 #include "Motor.h"
 #include "Pins.h"
 
@@ -22,12 +21,15 @@ void controlTask(void *params)
     // setting up pins as Inputs or Outputs
     pinSetup();
 
-    // instantiating the motors from the motor class
+    // instantiating the motors
     Motor leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN);
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
-    // instantiating the motor encoders from the encoder class
+    // instantiating the motor encoders
     Encoder motorEncoder(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN, R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN);
+
+    // instantiating the IMU
+    Imu imu;
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -54,11 +56,6 @@ void controlTask(void *params)
 
     State currentState = PAIRING; // start in pairing mode
     State lastState;
-
-    // setting up I2C and starting the IMU
-    Wire.begin();
-    MPU9250 imu;
-    connectImu(imu);
 
     // set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
     TickType_t lastWakeTime = xTaskGetTickCount();
@@ -219,10 +216,7 @@ void controlTask(void *params)
             // future autonomous capabilities go here
 
             // imu readout testing
-            if (imu.update())
-            {
-                printImuData(imu);
-            }
+            imu.print();
 
             break;
 
@@ -238,10 +232,10 @@ void controlTask(void *params)
             digitalWrite(STBY_PIN, stbyState);
 
             // calibrating the IMUs Accelerometer and Gyroscope
-            calibrateImuAccelGyro(imu);
+            imu.calibrateImuAccelGyro();
 
             // calibrating the IMUs Magnetometer
-            calibrateImuMag(imu, CAL_LED_PIN);
+            imu.calibrateImuMag(CAL_LED_PIN);
 
             // returning to DISARMED after calibration is complete
             lastState = currentState;
