@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
 #include <MPU9250.h>
-#include <ESP32Encoder.h>
 #include <ArduinoEigen.h>
+#include "Encoder.h"
 #include "ImuFunctions.h"
 #include "Motor.h"
 #include "Pins.h"
@@ -27,14 +27,7 @@ void controlTask(void *params)
     Motor rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN);
 
     // instantiating the motor encoders from the encoder class
-    ESP32Encoder leftEncoder;
-    ESP32Encoder rightEncoder;
-
-    // starting the count for each motor encoder
-    leftEncoder.attachFullQuad(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN); // 4x decoding
-    leftEncoder.setCount(0);
-    rightEncoder.attachFullQuad(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN); // 4x decoding
-    rightEncoder.setCount(0);
+    Encoder motorEncoder(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN, R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN);
 
     // setting up the standby state for the motor controller
     bool stbyState = LOW;
@@ -48,12 +41,6 @@ void controlTask(void *params)
     unsigned long lastBlinkSwitch = 0;
 
     unsigned long prevTime = millis();
-    double leftMotorCount = 0;
-    double rightMotorCount = 0;
-    double prevLeftMotorCount;
-    double prevRightMotorCount;
-    double triggerRate;
-    double velocity;
 
     // list of states the car can enter
     enum State
@@ -189,24 +176,7 @@ void controlTask(void *params)
             leftMotor.control(controllerState.leftStickY, controllerState.rightStickX);
             rightMotor.control(controllerState.leftStickY, -controllerState.rightStickX); // negative right stick to account for chirality differences for the motors
 
-            // reading out the encoder values for the left and right motors
-            prevLeftMotorCount = leftMotorCount;
-            prevRightMotorCount = rightMotorCount;
-            leftMotorCount = -leftEncoder.getCount(); //left motor .getCount decreases as the car moves forward
-            rightMotorCount = rightEncoder.getCount(); //right motor .getCount increase as the car moves forward
-
-            // calculating number of triggers/millisecond then scaling to triggers/second
-            triggerRate = 1000 * (((leftMotorCount - prevLeftMotorCount) + (rightMotorCount - prevRightMotorCount) / 2) / (currentTime - prevTime));
-
-            // motor tests indicate 2772 triggers/axle rotation
-            // wheel diameter is 0.070m, therefore 0.2199m circumference
-            // 2772 triggers/0.2199m or 12605 (trig/m)
-            // (m/s) = (trig/s) / (trig/m)
-            velocity = triggerRate / 12605;
-
-            Serial.printf("Count %ld  ", leftMotorCount);
-            Serial.printf("Trig Rate %.3f  ", triggerRate);
-            Serial.printf("Vel %.3f", velocity);
+            Serial.printf("Vel %.3f", motorEncoder.getVelocity(prevTime, currentTime));
             Serial.println();
 
             break;
