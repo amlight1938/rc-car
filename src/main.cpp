@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
-#include <ArduinoEigen.h>
+#include "KalmanFilter.h"
 #include "Encoder.h"
 #include "Imu.h"
 #include "Motor.h"
@@ -42,6 +42,7 @@ void controlTask(void *params)
     bool btLedState = LOW;
     unsigned long lastBlinkSwitch = 0;
 
+    //setting up prevTime for velocity calculations
     unsigned long prevTime = millis();
 
     // list of states the car can enter
