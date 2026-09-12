@@ -6,26 +6,20 @@
 class Encoder
 {
 public:
-    Encoder(uint8_t L_ENCODER_PHASE_A_PIN, uint8_t L_ENCODER_PHASE_B_PIN, uint8_t R_ENCODER_PHASE_A_PIN, uint8_t R_ENCODER_PHASE_B_PIN);
+	Encoder(uint8_t phaseAPin, uint8_t phaseBPin);
 
-    double getVelocity(unsigned long &prevTime, unsigned long &currentTime);
-    // gets the average velocity of the two motors with 70mm diameter wheels since the previous getVelocity request
-    // velocity is sent as meters/second
-
-    ESP32Encoder getLeftEncoder();
-    // returns the left encoder object
-
-    ESP32Encoder getRightEncoder();
-    // returns the right encoder object
+	// gets the velocity of the motor with 70mm diameter wheels since the previous getVelocity request in meters/second
+	double getVelocity();
 
 private:
-    ESP32Encoder leftEncoder;
-    ESP32Encoder rightEncoder;
-
-    double leftMotorCount;
-    double rightMotorCount;
-    double prevLeftMotorCount;
-    double prevRightMotorCount;
-    double triggerRate;
-    double velocity;
+	// motor tests indicate 2772 triggers/axle rotation
+	// wheel diameter is 0.070m, therefore 0.2199m circumference
+	// 2772 triggers/0.2199m or 12605 (trig/m)
+	static constexpr double TRIGGERS_PER_METER = 12605.0;
+	ESP32Encoder encoder;
+	double motorCount;
+	double prevMotorCount;
+	double triggerRate;
+	double velocity;
+	unsigned long lastMeasurementTime;
 };

@@ -1,43 +1,26 @@
 #include "Encoder.h"
 
-Encoder::Encoder(uint8_t L_ENCODER_PHASE_A_PIN, uint8_t L_ENCODER_PHASE_B_PIN, uint8_t R_ENCODER_PHASE_A_PIN, uint8_t R_ENCODER_PHASE_B_PIN)
+Encoder::Encoder(uint8_t phaseApin, uint8_t phaseBpin)
 {
-    // starting the count for each motor encoder
-    leftEncoder.attachFullQuad(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN); // 4x decoding
-    leftEncoder.setCount(0);
-    rightEncoder.attachFullQuad(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN); // 4x decoding
-    rightEncoder.setCount(0);
+	// starting the count for each motor encoder
+	encoder.attachFullQuad(phaseApin, phaseBpin); // 4x decoding
+	encoder.setCount(0);
 
-    leftMotorCount = 0;
-    rightMotorCount = 0;
+	prevMotorCount = 0;
+	lastMeasurementTime = millis();
 }
 
-double Encoder::getVelocity(unsigned long &prevTime, unsigned long &currentTime)
+double Encoder::getVelocity()
 {
-    // reading out the encoder values for the left and right motors
-    prevLeftMotorCount = leftMotorCount;
-    prevRightMotorCount = rightMotorCount;
-    leftMotorCount = -leftEncoder.getCount();  // left motor .getCount decreases as the car moves forward
-    rightMotorCount = rightEncoder.getCount(); // right motor .getCount increase as the car moves forward
+	unsigned long currentTime = millis();
+	// reading out the encoder values for the left and right motors
+	motorCount = encoder.getCount();
 
-    // calculating number of triggers/millisecond then scaling to triggers/second
-    triggerRate = 1000 * (((leftMotorCount - prevLeftMotorCount) + (rightMotorCount - prevRightMotorCount) / 2) / (currentTime - prevTime));
+	// calculating number of triggers/millisecond then scaling to triggers/second
+	triggerRate = 1000 * (motorCount - prevMotorCount) / (currentTime - lastMeasurementTime);
 
-    // motor tests indicate 2772 triggers/axle rotation
-    // wheel diameter is 0.070m, therefore 0.2199m circumference
-    // 2772 triggers/0.2199m or 12605 (trig/m)
-    // (m/s) = (trig/s) / (trig/m)
-    velocity = triggerRate / 12605;
+	prevMotorCount = motorCount;
 
-    return velocity;
-}
-
-ESP32Encoder Encoder::getLeftEncoder()
-{
-    return leftEncoder;
-}
-
-ESP32Encoder Encoder::getRightEncoder()
-{
-    return rightEncoder;
+	// (m/s) = (trig/s) / (trig/m)
+	return triggerRate / TRIGGERS_PER_METER;
 }

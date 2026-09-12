@@ -8,15 +8,15 @@ void KalmanFilter::iterate(double theta)
 
 double KalmanFilter::getX()
 {
-    return X;
+	return X;
 }
 
 double KalmanFilter::getY()
 {
-    return Y;
+	return Y;
 }
 
 double KalmanFilter::getTheta()
 {
-    return theta;
+	return theta;
 }
