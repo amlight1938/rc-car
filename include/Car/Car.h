@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Arduino.h"
-#include "Motor.h"
-#include "Encoder.h"
+#include "Motor/Motor.h"
+#include "Motor/Encoder.h"
 #include "CarMotionState.h"
 
 class Car
