@@ -58,10 +58,10 @@ void controlTask(void *params)
 
 	while (true)
 	{
-		// XboxControlsState controllerState;
 		unsigned long currentTime = millis();
 
 		ControllerState controllerState = controller.getControllerState();
+		
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
 		{
