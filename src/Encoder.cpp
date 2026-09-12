@@ -13,7 +13,7 @@ Encoder::Encoder(uint8_t phaseApin, uint8_t phaseBpin)
 double Encoder::getVelocity()
 {
 	unsigned long currentTime = millis();
-	// reading out the encoder values for the left and right motors
+	// reading out the encoder values 
 	motorCount = encoder.getCount();
 
 	// calculating number of triggers/millisecond then scaling to triggers/second
