@@ -1,10 +1,12 @@
 #include <Arduino.h>
 #include <BLEGamepadClient.h>
-#include "Encoder.h"
-#include "Imu.h"
-#include "Motor.h"
+#include "Motor/Encoder.h"
+#include "Imu/Imu.h"
+#include "Motor/Motor.h"
 #include "Pins.h"
-#include "Car.h"
+#include "Car/Car.h"
+#include "Controller/Controller.h"
+#include "Controller/ControllerState.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -15,8 +17,7 @@ void controlTask(void *params)
 	Serial.begin(115200);
 
 	// instantiating the bluetooth controller and motors
-	XboxController controller;
-	controller.begin();
+	Controller controller;
 
 	// setting up pins as Inputs or Outputs
 	pinSetup();
@@ -32,8 +33,6 @@ void controlTask(void *params)
 
 	// setting up the standby state for the motor controller
 	bool stbyState = LOW;
-	unsigned long stbyDelay = 500;
-	unsigned long lastStbyToggle = 0;
 
 	// setting up the blinking LED for the period the esp32 is searching for a bluetooth controller
 	unsigned long pairingBlinkDuration = 500;	 // 500 ms on, 500 off
@@ -59,18 +58,14 @@ void controlTask(void *params)
 
 	while (true)
 	{
-		XboxControlsState controllerState;
+		// XboxControlsState controllerState;
 		unsigned long currentTime = millis();
 
+		ControllerState controllerState = controller.getControllerState();
 		// enter pairing mode if controller disconnects
-		if (!controller.isConnected())
+		if (!controllerState.connected)
 		{
 			currentState = PAIRING;
-		}
-		else
-		{
-			// gathering the controller inputs if controller is connected
-			controller.read(&controllerState);
 		}
 
 		// performing unique actions based on the cars state
@@ -78,7 +73,7 @@ void controlTask(void *params)
 		{
 		case PAIRING:
 			// leaving the pairing state when a controller connects
-			if (controller.isConnected())
+			if (controllerState.connected)
 			{
 				lastState = currentState;
 				currentState = DISARMED;
@@ -116,18 +111,16 @@ void controlTask(void *params)
 			}
 
 			// switching to MANUAL based on controller inputs
-			if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.leftBumper)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = MANUAL; // always go straight to manual once stby button is toggled on
 				break;
 			}
 
 			// switching to CALIBRATION based on controller inputs
-			if (controllerState.dpadDown == true && controllerState.buttonA == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.dpadDown && controllerState.buttonA)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = CALIBRATION;
 				break;
@@ -147,18 +140,16 @@ void controlTask(void *params)
 			}
 
 			// switching to DISARMED based on controller inputs
-			if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.leftBumper)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = DISARMED;
 				break;
 			}
 
 			// switching to AUTONOMOUS based on controller inputs
-			if (controllerState.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.buttonY)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = AUTONOMOUS;
 				break;
@@ -166,9 +157,6 @@ void controlTask(void *params)
 
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
-
-			// Serial.printf("Vel %.3f", motorEncoder.getVelocity(prevTime, currentTime));
-			// Serial.println();
 
 			break;
 
@@ -189,18 +177,16 @@ void controlTask(void *params)
 			}
 
 			// switching to DISARMED based on controller inputs
-			if (controllerState.leftBumper == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.leftBumper)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = DISARMED;
 				break;
 			}
 
 			// switching to MANUAL based on controller inputs
-			if (controllerState.buttonY == true && currentTime - lastStbyToggle > stbyDelay)
+			if (controllerState.buttonY)
 			{
-				lastStbyToggle = currentTime;
 				lastState = currentState;
 				currentState = MANUAL;
 				break;
