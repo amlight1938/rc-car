@@ -22,15 +22,23 @@ const uint8_t R_ENCODER_PHASE_B_PIN = TX2; // GPIO 17
 
 // I2C pins are 21 for SDA(I2C Data) and 22 for SCL(I2C Clock) for the ESP32
 
+// initializing all utilized pins as outputs or inputs
 inline void pinSetup()
 {
-    // initializing all utilized pins as outputs or inputs
-    pinMode(STBY_PIN, OUTPUT);
-    pinMode(BT_LED_PIN, OUTPUT);
-    pinMode(CAL_LED_PIN, OUTPUT);
+	pinMode(STBY_PIN, OUTPUT);
+	pinMode(BT_LED_PIN, OUTPUT);
+	pinMode(CAL_LED_PIN, OUTPUT);
 
-    pinMode(L_ENCODER_PHASE_A_PIN, INPUT);
-    pinMode(L_ENCODER_PHASE_B_PIN, INPUT);
-    pinMode(R_ENCODER_PHASE_A_PIN, INPUT);
-    pinMode(R_ENCODER_PHASE_B_PIN, INPUT);
+	pinMode(L_MOTOR_PLUS_PIN, OUTPUT);
+	pinMode(L_MOTOR_MINUS_PIN, OUTPUT);
+	pinMode(L_MOTOR_SPEED_PIN, OUTPUT);
+
+	pinMode(R_MOTOR_PLUS_PIN, OUTPUT);
+	pinMode(R_MOTOR_MINUS_PIN, OUTPUT);
+	pinMode(R_MOTOR_SPEED_PIN, OUTPUT);
+
+	pinMode(L_ENCODER_PHASE_A_PIN, INPUT);
+	pinMode(L_ENCODER_PHASE_B_PIN, INPUT);
+	pinMode(R_ENCODER_PHASE_A_PIN, INPUT);
+	pinMode(R_ENCODER_PHASE_B_PIN, INPUT);
 }

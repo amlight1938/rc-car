@@ -6,21 +6,21 @@
 class KalmanFilter
 {
 public:
-    KalmanFilter();
+	KalmanFilter();
 
-    void iterate(double theta);
+	void iterate(double theta);
 
-    double getX();
-    double getY();
-    double getTheta();
+	double getX();
+	double getY();
+	double getTheta();
 
 private:
-    static constexpr double R = 4;
+	static constexpr double R = 4;
 
-    static constexpr uint8_t H[1][4] = {
-        {0, 0, 1, 0}};
+	static constexpr uint8_t H[1][4] = {
+		{0, 0, 1, 0}};
 
-    double theta;
-    double X;
-    double Y;
+	double theta;
+	double X;
+	double Y;
 };

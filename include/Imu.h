@@ -1,23 +1,23 @@
 #pragma once
 
 #include "Arduino.h"
+#include "ImuReading.h"
 #include <MPU9250.h>
 
 class Imu
 {
 public:
-    Imu();
+	Imu();
 
-    void print();
+	void print();
 
-    void calibrateImuAccelGyro();
+	void calibrateImuAccelGyro();
 
-    void calibrateImuMag(uint8_t LedPin);
+	void calibrateImuMag(uint8_t ledPin);
 
-    MPU9250 getMpu();
-    // returns the mpu9250 object
+	ImuReading getImuReading();
 
 private:
-    MPU9250 imu;
-
+	MPU9250 imu;
+	unsigned long lastMeasurementTime;
 };
