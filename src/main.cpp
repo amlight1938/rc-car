@@ -1,11 +1,12 @@
 #include <Arduino.h>
-#include "Motor/Encoder.h"
+#include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
 #include "Pins.h"
 #include "Car/Car.h"
 #include "Controller/Controller.h"
 #include "Controller/ControllerState.h"
+#include "logging/Logger.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -13,7 +14,8 @@
 // Specify core use - specify which core (0,1) to run this task on so we can separate it from bluetooth task
 void controlTask(void *params)
 {
-	Serial.begin(115200);
+	// instantiating the bluetooth controller and motors
+	Controller controller;
 
 	// setting up pins as Inputs or Outputs
 	pinSetup();
@@ -234,6 +236,8 @@ void controlTask(void *params)
 
 void setup()
 {
+	Serial.begin(115200);
+	Logger::getInstance().startTask();
 	// create and run the task
 	// task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
 	xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0);

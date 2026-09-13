@@ -2,7 +2,7 @@
 
 #include "Arduino.h"
 #include "Motor/Motor.h"
-#include "Motor/Encoder.h"
+#include "Encoder/Encoder.h"
 #include "CarMotionState.h"
 
 class Car
