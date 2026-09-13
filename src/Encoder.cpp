@@ -1,9 +1,9 @@
 #include "Motor/Encoder.h"
 
-Encoder::Encoder(uint8_t phaseApin, uint8_t phaseBpin)
+Encoder::Encoder(uint8_t phaseAPin, uint8_t phaseBPin)
 {
 	// starting the count for each motor encoder
-	encoder.attachFullQuad(phaseApin, phaseBpin); // 4x decoding
+	encoder.attachFullQuad(phaseAPin, phaseBPin); // 4x decoding
 	encoder.setCount(0);
 
 	prevMotorCount = 0;
@@ -20,7 +20,8 @@ double Encoder::getVelocity()
 	triggerRate = 1000 * (motorCount - prevMotorCount) / (currentTime - lastMeasurementTime);
 
 	prevMotorCount = motorCount;
-
+	lastMeasurementTime = currentTime;
+	
 	// (m/s) = (trig/s) / (trig/m)
 	return triggerRate / TRIGGERS_PER_METER;
 }

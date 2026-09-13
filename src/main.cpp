@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <BLEGamepadClient.h>
 #include "Motor/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
@@ -16,11 +15,11 @@ void controlTask(void *params)
 {
 	Serial.begin(115200);
 
-	// instantiating the bluetooth controller and motors
-	Controller controller;
-
 	// setting up pins as Inputs or Outputs
 	pinSetup();
+
+	// instantiating the bluetooth controller and motors
+	Controller controller;
 
 	// instantiating the car
 	Car car(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN,
@@ -55,6 +54,8 @@ void controlTask(void *params)
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
+
+	CarMotionState motion;
 
 	while (true)
 	{
@@ -158,6 +159,11 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
+			motion = car.getCarMotionState();
+			Serial.printf("Velocity: %.2f", motion.forwardVelocity);
+			Serial.printf("  Turn rate: %.2f", motion.turnRate);
+			Serial.println();
+			
 			break;
 
 		case AUTONOMOUS:
