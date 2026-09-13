@@ -19,6 +19,6 @@ More information about PlatformIO Unit Testing:
 2) Connect Bluetooth controller, Blue solid LED for DISAMRED state
 3) Toggle LB, Blue solid LED, Red Solid LED for MANUAL state
 4) Toggle Y, Blue quickly blinking LED, Red Solid LED for AUTONOMOUS state
-5) Toggle TB, Blue solid LED for DISARMED state
+5) Toggle LB, Blue solid LED for DISARMED state
 6) *NOT NECESSARY* D-Pad Down & A, No LEDs for CALIBRATION state
 7) *ONLY IF 6 IS USED* Yellow solid LED for Mag Calibration. Move Car in figure 8 to calibrate the magnetometer
