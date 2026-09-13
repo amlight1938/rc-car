@@ -1,7 +1,6 @@
 #include <Arduino.h>
-#include <BLEGamepadClient.h>
-#include "KalmanFilter.h"
-#include "Motor/Encoder.h"
+#include "EKF/KalmanFilter.h"
+#include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
 #include "Pins.h"
