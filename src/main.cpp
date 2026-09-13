@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Motor/Encoder.h"
+#include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
 #include "Pins.h"
