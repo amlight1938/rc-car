@@ -9,32 +9,32 @@ ControllerState Controller::getControllerState(){
 	ControllerState rawControllerState; //stores raw controller values without calculations to be used next cycle for edge detection
 
 	if (controller.isConnected()){
-		XboxControlsState xBoxControlsState;
-		controller.read(&xBoxControlsState);
+		XboxControlsState xboxControlsState;
+		controller.read(&xboxControlsState);
 
 		//make controller state to be returned 
 		returnState.connected = true;
-		returnState.leftStickX = xBoxControlsState.leftStickX;
-		returnState.leftStickY = xBoxControlsState.leftStickY;
-		returnState.rightStickX = xBoxControlsState.rightStickX;
-		returnState.rightStickY = xBoxControlsState.rightStickY;
-		returnState.leftBumper = xBoxControlsState.leftBumper && !lastRawControllerState.leftBumper;
-		returnState.rightBumper = xBoxControlsState.rightBumper && !lastRawControllerState.rightBumper;
-		returnState.dpadDown = xBoxControlsState.dpadDown && !lastRawControllerState.dpadDown;
-		returnState.buttonA = xBoxControlsState.buttonA && !lastRawControllerState.buttonA;
-		returnState.buttonY = xBoxControlsState.buttonY && !lastRawControllerState.buttonY;
+		returnState.leftStickX = xboxControlsState.leftStickX;
+		returnState.leftStickY = xboxControlsState.leftStickY;
+		returnState.rightStickX = xboxControlsState.rightStickX;
+		returnState.rightStickY = xboxControlsState.rightStickY;
+		returnState.leftBumper = xboxControlsState.leftBumper && !lastRawControllerState.leftBumper;
+		returnState.rightBumper = xboxControlsState.rightBumper && !lastRawControllerState.rightBumper;
+		returnState.dpadDown = xboxControlsState.dpadDown && !lastRawControllerState.dpadDown;
+		returnState.buttonA = xboxControlsState.buttonA && !lastRawControllerState.buttonA;
+		returnState.buttonY = xboxControlsState.buttonY && !lastRawControllerState.buttonY;
 
 		//make raw controller state to be saved for next cycle edge detection
 		rawControllerState.connected = true;
-		rawControllerState.leftStickX = xBoxControlsState.leftStickX;
-		rawControllerState.leftStickY = xBoxControlsState.leftStickY;
-		rawControllerState.rightStickX = xBoxControlsState.rightStickX;
-		rawControllerState.rightStickY = xBoxControlsState.rightStickY;
-		rawControllerState.leftBumper = xBoxControlsState.leftBumper;
-		rawControllerState.rightBumper = xBoxControlsState.rightBumper;
-		rawControllerState.dpadDown = xBoxControlsState.dpadDown;
-		rawControllerState.buttonA = xBoxControlsState.buttonA;
-		rawControllerState.buttonY = xBoxControlsState.buttonY;
+		rawControllerState.leftStickX = xboxControlsState.leftStickX;
+		rawControllerState.leftStickY = xboxControlsState.leftStickY;
+		rawControllerState.rightStickX = xboxControlsState.rightStickX;
+		rawControllerState.rightStickY = xboxControlsState.rightStickY;
+		rawControllerState.leftBumper = xboxControlsState.leftBumper;
+		rawControllerState.rightBumper = xboxControlsState.rightBumper;
+		rawControllerState.dpadDown = xboxControlsState.dpadDown;
+		rawControllerState.buttonA = xboxControlsState.buttonA;
+		rawControllerState.buttonY = xboxControlsState.buttonY;
 	}else{
 		returnState = ControllerState{};  // default/zeroed state when disconnected
 		rawControllerState = ControllerState{};
