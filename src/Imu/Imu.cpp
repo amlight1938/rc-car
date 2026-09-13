@@ -1,6 +1,6 @@
 #include "Imu/Imu.h"
 
-Imu::Imu()
+Imu::Imu() : logger(Logger::getInstance())
 {
 	Wire.begin();
 
@@ -30,6 +30,9 @@ ImuReading Imu::getImuReading()
 	imuState.magX = imu.getMagX();
 	imuState.magY = imu.getMagY();
 	imuState.magZ = imu.getMagZ();
+	imuState.gyroX = imu.getGyroX();
+	imuState.gyroY = imu.getGyroY();
+	imuState.gyroZ = imu.getGyroZ();
 
 	lastMeasurementTime = currentTime;
 	return imuState;
@@ -46,6 +49,9 @@ void Imu::print()
 		Serial.printf("MagX: %.2f  ", imu.getMagX());
 		Serial.printf("MagY: %.2f  ", imu.getMagY());
 		Serial.printf("MagZ: %.2f  ", imu.getMagZ());
+		Serial.printf("GyroX: %.2f  ", imu.getGyroX());
+		Serial.printf("GyroY: %.2f  ", imu.getGyroY());
+		Serial.printf("GryoZ: %.2f  ", imu.getGyroZ());
 		// Serial.printf("Temp: %.2f  ", imu.getTemperature());
 		// Serial.printf("AccX: %.2f  ", imu.getAccX());
 		// Serial.printf("AccY: %.2f  ", imu.getAccY());
@@ -57,11 +63,17 @@ void Imu::print()
 
 void Imu::calibrateImuAccelGyro()
 {
-	Serial.println("Accel Gyro calibration will start in 3sec.");
-	Serial.println("Please leave the device still on the flat plane.");
+	logger.getInstance().log(Logger::formatLog("[%lu]-Accel Gyro calibration starts in 3sec", millis()/1000));
+	logger.log(Logger::formatLog("[%lu]-Leave device still on flat plane", millis()/1000));
 	delay(3000);
 	imu.calibrateAccelGyro();
-	Serial.println("Accel Gyro Calibration Complete.");
+	logger.log(Logger::formatLog("[%lu]-Accel Gyro Calibration Complete", millis()/1000));
+
+	// Serial.println("Accel Gyro calibration will start in 3sec.");
+	// Serial.println("Please leave the device still on the flat plane.");
+	// delay(3000);
+	// imu.calibrateAccelGyro();
+	// Serial.println("Accel Gyro Calibration Complete.");
 }
 
 void Imu::calibrateImuMag(uint8_t ledPin)
@@ -69,11 +81,17 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	// setting the bluetooth LED HIGH to indicate the Mag calibration has started
 	digitalWrite(ledPin, HIGH);
 
-	Serial.println("Mag calibration will start in 3sec.");
-	Serial.println("Please Wave device in a figure eight until done.");
+	logger.log(Logger::formatLog("[%lu]-Mag calibration will start in 3sec", millis()/1000));
+	logger.log(Logger::formatLog("[%lu]-Wave in a figure eight until yellow light turns off", millis()/1000));
 	delay(3000);
 	imu.calibrateMag();
-	Serial.println("Mag Calibration Complete.");
+	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis()/1000));
+
+	// Serial.println("Mag calibration will start in 3sec.");
+	// Serial.println("Please Wave device in a figure eight until done.");
+	// delay(3000);
+	// imu.calibrateMag();
+	// Serial.println("Mag Calibration Complete.");
 
 	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
 	digitalWrite(ledPin, LOW);

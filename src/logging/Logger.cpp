@@ -1,7 +1,12 @@
-#include "Logger.h"
+#include "logging/Logger.h"
 
 Logger::Logger(){
-	setupWifi();
+	bool result = connectToWifi();
+	if (!result){
+		Serial.println("Restarting ESP32...");
+		delay(1000);
+		ESP.restart();
+	}
 	logQueue = xQueueCreateStatic(QUEUE_LENGTH, QUEUE_ITEM_SIZE, ucQueueStorageArea, &xStaticQueue);
 }
 
@@ -10,15 +15,15 @@ Logger& Logger::getInstance(){
 	return instance;
 }
 
-void Logger::startTask(){
+void Logger::createTask(){
 	xTaskCreatePinnedToCore(loggingTask, "loggingTask", 4000, NULL, 1, NULL, 0);
 }
 
 void Logger::loggingTask(void* params){
 	Logger& logger = Logger::getInstance();
 	while(true){
-		logger.sendUdp();
-		Serial.printf("High water mark: %u\n", uxTaskGetStackHighWaterMark(NULL));
+		bool result = logger.sendUdp();
+		Serial.printf("[%lu] UDP send: %s\n", millis(), result ? "OK" : "FAILEDDDDDDDDDD");
 	}
 }
 
@@ -39,17 +44,47 @@ void Logger::log(const std::string& message){
 	xQueueSend(logQueue, buffer, 0);
 }
 
-void Logger::setupWifi(){
+bool Logger::connectToWifi(){
+	unsigned long timeout = 10000; 
+
 	//Serial printing and not logging yet since wifi isn't connected
-	Serial.print("Connecting.");
-	WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-	while (WiFi.status() != WL_CONNECTED){
+	Serial.print("Connecting to WiFi.");
+	//try 3 times 10 seconds each
+	for (size_t i = 1; i < 3; i++){
+		if (i > 1){
+			Serial.println("Timed out. Retrying...");
+		}
+
+		WiFi.disconnect(true); //forget previous networks
 		delay(500);
-		Serial.print(".");
+		WiFi.mode(WIFI_STA); //set to connection mode
+		// WiFi.setSleep(false); //make sure it doesnt miss any wifi pings
+
+		WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+		unsigned long startTime = millis();
+		while (WiFi.status() != WL_CONNECTED && millis() - startTime < timeout){
+			delay(500);
+			Serial.print(".");
+		}
+
+		if (WiFi.status() == WL_CONNECTED) {
+            break;  // exit early on success, don't burn remaining attempts
+        }
 	}
-	Serial.println("\nConnected to Wi-Fi");
-	Serial.print("ESP32 IP address: ");
-  	Serial.println(WiFi.localIP());
+
+	// WiFi.setSleep(true); // set it back because it needs to yield time to BLE later on
+
+	if (WiFi.status() == WL_CONNECTED){
+		Serial.println("\nConnected to Wi-Fi");
+		Serial.print("ESP32 IP address: ");
+		Serial.println(WiFi.localIP());
+		delay(2000); //time to allow wifi connection to fully settle
+		return true;
+	}else{
+		Serial.println("Failed to connect to WiFi");
+		return false;
+	}
 }
 
 //defined outside the class becuase static members that are runtime dependent cant be defined inside the class 

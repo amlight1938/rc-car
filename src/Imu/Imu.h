@@ -3,6 +3,7 @@
 #include "Arduino.h"
 #include "Imu/ImuReading.h"
 #include <MPU9250.h>
+#include "logging/Logger.h"
 
 class Imu
 {
@@ -20,4 +21,5 @@ public:
 private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
+	Logger& logger;
 };

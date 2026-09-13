@@ -6,12 +6,13 @@
 #include <WiFi.h>
 #include "WifiCredentials.h"
 
+//a singleton class
 class Logger {
 	private:
 		Logger();
 		~Logger() = default;
 
-		void setupWifi();
+		bool connectToWifi();
 
 		bool sendUdp();
 
@@ -36,7 +37,7 @@ class Logger {
 
 		void log(const std::string& message);
 
-		void startTask();
+		void createTask();
 
 		template<typename... Args>
 		static std::string formatLog(const char* fmt, Args... args) {

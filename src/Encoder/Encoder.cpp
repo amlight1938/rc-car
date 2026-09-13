@@ -1,4 +1,4 @@
-#include "Motor/Encoder.h"
+#include "Encoder/Encoder.h"
 
 Encoder::Encoder(uint8_t phaseAPin, uint8_t phaseBPin)
 {

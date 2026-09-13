@@ -3,24 +3,22 @@ import socket
 
 LISTENER_IP_ADDRESS = socket.gethostbyname(socket.gethostname())
 PORT = 8090
-script_dir = Path(__file__).resolve().parent
-print(script_dir)
+# script_dir = Path(__file__).resolve().parent
 
 try:
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock.bind(("", PORT))
 	sock.settimeout(11.0)
 
-	with open(script_dir.joinpath("log.txt"), mode="w") as file:
-		while True:
-			try:
-				data, address = sock.recvfrom(1024)
-				print(f"received message: {data.decode()}", flush=True)
-	
-				file.write(data.decode() + '\n')
-				file.flush()
-			except socket.timeout:
-				continue  # no packet arrived in timeout, loop and check for Ctrl+C again
+	# with open(script_dir.joinpath("log.txt"), mode="w") as file:
+	while True:
+		try:
+			data, address = sock.recvfrom(1024)
+			print(f"received message: {data.decode()}", flush=True)
+				# file.write(data.decode() + '\n')
+				# file.flush()
+		except socket.timeout:
+			continue  # no packet arrived in timeout, loop and check for Ctrl+C again
 
 except KeyboardInterrupt:
 	print("User closed program")
