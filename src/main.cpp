@@ -201,7 +201,7 @@ void controlTask(void *params)
 			// future autonomous capabilities go here
 
 			// imu readout testing
-			imu.print();
+			imu.print(imu.getImuReading());
 
 			break;
 

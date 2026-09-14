@@ -9,7 +9,7 @@ class Imu
 public:
 	Imu();
 
-	void print();
+	void print(ImuReading imuState);
 
 	void calibrateImuAccelGyro();
 

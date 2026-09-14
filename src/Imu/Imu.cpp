@@ -27,32 +27,36 @@ ImuReading Imu::getImuReading()
 	imuState.roll = imu.getRoll();
 	imuState.pitch = imu.getPitch();
 	imuState.yaw = imu.getYaw();
-	imuState.magX = imu.getMagX();
-	imuState.magY = imu.getMagY();
-	imuState.magZ = imu.getMagZ();
+	// imuState.magX = imu.getMagX();
+	// imuState.magY = imu.getMagY();
+	// imuState.magZ = imu.getMagZ();
+	imuState.gyroX = imu.getGyroX();
+	imuState.gyroY = imu.getGyroY();
+	imuState.gyroZ = imu.getGyroZ();
+	// imuState.accX = imu.getAccX();
+	// imuState.accY = imu.getAccY();
+	// imuState.accZ = imu.getAccZ();
 
 	lastMeasurementTime = currentTime;
 	return imuState;
 }
 
-void Imu::print()
+void Imu::print(ImuReading imuState)
 {
-	if (imu.update())
-	{
-		// printing any desired data to the Serial Monitor
-		Serial.printf("Roll: %.2f  ", imu.getRoll());
-		Serial.printf("Pitch: %.2f  ", imu.getPitch());
-		Serial.printf("Yaw: %.2f  ", imu.getYaw());
-		Serial.printf("MagX: %.2f  ", imu.getMagX());
-		Serial.printf("MagY: %.2f  ", imu.getMagY());
-		Serial.printf("MagZ: %.2f  ", imu.getMagZ());
-		// Serial.printf("Temp: %.2f  ", imu.getTemperature());
-		// Serial.printf("AccX: %.2f  ", imu.getAccX());
-		// Serial.printf("AccY: %.2f  ", imu.getAccY());
-		// Serial.printf("AccZ: %.2f  ", imu.getAccZ());
 
-		Serial.println();
-	}
+	// printing any desired data to the Serial Monitor
+	Serial.printf("Roll: %.2f  ", imuState.roll);
+	Serial.printf("Pitch: %.2f  ", imuState.pitch);
+	Serial.printf("Yaw: %.2f  ", imuState.yaw);
+	Serial.printf("GryoX: %.2f  ", imuState.gyroX);
+	Serial.printf("GryoY: %.2f  ", imuState.gyroY);
+	Serial.printf("GryoZ: %.2f  ", imuState.gyroZ);
+	// Serial.printf("Temp: %.2f  ", imuState.Temperature);
+	// Serial.printf("AccX: %.2f  ", imuState.accX);
+	// Serial.printf("AccY: %.2f  ", imuState.accY);
+	// Serial.printf("AccZ: %.2f  ", imuState.accZ);
+
+	Serial.println();
 }
 
 void Imu::calibrateImuAccelGyro()
