@@ -13,9 +13,9 @@ struct ImuReading
 	double gyroX;
 	double gyroY;
 	double gyroZ;
-	// double accX;
-	// double accY;
-	// double accZ;
+	double accX;
+	double accY;
+	double accZ;
 };
 
 //??do we have roll rate, yaw rate etc. ??

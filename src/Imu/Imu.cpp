@@ -13,6 +13,8 @@ Imu::Imu()
 		}
 	}
 
+	imu.setMagneticDeclination(7.5); //7.5 degrees in Denver, CO
+
 	lastMeasurementTime = millis();
 }
 
@@ -33,9 +35,9 @@ ImuReading Imu::getImuReading()
 	imuState.gyroX = imu.getGyroX();
 	imuState.gyroY = imu.getGyroY();
 	imuState.gyroZ = imu.getGyroZ();
-	// imuState.accX = imu.getAccX();
-	// imuState.accY = imu.getAccY();
-	// imuState.accZ = imu.getAccZ();
+	imuState.accX = imu.getAccX();
+	imuState.accY = imu.getAccY();
+	imuState.accZ = imu.getAccZ();
 
 	lastMeasurementTime = currentTime;
 	return imuState;
@@ -48,13 +50,13 @@ void Imu::print(ImuReading imuState)
 	Serial.printf("Roll: %.2f  ", imuState.roll);
 	Serial.printf("Pitch: %.2f  ", imuState.pitch);
 	Serial.printf("Yaw: %.2f  ", imuState.yaw);
-	Serial.printf("GryoX: %.2f  ", imuState.gyroX);
-	Serial.printf("GryoY: %.2f  ", imuState.gyroY);
-	Serial.printf("GryoZ: %.2f  ", imuState.gyroZ);
+	// Serial.printf("GryoX: %.2f  ", imuState.gyroX);
+	// Serial.printf("GryoY: %.2f  ", imuState.gyroY);
+	// Serial.printf("GryoZ: %.2f  ", imuState.gyroZ);
 	// Serial.printf("Temp: %.2f  ", imuState.Temperature);
-	// Serial.printf("AccX: %.2f  ", imuState.accX);
-	// Serial.printf("AccY: %.2f  ", imuState.accY);
-	// Serial.printf("AccZ: %.2f  ", imuState.accZ);
+	Serial.printf("AccX: %.2f  ", imuState.accX);
+	Serial.printf("AccY: %.2f  ", imuState.accY);
+	Serial.printf("AccZ: %.2f  ", imuState.accZ);
 
 	Serial.println();
 }
