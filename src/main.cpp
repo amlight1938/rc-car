@@ -43,7 +43,7 @@ void controlTask(void *params)
 	bool btLedState = LOW;
 	unsigned long lastBlinkSwitch = 0;
 
-	logger.log(Logger::formatLog("[%lu]-init complete", millis()/1000));
+	logger.log(Logger::formatLog("[%lu]-init complete", millis()/1000), true);
 
 	// list of states the car can enter
 	enum State
@@ -80,7 +80,7 @@ void controlTask(void *params)
 		switch (currentState)
 		{
 		case PAIRING:
-			logger.log(Logger::formatLog("[%lu]-current state: PAIRING", millis()/1000));
+			logger.log(Logger::formatLog("[%lu]-current state: PAIRING", millis()/1000), true);
 
 			// leaving the pairing state when a controller connects
 			if (controllerState.connected)
@@ -110,7 +110,7 @@ void controlTask(void *params)
 			break;
 
 		case DISARMED:
-			logger.log(Logger::formatLog("[%lu]-current state: DISARMED", millis()/1000));
+			logger.log(Logger::formatLog("[%lu]-current state: DISARMED", millis()/1000), true);
 
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
@@ -172,7 +172,7 @@ void controlTask(void *params)
 			
 			motion = car.getCarMotionState();
 
-			logger.log(Logger::formatLog("[%lu]-Velocity: %.2f Turn rate: %.2f", millis()/1000, motion.forwardVelocity, motion.turnRate));
+			logger.log(Logger::formatLog("[%lu]-Velocity: %.2f Turn rate: %.2f", millis()/1000, motion.forwardVelocity, motion.turnRate), true);
 			// Serial.printf("Velocity: %.2f", motion.forwardVelocity);
 			// Serial.printf("  Turn rate: %.2f", motion.turnRate);
 			// Serial.println();
@@ -217,12 +217,12 @@ void controlTask(void *params)
 			imuReading = imu.getImuReading();
 
 			logger.log(Logger::formatLog("[%lu]-R: %.0f P: %.0f Y: %.0f GX: %.0f GY: %.0f GZ: %.0f", 
-				millis()/1000, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ));
+				millis()/1000, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ), true);
 
 			break;
 
 		case CALIBRATION:
-			logger.log(Logger::formatLog("[%lu]-current state: CALIBRATION", millis()/1000));
+			logger.log(Logger::formatLog("[%lu]-current state: CALIBRATION", millis()/1000), true);
 				
 			// turning the both motors off when entering the state
 			car.stop();
@@ -245,8 +245,10 @@ void controlTask(void *params)
 			break;
 		}
 
+		logger.incrementRateLimitCounter();
+
 		// schedule when the task should wake up and run another loop
-		vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(50));
+		vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
 	}
 }
 

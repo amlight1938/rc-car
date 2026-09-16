@@ -38,7 +38,12 @@ bool Logger::sendUdp(){
 	return udp.endPacket();
 }
 
-void Logger::log(const std::string& message){
+void Logger::log(const std::string& message, bool rateLimit){
+	// skip log to rate limit the logging if boolean is true and we are not on the start of the rate limit cycle
+	if (rateLimit && rateLimitIterationCounter != 0){
+		return;
+	}
+
 	char buffer[QUEUE_ITEM_SIZE];
 	snprintf(buffer, QUEUE_ITEM_SIZE, "%s", message.c_str()); //%s so it doesnt accidentally interpret message as a format string
 	xQueueSend(logQueue, buffer, 0);
@@ -50,8 +55,8 @@ bool Logger::connectToWifi(){
 	//Serial printing and not logging yet since wifi isn't connected
 	Serial.print("Connecting to WiFi.");
 	//try 3 times 10 seconds each
-	for (size_t i = 1; i < 3; i++){
-		if (i > 1){
+	for (size_t i = 0; i < 3; i++){
+		if (i > 0){
 			Serial.println("Timed out. Retrying...");
 		}
 
@@ -84,6 +89,14 @@ bool Logger::connectToWifi(){
 	}else{
 		Serial.println("Failed to connect to WiFi");
 		return false;
+	}
+}
+
+void Logger::incrementRateLimitCounter(){ 
+	if (rateLimitIterationCounter == RATE_LIMIT_COUNT_MAX - 1){
+		rateLimitIterationCounter = 0;
+	}else{
+		rateLimitIterationCounter++; 
 	}
 }
 
