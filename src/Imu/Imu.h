@@ -21,5 +21,5 @@ public:
 private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
-	Logger& logger;
+	Logger &logger;
 };
