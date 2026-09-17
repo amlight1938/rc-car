@@ -43,7 +43,7 @@ void controlTask(void *params)
 	unsigned long lastBlinkSwitch = 0;
 
 	// logging that the initialization process has finished at the time this occured
-	logger.log(Logger::formatLog("[%lu]-init complete", millis() / 1000), true);
+	logger.log(Logger::formatLog("[%.1f]-init complete", millis() / 1000.0), true);
 
 	// list of states the car can enter
 	enum State
@@ -81,7 +81,7 @@ void controlTask(void *params)
 		{
 		case PAIRING:
 			// logging the current state while waiting to pair to a controller
-			logger.log(Logger::formatLog("[%lu]-current state: PAIRING", millis() / 1000), true);
+			logger.log(Logger::formatLog("[%.1f]-current state: PAIRING", millis() / 1000.0), true);
 
 			// leaving the pairing state when a controller connects
 			if (controllerState.connected)
@@ -112,7 +112,7 @@ void controlTask(void *params)
 
 		case DISARMED:
 			// logging the current state while waiting in the disarmed state
-			logger.log(Logger::formatLog("[%lu]-current state: DISARMED", millis() / 1000), true);
+			logger.log(Logger::formatLog("[%.1fs]-current state: DISARMED", millis() / 1000.0), true);
 
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
@@ -176,7 +176,7 @@ void controlTask(void *params)
 			motion = car.getCarMotionState();
 
 			// logging the current velocity and turn rate of the car
-			logger.log(Logger::formatLog("[%lu]-Velocity: %.2f Turn rate: %.2f", millis() / 1000, motion.forwardVelocity, motion.turnRate), true);
+			logger.log(Logger::formatLog("[%.1f]-Velocity: %.2f Turn rate: %.2f", millis() / 1000.0, motion.forwardVelocity, motion.turnRate), true);
 
 			break;
 
@@ -221,15 +221,15 @@ void controlTask(void *params)
 			imuReading = imu.getImuReading();
 
 			// logging the imu's heading and gyro readings
-			logger.log(Logger::formatLog("[%lu]-R: %.0f P: %.0f Y: %.0f GX: %.0f GY: %.0f GZ: %.0f",
-										 millis() / 1000, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ),
+			logger.log(Logger::formatLog("[%.1f]-R: %.0f P: %.0f Y: %.0f GX: %.0f GY: %.0f GZ: %.0f",
+										 millis() / 1000.0, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ),
 					   true);
 
 			break;
 
 		case CALIBRATION:
 			// logging the current state while waiting performing the imu calibration
-			logger.log(Logger::formatLog("[%lu]-current state: CALIBRATION", millis() / 1000), true);
+			logger.log(Logger::formatLog("[%.1f]-current state: CALIBRATION", millis() / 1000.0), true);
 
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
