@@ -68,12 +68,6 @@ void Imu::calibrateImuAccelGyro()
 	delay(3000);
 	imu.calibrateAccelGyro();
 	logger.log(Logger::formatLog("[%lu]-Accel Gyro Calibration Complete", millis()/1000));
-
-	// Serial.println("Accel Gyro calibration will start in 3sec.");
-	// Serial.println("Please leave the device still on the flat plane.");
-	// delay(3000);
-	// imu.calibrateAccelGyro();
-	// Serial.println("Accel Gyro Calibration Complete.");
 }
 
 void Imu::calibrateImuMag(uint8_t ledPin)
@@ -87,13 +81,6 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	imu.calibrateMag();
 	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis()/1000));
 
-	// Serial.println("Mag calibration will start in 3sec.");
-	// Serial.println("Please Wave device in a figure eight until done.");
-	// delay(3000);
-	// imu.calibrateMag();
-	// Serial.println("Mag Calibration Complete.");
-
 	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
 	digitalWrite(ledPin, LOW);
-	// delay(2000);
 }

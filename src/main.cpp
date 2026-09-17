@@ -171,10 +171,7 @@ void controlTask(void *params)
 			motion = car.getCarMotionState();
 
 			logger.log(Logger::formatLog("[%lu]-Velocity: %.2f Turn rate: %.2f", millis()/1000, motion.forwardVelocity, motion.turnRate), true);
-			// Serial.printf("Velocity: %.2f", motion.forwardVelocity);
-			// Serial.printf("  Turn rate: %.2f", motion.turnRate);
-			// Serial.println();
-			
+		
 			break;
 
 		case AUTONOMOUS:
