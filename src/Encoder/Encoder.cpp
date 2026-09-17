@@ -13,7 +13,7 @@ Encoder::Encoder(uint8_t phaseAPin, uint8_t phaseBPin)
 double Encoder::getVelocity()
 {
 	unsigned long currentTime = millis();
-	// reading out the encoder values 
+	// reading out the encoder values
 	motorCount = encoder.getCount();
 
 	// calculating number of triggers/millisecond then scaling to triggers/second
@@ -21,7 +21,7 @@ double Encoder::getVelocity()
 
 	prevMotorCount = motorCount;
 	lastMeasurementTime = currentTime;
-	
+
 	// (m/s) = (trig/s) / (trig/m)
 	return triggerRate / TRIGGERS_PER_METER;
 }

@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "EKF/KalmanFilter.h"
 #include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
@@ -66,7 +67,7 @@ void controlTask(void *params)
 		unsigned long currentTime = millis();
 
 		ControllerState controllerState = controller.getControllerState();
-		
+
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
 		{
