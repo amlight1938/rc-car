@@ -3,12 +3,13 @@ import socket
 
 LISTENER_IP_ADDRESS = socket.gethostbyname(socket.gethostname())
 PORT = 8090
+#used to create log file from messages
 # script_dir = Path(__file__).resolve().parent
 
 try:
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock.bind(("", PORT))
-	sock.settimeout(11.0)
+	sock.settimeout(45.0)
 
 	# with open(script_dir.joinpath("log.txt"), mode="w") as file:
 	while True:

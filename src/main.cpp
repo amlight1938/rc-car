@@ -6,7 +6,7 @@
 #include "Car/Car.h"
 #include "Controller/Controller.h"
 #include "Controller/ControllerState.h"
-#include "logging/Logger.h"
+#include "Logging/Logger.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -16,12 +16,9 @@ void controlTask(void *params)
 {
 	Logger& logger = Logger::getInstance();
 
-	// instantiating the bluetooth controller and motors
-	Controller controller;
-
 	// setting up pins as Inputs or Outputs
 	pinSetup();
-
+	
 	// instantiating the bluetooth controller and motors
 	Controller controller;
 

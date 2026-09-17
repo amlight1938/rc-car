@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "Imu/ImuReading.h"
 #include <MPU9250.h>
-#include "logging/Logger.h"
+#include "Logging/Logger.h"
 
 class Imu
 {

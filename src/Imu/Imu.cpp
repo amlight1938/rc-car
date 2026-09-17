@@ -82,7 +82,7 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	digitalWrite(ledPin, HIGH);
 
 	logger.log(Logger::formatLog("[%lu]-Mag calibration will start in 3sec", millis()/1000));
-	logger.log(Logger::formatLog("[%lu]-Wave in a figure eight until yellow light turns off", millis()/1000));
+	logger.log(Logger::formatLog("[%lu]-Wave in a figure 8 until light turns off", millis()/1000));
 	delay(3000);
 	imu.calibrateMag();
 	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis()/1000));
@@ -95,5 +95,5 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 
 	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
 	digitalWrite(ledPin, LOW);
-	delay(2000);
+	// delay(2000);
 }

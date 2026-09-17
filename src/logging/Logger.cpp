@@ -1,4 +1,4 @@
-#include "logging/Logger.h"
+#include "Logging/Logger.h"
 
 Logger::Logger(){
 	// connect to wifi, if unsuccessful restart ESP
@@ -53,7 +53,10 @@ void Logger::log(const std::string& message, bool rateLimit){
 
 	char buffer[QUEUE_ITEM_SIZE];
 	snprintf(buffer, QUEUE_ITEM_SIZE, "%s", message.c_str()); //%s so it doesnt accidentally interpret message as a format string
-	xQueueSend(logQueue, buffer, 0);
+	// xQueueSend(logQueue, buffer, 0);
+	if (xQueueSend(logQueue, buffer, 0) != pdTRUE) {
+		Serial.println("Log queue full, dropping messageeeeeeeeeeee");
+	}
 }
 
 bool Logger::connectToWifi(){
