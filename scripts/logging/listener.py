@@ -9,7 +9,7 @@ PORT = 8090
 try:
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock.bind(("", PORT))
-	sock.settimeout(45.0)
+	sock.settimeout(1.0)
 
 	# with open(script_dir.joinpath("log.txt"), mode="w") as file:
 	while True:
