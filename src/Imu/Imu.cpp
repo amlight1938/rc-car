@@ -1,6 +1,7 @@
 #include "Imu/Imu.h"
 
-Imu::Imu() : logger(Logger::getInstance())
+Imu::Imu()
+	: logger(Logger::getInstance())
 {
 	Wire.begin();
 
@@ -63,11 +64,16 @@ void Imu::print()
 
 void Imu::calibrateImuAccelGyro()
 {
-	logger.getInstance().log(Logger::formatLog("[%lu]-Accel Gyro calibration starts in 3sec", millis()/1000));
-	logger.log(Logger::formatLog("[%lu]-Leave device still on flat plane", millis()/1000));
+	// logging the start of the Accelerometer and Gyroscope calibration
+	logger.log(Logger::formatLog("[%lu]-Accel Gyro calibration starts in 3sec", millis() / 1000));
+	logger.log(Logger::formatLog("[%lu]-Leave device still on flat plane", millis() / 1000));
 	delay(3000);
+
+	// starting the Accelerometer and Gyroscope calibration
 	imu.calibrateAccelGyro();
-	logger.log(Logger::formatLog("[%lu]-Accel Gyro Calibration Complete", millis()/1000));
+
+	// logging the completion of the Accelerometer and Gyroscope calibration
+	logger.log(Logger::formatLog("[%lu]-Accel Gyro Calibration Complete", millis() / 1000));
 }
 
 void Imu::calibrateImuMag(uint8_t ledPin)
@@ -75,11 +81,16 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	// setting the bluetooth LED HIGH to indicate the Mag calibration has started
 	digitalWrite(ledPin, HIGH);
 
-	logger.log(Logger::formatLog("[%lu]-Mag calibration will start in 3sec", millis()/1000));
-	logger.log(Logger::formatLog("[%lu]-Wave in a figure 8 until light turns off", millis()/1000));
+	// logging the start of the Mangetometer calibration
+	logger.log(Logger::formatLog("[%lu]-Mag calibration will start in 3sec", millis() / 1000));
+	logger.log(Logger::formatLog("[%lu]-Wave in a figure 8 until light turns off", millis() / 1000));
 	delay(3000);
+
+	// starting the Mangetometer calibration
 	imu.calibrateMag();
-	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis()/1000));
+
+	// logging the completion of the Mangetometer calibration
+	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis() / 1000));
 
 	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
 	digitalWrite(ledPin, LOW);
