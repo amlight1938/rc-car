@@ -10,6 +10,9 @@ struct ImuReading
 	double magX;
 	double magY;
 	double magZ;
+	double gyroX;
+	double gyroY;
+	double gyroZ;
 };
 
 //??do we have roll rate, yaw rate etc. ??
