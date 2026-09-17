@@ -5,12 +5,12 @@
 
 class Controller
 {
-	public:
-		Controller();
+public:
+	Controller();
 
-		ControllerState getControllerState();
+	ControllerState getControllerState();
 
-	private:
-		XboxController controller;
-		ControllerState lastRawControllerState;
+private:
+	XboxController controller;
+	ControllerState lastRawControllerState;
 };

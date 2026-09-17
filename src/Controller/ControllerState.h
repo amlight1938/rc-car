@@ -1,6 +1,7 @@
 #pragma once
 
-struct ControllerState{
+struct ControllerState
+{
 	bool connected;
 	double leftStickX;
 	double leftStickY;

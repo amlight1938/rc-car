@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "EKF/KalmanFilter.h"
 #include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
@@ -62,7 +63,7 @@ void controlTask(void *params)
 		unsigned long currentTime = millis();
 
 		ControllerState controllerState = controller.getControllerState();
-		
+
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
 		{
@@ -163,7 +164,7 @@ void controlTask(void *params)
 			Serial.printf("Velocity: %.2f", motion.forwardVelocity);
 			Serial.printf("  Turn rate: %.2f", motion.turnRate);
 			Serial.println();
-			
+
 			break;
 
 		case AUTONOMOUS:
