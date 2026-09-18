@@ -20,7 +20,7 @@ public:
 
 private:
 	// creating the 4x1 X matrix and 1x2 Z Matrix
-	Matrix<double, 1, 2> Z;
+	Matrix<double, 2, 1> Z;
 	Matrix<double, 4, 1> X;
 
 	// creating the 2x2 R matrix and 2x4 H matrix
