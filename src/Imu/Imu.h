@@ -10,6 +10,8 @@ class Imu
 public:
 	Imu();
 
+	void print();
+
 	void calibrateImuAccelGyro();
 
 	void calibrateImuMag(uint8_t ledPin);
