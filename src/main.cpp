@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "EKF/KalmanFilter.h"
 #include "Encoder/Encoder.h"
 #include "Imu/Imu.h"
 #include "Motor/Motor.h"
@@ -6,6 +7,7 @@
 #include "Car/Car.h"
 #include "Controller/Controller.h"
 #include "Controller/ControllerState.h"
+#include "Logging/Logger.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -13,7 +15,8 @@
 // Specify core use - specify which core (0,1) to run this task on so we can separate it from bluetooth task
 void controlTask(void *params)
 {
-	Serial.begin(115200);
+	// getting a reference to the logger singleton
+	Logger &logger = Logger::getInstance();
 
 	// setting up pins as Inputs or Outputs
 	pinSetup();
@@ -39,6 +42,9 @@ void controlTask(void *params)
 	bool btLedState = LOW;
 	unsigned long lastBlinkSwitch = 0;
 
+	// logging that the initialization process has finished at the time this occured
+	logger.log(Logger::formatLog("[%lu]-init complete", millis() / 1000), true);
+
 	// list of states the car can enter
 	enum State
 	{
@@ -52,17 +58,18 @@ void controlTask(void *params)
 	State currentState = PAIRING; // start in pairing mode
 	State lastState;
 
+	CarMotionState motion;
+	ImuReading imuReading;
+
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
-
-	CarMotionState motion;
 
 	while (true)
 	{
 		unsigned long currentTime = millis();
 
 		ControllerState controllerState = controller.getControllerState();
-		
+
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
 		{
@@ -73,6 +80,9 @@ void controlTask(void *params)
 		switch (currentState)
 		{
 		case PAIRING:
+			// logging the current state while waiting to pair to a controller
+			logger.log(Logger::formatLog("[%lu]-current state: PAIRING", millis() / 1000), true);
+
 			// leaving the pairing state when a controller connects
 			if (controllerState.connected)
 			{
@@ -101,6 +111,9 @@ void controlTask(void *params)
 			break;
 
 		case DISARMED:
+			// logging the current state while waiting in the disarmed state
+			logger.log(Logger::formatLog("[%lu]-current state: DISARMED", millis() / 1000), true);
+
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
@@ -130,7 +143,7 @@ void controlTask(void *params)
 			break;
 
 		case MANUAL:
-			// turning the bluetooth LED ON and the standby LED O when entering the state
+			// turning the bluetooth LED ON and the standby LED ON when entering the state
 			if (lastState != MANUAL)
 			{
 				stbyState = HIGH;
@@ -159,11 +172,12 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
+			// getting the cars motion state for logging and performing calculations
 			motion = car.getCarMotionState();
-			Serial.printf("Velocity: %.2f", motion.forwardVelocity);
-			Serial.printf("  Turn rate: %.2f", motion.turnRate);
-			Serial.println();
-			
+
+			// logging the current velocity and turn rate of the car
+			logger.log(Logger::formatLog("[%lu]-Velocity: %.2f Turn rate: %.2f", millis() / 1000, motion.forwardVelocity, motion.turnRate), true);
+
 			break;
 
 		case AUTONOMOUS:
@@ -200,16 +214,29 @@ void controlTask(void *params)
 
 			// future autonomous capabilities go here
 
+
+			// getting the cars imu reading logging and performing calculations
+			imuReading = imu.getImuReading();
+
 			// imu readout testing
-			imu.print(imu.getImuReading());
+			imu.print(imuReading);
+			
+			// logging the imu's heading and gyro readings
+			logger.log(Logger::formatLog("[%lu]-R: %.0f P: %.0f Y: %.0f GX: %.0f GY: %.0f GZ: %.0f",
+										 millis() / 1000, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ),
+					   true);
 
 			break;
 
 		case CALIBRATION:
+			// logging the current state while waiting performing the imu calibration
+			logger.log(Logger::formatLog("[%lu]-current state: CALIBRATION", millis() / 1000), true);
+
 			// turning the both motors off when entering the state
+			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			car.stop();
 
-			// turning the bluetooth LED and Standby  off when calbrating
+			// turning the bluetooth LED and Standby off when calbrating
 			btLedState = LOW;
 			digitalWrite(BT_LED_PIN, btLedState);
 			stbyState = LOW;
@@ -227,6 +254,9 @@ void controlTask(void *params)
 			break;
 		}
 
+		// increaseing the rate limit counter so the logger only operates every 10th cycle
+		logger.incrementRateLimitCounter();
+
 		// schedule when the task should wake up and run another loop
 		vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(10));
 	}
@@ -234,9 +264,13 @@ void controlTask(void *params)
 
 void setup()
 {
-	// create and run the task
+	Serial.begin(115200);
+	// creating the logger singleton and starting its task to send data
+	Logger::getInstance().createTask();
+
+	// creating the control task to control the car and manage the cars state
 	// task, human readable name, stack size allocation, input parameters, priority, returned task handle, core ID
-	xTaskCreatePinnedToCore(controlTask, "controlTask", 4000, NULL, 2, NULL, 0);
+	xTaskCreatePinnedToCore(controlTask, "controlTask", 8000, NULL, 2, NULL, 0);
 }
 
 void loop()

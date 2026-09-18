@@ -3,6 +3,7 @@
 #include "Arduino.h"
 #include "Imu/ImuReading.h"
 #include "Imu/MPU9250/MPU9250.h" //using ours because were changing some things in file. make sure to include with "" not <>
+#include "Logging/Logger.h"
 
 class Imu
 {
@@ -20,4 +21,5 @@ public:
 private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
+	Logger &logger;
 };
