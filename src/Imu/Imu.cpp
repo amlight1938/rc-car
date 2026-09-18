@@ -10,7 +10,7 @@ Imu::Imu()
 	{
 		while (1)
 		{
-			Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
+			logger.log("[%.1f]-MPU connection failed.c", millis() / 1000.0);
 		}
 	}
 
@@ -98,15 +98,15 @@ void Imu::print(ImuReading imuState)
 void Imu::calibrateImuAccelGyro()
 {
 	// logging the start of the Accelerometer and Gyroscope calibration
-	logger.log(Logger::formatLog("[%lu]-Accel Gyro calibration starts in 3sec", millis() / 1000));
-	logger.log(Logger::formatLog("[%lu]-Leave device still on flat plane", millis() / 1000));
+	logger.log("[%.1f]-Accel Gyro calibration starts in 3sec", millis() / 1000.0);
+	logger.log("[%.1f]-Leave device still on flat plane", millis() / 1000.0);
 	delay(3000);
 
 	// starting the Accelerometer and Gyroscope calibration
 	imu.calibrateAccelGyro();
 
 	// logging the completion of the Accelerometer and Gyroscope calibration
-	logger.log(Logger::formatLog("[%lu]-Accel Gyro Calibration Complete", millis() / 1000));
+	logger.log("[%.1f]-Accel Gyro Calibration Complete", millis() / 1000.0);
 }
 
 void Imu::calibrateImuMag(uint8_t ledPin)
@@ -115,15 +115,15 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	digitalWrite(ledPin, HIGH);
 
 	// logging the start of the Mangetometer calibration
-	logger.log(Logger::formatLog("[%lu]-Mag calibration will start in 3sec", millis() / 1000));
-	logger.log(Logger::formatLog("[%lu]-Wave in a figure 8 until light turns off", millis() / 1000));
+	logger.log("[%.1f]-Mag calibration will start in 3sec", millis() / 1000.0);
+	logger.log("[%.1f]-Wave in a figure 8 until light turns off", millis() / 1000.0);
 	delay(3000);
 
 	// starting the Mangetometer calibration
 	imu.calibrateMag();
 
 	// logging the completion of the Mangetometer calibration
-	logger.log(Logger::formatLog("[%lu]-Mag Calibration Complete", millis() / 1000));
+	logger.log("[%.1f]-Mag Calibration Complete", millis() / 1000.0);
 
 	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
 	digitalWrite(ledPin, LOW);
