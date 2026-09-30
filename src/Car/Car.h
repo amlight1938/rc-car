@@ -4,6 +4,7 @@
 #include "Motor/Motor.h"
 #include "Encoder/Encoder.h"
 #include "CarMotionState.h"
+#include <cmath>
 
 class Car
 {
@@ -17,7 +18,7 @@ public:
 	void stop();
 
 private:
-	static constexpr double TRACK_WIDTH = .1; // meters
+	static constexpr double TRACK_WIDTH = .145; // meters
 	Motor leftMotor;
 	Motor rightMotor;
 	Encoder leftEncoder;

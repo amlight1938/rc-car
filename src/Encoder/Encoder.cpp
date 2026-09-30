@@ -14,10 +14,10 @@ double Encoder::getVelocity()
 {
 	unsigned long currentTime = millis();
 	// reading out the encoder values
-	motorCount = encoder.getCount();
+	int64_t motorCount = encoder.getCount();
 
 	// calculating number of triggers/millisecond then scaling to triggers/second
-	triggerRate = 1000 * (motorCount - prevMotorCount) / (currentTime - lastMeasurementTime);
+	triggerRate = 1000.0 * (double)(motorCount - prevMotorCount) / (currentTime - lastMeasurementTime);
 
 	prevMotorCount = motorCount;
 	lastMeasurementTime = currentTime;

@@ -18,8 +18,11 @@ def process_file(filepath: Path):
 	df = pd.read_csv(filepath)
 
 	variances = df.var()
+	bias = df.mean()
 	print("Variances:")
 	print(variances)
+	print("Biases:")
+	print(bias)
 
 if __name__ == "__main__":
 	main()

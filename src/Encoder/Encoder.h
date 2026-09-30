@@ -17,8 +17,7 @@ private:
 	// 2772 triggers/0.2199m or 12605 (trig/m)
 	static constexpr double TRIGGERS_PER_METER = 12605.0;
 	ESP32Encoder encoder;
-	double motorCount;
-	double prevMotorCount;
+	int64_t prevMotorCount;
 	double triggerRate;
 	double velocity;
 	unsigned long lastMeasurementTime;

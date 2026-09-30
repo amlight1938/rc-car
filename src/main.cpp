@@ -113,7 +113,6 @@ void controlTask(void *params)
 		case DISARMED:
 			// logging the current state while waiting in the disarmed state
 			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
-			logger.log(true, "Testing the string overload");
 
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
@@ -177,9 +176,11 @@ void controlTask(void *params)
 			imuReading = imu.getImuReading();
 			motion = car.getCarMotionState();
 
-			logger.log(true, "[%lu] - Calculated Velocity:%-4.0f Calculated Omega:%-4.0f GyroZ:%-4.0f", 
-				millis() / 1000.0, motion.forwardVelocity, motion.turnRate, imuReading.gyroX);
-
+			logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
+    			millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+			Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
+				millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+			Serial.println();
 			break;
 
 		case AUTONOMOUS:
