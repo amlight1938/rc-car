@@ -2,6 +2,7 @@
 
 #include "Arduino.h"
 #include <ESP32Encoder.h>
+#include <deque> 
 
 class Encoder
 {
@@ -21,4 +22,7 @@ private:
 	double triggerRate;
 	double velocity;
 	unsigned long lastMeasurementTime;
+	std::deque<double> rollingAverageDeque;
+	const uint8_t DEQUE_MAX_SIZE = 5;
+	double currentDequeSum;
 };

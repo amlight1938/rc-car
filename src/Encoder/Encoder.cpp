@@ -23,5 +23,21 @@ double Encoder::getVelocity()
 	lastMeasurementTime = currentTime;
 
 	// (m/s) = (trig/s) / (trig/m)
-	return triggerRate / TRIGGERS_PER_METER;
+	double newVelocity = triggerRate / TRIGGERS_PER_METER;
+
+	//use the deque to calculate a rolling average over the last DEQUE_MAX_SIZE steps to reduce noise
+	if(rollingAverageDeque.size() >= DEQUE_MAX_SIZE){
+		//remove the front and subtract it from the rolling sum then add the new velocity
+		const auto& oldVelocity = rollingAverageDeque.front();
+		currentDequeSum -= oldVelocity;
+		rollingAverageDeque.pop_front();
+		rollingAverageDeque.push_back(newVelocity);
+		currentDequeSum += newVelocity;
+	}else{
+		//not at capacity yet so just add the new velocity
+		rollingAverageDeque.push_back(newVelocity);
+		currentDequeSum += newVelocity;
+	}
+
+	return currentDequeSum / rollingAverageDeque.size();
 }
