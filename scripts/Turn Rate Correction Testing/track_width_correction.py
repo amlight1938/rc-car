@@ -19,7 +19,7 @@ def main():
 def calculate_correction_factor(filepath: Path):
 	df = pd.read_csv(filepath)
 
-	df["correction_factor]"] = df["calculated_omega"] / df["gryro_z"]
+	df["correction_factor]"] = df["calculated_omega"] / (df["gryro_z"] - GYRO_Z_BIAS)
 	correction_average = df["correction_factor"].mean()
 	print("Average correction factor:")
 	print(correction_average)
