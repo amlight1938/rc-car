@@ -2,8 +2,8 @@
 
 struct CarMotionState
 {
-	double forwardVelocity;
-	double turnRate;
-	double leftWheelVelocity;
-	double rightWheelVelocity;
+	double forwardVelocity;	   // m/s
+	double turnRate;		   // rad/s
+	double leftWheelVelocity;  // m/s
+	double rightWheelVelocity; // m/s
 };

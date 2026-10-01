@@ -11,16 +11,17 @@ using namespace Eigen;
 class KalmanFilter
 {
 public:
+	// creating a constructor with default arguments
 	KalmanFilter(double xStartPos = 0, double yStartPos = 0, double startAngle = 0, double startRotationRate = 0);
 
-	void iterate(const MeasurementState& measurementState);
+	void iterate(const MeasurementState &measurementState);
 
-	Matrix<double, 4, 1> getState();
+	Vector<double, 4> getState();
 
 private:
-	// creating the 4x1 X matrix and 1x2 Z Matrix
-	Vector2d Z;
-	Vector4d X;
+	// creating the 4-dim X vector and 2-dim Z vector
+	Vector<double, 2> Z;
+	Vector<double, 4> X;
 
 	// creating the 2x2 R matrix and 2x4 H matrix
 	Matrix<double, 2, 2> R;
@@ -37,5 +38,4 @@ private:
 
 	double v;
 	double dt;
-
 };
