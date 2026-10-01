@@ -2,7 +2,7 @@
 
 #include "Arduino.h"
 #include "Imu/ImuReading.h"
-#include "Imu/MPU9250/MPU9250.h" //using ours because were changing some things in file. make sure to include with "" not <>
+#include "Imu/MPU9250/MPU9250.h" // using a fork of the MPU library to change Z axis polarity. Use the include with "" not <>
 #include "Logging/Logger.h"
 
 // Calculated values based on data recording variances_calculation.py

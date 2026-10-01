@@ -4,7 +4,6 @@
 #include "Motor/Motor.h"
 #include "Encoder/Encoder.h"
 #include "CarMotionState.h"
-#include <cmath>
 
 class Car
 {

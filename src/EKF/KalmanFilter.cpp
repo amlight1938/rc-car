@@ -70,7 +70,7 @@ void KalmanFilter::iterate(const MeasurementState& measurementState)
 	// computing the new X and P matrices
 	Vector2d innovation = Z - (H * Xp);
 	X = Xp + (K * (innovation));
-	X[2] = std::fmod(X[2], 2 * PI); 
+	X[2] = std::fmod(X[2], 2 * PI);
 	if(X[2] < 0){
 		X[2] += 2 * PI;
 	}
