@@ -20,21 +20,21 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startAngle
 	dt = 0.01;	  // in units of seconds
 
 	// initializing the Aj matrix
-	Aj << 1, 0, -v * dt* sin(X(2, 0)), 0,
-		0, 1, v * dt* cos(X(2, 0)), 0,
+	Aj << 1, 0, -v * dt* sin(X[2]), 0,
+		0, 1, v * dt* cos(X[2]), 0,
 		0, 0, 1, dt,
 		0, 0, 0, 1;
 
 	// initializing the P and Q matrices
 	// starting car at origin allow the x and y uncertainty to be very small
-	P << 0.0001, 0, 0, 0, // 1cm uncertainty
-		0, 0.0001, 0, 0,
-		0, 0, 0.001, 0,
-		0, 0, 0, 0.001;
-	Q << 0.0001, 0, 0, 0,
-		0, 0.0001, 0, 0,
-		0, 0, 0.007, 0,
-		0, 0, 0, 0.007;
+	P << 0.0001, 0, 0, 0, 	// 1 cm uncertainty
+		0, 0.0001, 0, 0,	// 1 cm uncertainty
+		0, 0, 0.001, 0,		// 2 degrees uncertainty
+		0, 0, 0, 0.001;		// 2 degrees uncertainty
+	Q << 0.0001, 0, 0, 0,	// 1 cm
+		0, 0.0001, 0, 0,	// 1 cm
+		0, 0, 0.007, 0,		// 5 degrees
+		0, 0, 0, 0.007;		// 5 degrees
 }
 
 void KalmanFilter::iterate(const MeasurementState& measurementState)
@@ -46,17 +46,12 @@ void KalmanFilter::iterate(const MeasurementState& measurementState)
 
 	dt = measurementState.timeSinceLastMeasurement; //seconds
 
-	// Logger::getInstance().log(true, "dt: %-8.4f", dt );
-	// Logger::getInstance().log(true, "v: %-8.4f", v );
-
 	// computing the Xp matrix
 	// Xp = f(Xprev) using previous state value of v
 	Xp[0] = X[0] + (v * dt * cos(X[2]));
 	Xp[1] = X[1] + (v * dt * sin(X[2]));
 	Xp[2] = X[2] + (dt * X[3]);
 	Xp[3] = X[3];
-
-	// Logger::getInstance().log(true, "x: %-8.4f y: %-8.4f theta: %-8.4f w: %-8.4f", Xp[0], Xp[1], Xp[2], Xp[3]);
 
 	// updating the Aj matrix before computing Pp
 	updateAj();
@@ -69,24 +64,21 @@ void KalmanFilter::iterate(const MeasurementState& measurementState)
 
 	// gathering new data
 	v = measurementState.velocity;
-	// Logger::getInstance().log(true, "v: %-8.4f measured_v: %-8.4f", v, measurementState.velocity );
 
 	Z << measurementState.omega_encoder, measurementState.omega_gyro;
 
-	// Logger::getInstance().log(true, "we: %-8.4f wg: %-8.4f Zwe: %-8.4f Zwg: %-8.4f", 
-	// 	measurementState.omega_encoder, measurementState.omega_gyro, Z[0], Z[1]);
-	// Logger::getInstance().log(true, "    " );
-	// Logger::getInstance().log(true, "    " );
-	// Logger::getInstance().log(true, "    " );
-
-
 	// computing the new X and P matrices
-	X = Xp + (K * (Z - (H * Xp)));
+	Vector2d innovation = Z - (H * Xp);
+	X = Xp + (K * (innovation));
 	X[2] = std::fmod(X[2], 2 * PI); 
 	if(X[2] < 0){
 		X[2] += 2 * PI;
 	}
 	P = Pp - (K * H * Pp);
+
+	//logging EKF values
+	Logger::getInstance().log(true, "rE: %-7.4f rG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
+		Z[0], Z[1], X[0], X[1], X[2], X[3]);
 }
 
 Matrix<double, 4, 1> KalmanFilter::getState()

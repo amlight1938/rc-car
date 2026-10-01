@@ -158,8 +158,7 @@ void controlTask(void *params)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 
-				ekf = KalmanFilter();
-				logger.log("called");
+				ekf = KalmanFilter(); //allow for starting a new EKF without having to restart car
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -188,19 +187,16 @@ void controlTask(void *params)
 			measurementState.velocity = motion.forwardVelocity;
 			measurementState.omega_encoder= motion.turnRate;
 			measurementState.omega_gyro = imuReading.gyroZ;
-			// logger.log(true, "[%6.1f] - t: %-7.2f v: %-7.2f we: %-7.2f wg: %-7.2f", 
-			// 	millis() / 1000.0, measurementState.timeSinceLastMeasurement, measurementState.velocity, measurementState.omega_encoder, measurementState.omega_gyro);
-			
 			ekf.iterate(measurementState);
 			pose = ekf.getState();
 
 			//logging
-			logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f", 
-    			pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f", 
+    		// 	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+
 			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
-			// logger.log(true, "[%6.1f] - ax: %-7.2f ay: %-7.2f az: %-7.2f", 
-			// 	millis() / 1000.0, imuReading.accX, imuReading.accY, imuReading.accZ);
+
 			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f", 
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
 			Serial.println();
