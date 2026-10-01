@@ -58,6 +58,9 @@ void controlTask(void *params)
 	State currentState = PAIRING; // start in pairing mode
 	State lastState;
 
+	KalmanFilter ekf;
+	MeasurementState measurementState;
+	Matrix<double, 4, 1> pose;
 	CarMotionState motion;
 	ImuReading imuReading;
 
@@ -94,6 +97,7 @@ void controlTask(void *params)
 			// stopping the motors if the controller disconnects
 			if (lastState != PAIRING)
 			{
+				lastState = PAIRING;
 				stbyState = LOW;
 				digitalWrite(STBY_PIN, stbyState);
 				car.stop();
@@ -117,6 +121,7 @@ void controlTask(void *params)
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
+				lastState = DISARMED;
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 				stbyState = LOW;
@@ -146,11 +151,15 @@ void controlTask(void *params)
 			// turning the bluetooth LED ON and the standby LED ON when entering the state
 			if (lastState != MANUAL)
 			{
+				lastState = MANUAL;
 				stbyState = HIGH;
 				digitalWrite(STBY_PIN, stbyState);
 				// need to turn the btLED on (at least for the time being for indication)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
+
+				ekf = KalmanFilter();
+				logger.log("called");
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -172,14 +181,28 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
-			// getting the measurements
+			// getting the measurements and update ekf
 			imuReading = imu.getImuReading();
 			motion = car.getCarMotionState();
+			measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
+			measurementState.velocity = motion.forwardVelocity;
+			measurementState.omega_encoder= motion.turnRate;
+			measurementState.omega_gyro = imuReading.gyroZ;
+			// logger.log(true, "[%6.1f] - t: %-7.2f v: %-7.2f we: %-7.2f wg: %-7.2f", 
+			// 	millis() / 1000.0, measurementState.timeSinceLastMeasurement, measurementState.velocity, measurementState.omega_encoder, measurementState.omega_gyro);
+			
+			ekf.iterate(measurementState);
+			pose = ekf.getState();
 
-			logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
-    			millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
-			Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
-				millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+			//logging
+			logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f", 
+    			pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
+			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+			// logger.log(true, "[%6.1f] - ax: %-7.2f ay: %-7.2f az: %-7.2f", 
+			// 	millis() / 1000.0, imuReading.accX, imuReading.accY, imuReading.accZ);
+			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f", 
+			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
 			Serial.println();
 			break;
 
@@ -187,6 +210,7 @@ void controlTask(void *params)
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
 			{
+				lastState = AUTONOMOUS;
 				car.stop();
 			}
 
@@ -221,9 +245,6 @@ void controlTask(void *params)
 			// getting the cars imu reading logging and performing calculations
 			imuReading = imu.getImuReading();
 
-			// imu readout testing
-			imu.print(imuReading);
-
 			// logging the imu's heading and gyro readings
 			logger.log(true, "R:%-3.0f P:%-3.0f Y:%-3.0f GX:%-3.0f GY:%-3.0f GZ:%-3.0f Ax:%-4.1f Ay:%-4.1f Az:%-4.1f",
 										 imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ, 
@@ -239,6 +260,7 @@ void controlTask(void *params)
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != CALIBRATION)
 			{
+				lastState = CALIBRATION;
 				car.stop();
 			}
 

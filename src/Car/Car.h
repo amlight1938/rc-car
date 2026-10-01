@@ -18,7 +18,7 @@ public:
 	void stop();
 
 private:
-	static constexpr double TRACK_WIDTH = .145; // meters
+	static constexpr double TRACK_WIDTH = 0.145; // meters
 	Motor leftMotor;
 	Motor rightMotor;
 	Encoder leftEncoder;

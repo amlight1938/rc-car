@@ -7,11 +7,9 @@
 
 // Calculated values based on data recording variances_calculation.py
 // Variances:
-// GyroZ    0.003105
-// dtype: float64
+// GyroZ    8.035852e-07 rad^2/s^2
 // Biases:
-// GyroZ   -0.724126
-
+// GyroZ   -0.012497 rad/s
 
 class Imu
 {
@@ -30,4 +28,5 @@ private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
 	Logger &logger;
+	const double GYRO_Z_BIAS = -0.012497; // rad/s calculated with variance_calculation.py, possible value could change with calibration
 };
