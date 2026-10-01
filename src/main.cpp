@@ -58,6 +58,9 @@ void controlTask(void *params)
 	State currentState = PAIRING; // start in pairing mode
 	State lastState;
 
+	KalmanFilter ekf;
+	MeasurementState measurementState;
+	Matrix<double, 4, 1> pose;
 	CarMotionState motion;
 	ImuReading imuReading;
 
@@ -94,6 +97,7 @@ void controlTask(void *params)
 			// stopping the motors if the controller disconnects
 			if (lastState != PAIRING)
 			{
+				lastState = PAIRING;
 				stbyState = LOW;
 				digitalWrite(STBY_PIN, stbyState);
 				car.stop();
@@ -113,11 +117,11 @@ void controlTask(void *params)
 		case DISARMED:
 			// logging the current state while waiting in the disarmed state
 			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
-			logger.log(true, "Testing the string overload");
 
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
+				lastState = DISARMED;
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 				stbyState = LOW;
@@ -147,11 +151,14 @@ void controlTask(void *params)
 			// turning the bluetooth LED ON and the standby LED ON when entering the state
 			if (lastState != MANUAL)
 			{
+				lastState = MANUAL;
 				stbyState = HIGH;
 				digitalWrite(STBY_PIN, stbyState);
 				// need to turn the btLED on (at least for the time being for indication)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
+
+				ekf = KalmanFilter(); //allow for starting a new EKF without having to restart car
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -173,18 +180,33 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
-			// getting the cars motion state for logging and performing calculations
+			// getting the measurements and update ekf
+			imuReading = imu.getImuReading();
 			motion = car.getCarMotionState();
+			measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
+			measurementState.velocity = motion.forwardVelocity;
+			measurementState.omega_encoder= motion.turnRate;
+			measurementState.omega_gyro = imuReading.gyroZ;
+			ekf.iterate(measurementState);
+			pose = ekf.getState();
 
-			// logging the current velocity and turn rate of the car
-			logger.log(true, "[%.1f]-Velocity: %.2f Turn rate: %.2f", millis() / 1000.0, motion.forwardVelocity, motion.turnRate);
+			//logging
+			// logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f", 
+    		// 	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
 
+			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
+			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+
+			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f", 
+			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
+			Serial.println();
 			break;
 
 		case AUTONOMOUS:
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
 			{
+				lastState = AUTONOMOUS;
 				car.stop();
 			}
 
@@ -215,15 +237,14 @@ void controlTask(void *params)
 
 			// future autonomous capabilities go here
 
-			// getting the cars motion state for logging and performing calculations
-			motion = car.getCarMotionState();
 
 			// getting the cars imu reading logging and performing calculations
 			imuReading = imu.getImuReading();
 
 			// logging the imu's heading and gyro readings
-			logger.log(true, "[%.1f]-R: %.0f P: %.0f Y: %.0f GX: %.0f GY: %.0f GZ: %.0f",
-					millis() / 1000.0, imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ);
+			logger.log(true, "R:%-3.0f P:%-3.0f Y:%-3.0f GX:%-3.0f GY:%-3.0f GZ:%-3.0f Ax:%-4.1f Ay:%-4.1f Az:%-4.1f",
+										 imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ, 
+										 imuReading.accX, imuReading.accY, imuReading.accZ);
 
 			break;
 
@@ -233,7 +254,11 @@ void controlTask(void *params)
 
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
-			car.stop();
+			if (lastState != CALIBRATION)
+			{
+				lastState = CALIBRATION;
+				car.stop();
+			}
 
 			// turning the bluetooth LED and Standby off when calbrating
 			btLedState = LOW;

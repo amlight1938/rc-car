@@ -2,7 +2,8 @@
 
 struct MeasurementState
 {
-	double theta;
-	double omega;
+	double timeSinceLastMeasurement;
 	double velocity;
+	double omega_encoder;
+	double omega_gyro;
 };

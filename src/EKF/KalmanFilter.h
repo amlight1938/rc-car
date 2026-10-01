@@ -3,25 +3,24 @@
 #include "Arduino.h"
 #include <ArduinoEigen.h>
 #include "EKF/MeasurementState.h"
+#include "Logging/Logger.h"
+#include <cmath>
 
 using namespace Eigen;
 
 class KalmanFilter
 {
 public:
-	KalmanFilter(double xStartPos, double yStartPos, double startAngle, double startRotationRate);
+	KalmanFilter(double xStartPos = 0, double yStartPos = 0, double startAngle = 0, double startRotationRate = 0);
 
-	void iterate(MeasurementState measurementState);
+	void iterate(const MeasurementState& measurementState);
 
-	double getX();
-	double getY();
-	double getTheta();
-	double getOmega();
+	Matrix<double, 4, 1> getState();
 
 private:
 	// creating the 4x1 X matrix and 1x2 Z Matrix
-	Matrix<double, 2, 1> Z;
-	Matrix<double, 4, 1> X;
+	Vector2d Z;
+	Vector4d X;
 
 	// creating the 2x2 R matrix and 2x4 H matrix
 	Matrix<double, 2, 2> R;
@@ -37,6 +36,6 @@ private:
 	void updateAj();
 
 	double v;
-	double prevTime;
 	double dt;
+
 };

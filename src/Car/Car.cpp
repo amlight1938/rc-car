@@ -13,12 +13,18 @@ Car::Car(uint8_t leftPlusPin, uint8_t leftMinusPin, uint8_t leftSpeedPin,
 
 CarMotionState Car::getCarMotionState()
 {
+	CarMotionState state;
 	double leftWheelVelocity = -leftEncoder.getVelocity();	// left motor .getCount decreases as the car moves forward
 	double rightWheelVelocity = rightEncoder.getVelocity(); // right motor .getCount increase as the car moves forward
 
-	double forwardVel = (rightWheelVelocity + leftWheelVelocity) / 2;
-	double turnRate = (rightWheelVelocity - leftWheelVelocity) / TRACK_WIDTH;
-	return {forwardVel, turnRate};
+	double forwardVel = (rightWheelVelocity + leftWheelVelocity) / 2; // m/s
+	double turnRate = (rightWheelVelocity - leftWheelVelocity) / TRACK_WIDTH; // rad/s
+
+	state.forwardVelocity = forwardVel;
+	state.turnRate = turnRate;
+	state.leftWheelVelocity = leftWheelVelocity;
+	state.rightWheelVelocity = rightWheelVelocity;
+	return state;
 }
 
 void Car::control(double leftStickY, double rightStickX)
