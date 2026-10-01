@@ -17,7 +17,7 @@ CarMotionState Car::getCarMotionState()
 	double leftWheelVelocity = -leftEncoder.getVelocity();	// left motor .getCount decreases as the car moves forward
 	double rightWheelVelocity = rightEncoder.getVelocity(); // right motor .getCount increase as the car moves forward
 
-	double forwardVel = (rightWheelVelocity + leftWheelVelocity) / 2; // m/s
+	double forwardVel = (rightWheelVelocity + leftWheelVelocity) / 2;		  // m/s
 	double turnRate = (rightWheelVelocity - leftWheelVelocity) / TRACK_WIDTH; // rad/s
 
 	state.forwardVelocity = forwardVel;

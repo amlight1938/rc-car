@@ -1,13 +1,12 @@
 #include <Arduino.h>
-#include "EKF/KalmanFilter.h"
-#include "Encoder/Encoder.h"
-#include "Imu/Imu.h"
-#include "Motor/Motor.h"
 #include "Pins.h"
 #include "Car/Car.h"
 #include "Controller/Controller.h"
-#include "Controller/ControllerState.h"
+#include "EKF/KalmanFilter.h"
+#include "Encoder/Encoder.h"
+#include "Imu/Imu.h"
 #include "Logging/Logger.h"
+#include "Motor/Motor.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -52,17 +51,18 @@ void controlTask(void *params)
 		DISARMED,
 		MANUAL,
 		AUTONOMOUS,
-		CALIBRATION
+		IMU_CALIBRATION
 	};
 
 	State currentState = PAIRING; // start in pairing mode
 	State lastState;
 
-	KalmanFilter ekf;
-	MeasurementState measurementState;
-	Matrix<double, 4, 1> pose;
-	CarMotionState motion;
+	// initializing our measurement variables
 	ImuReading imuReading;
+	CarMotionState motion;
+	MeasurementState measurementState;
+	KalmanFilter ekf;
+	Vector<double, 4> pose;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
@@ -137,11 +137,11 @@ void controlTask(void *params)
 				break;
 			}
 
-			// switching to CALIBRATION based on controller inputs
+			// switching to IMU_CALIBRATION based on controller inputs
 			if (controllerState.dpadDown && controllerState.buttonA)
 			{
 				lastState = currentState;
-				currentState = CALIBRATION;
+				currentState = IMU_CALIBRATION;
 				break;
 			}
 
@@ -158,7 +158,8 @@ void controlTask(void *params)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 
-				ekf = KalmanFilter(); //allow for starting a new EKF without having to restart car
+				// restarting the EKF without having to restart car
+				ekf = KalmanFilter();
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -180,26 +181,27 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
-			// getting the measurements and update ekf
+			// getting the measurements and updating the EKF
 			imuReading = imu.getImuReading();
 			motion = car.getCarMotionState();
 			measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
 			measurementState.velocity = motion.forwardVelocity;
-			measurementState.omega_encoder= motion.turnRate;
+			measurementState.omega_encoder = motion.turnRate;
 			measurementState.omega_gyro = imuReading.gyroZ;
 			ekf.iterate(measurementState);
 			pose = ekf.getState();
 
-			//logging
-			// logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f", 
-    		// 	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logging data for troubleshooting
+			//  logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+			//  	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f", 
+			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
 
-			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f", 
+			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
-			Serial.println();
+			// Serial.println();
+
 			break;
 
 		case AUTONOMOUS:
@@ -237,26 +239,17 @@ void controlTask(void *params)
 
 			// future autonomous capabilities go here
 
-
-			// getting the cars imu reading logging and performing calculations
-			imuReading = imu.getImuReading();
-
-			// logging the imu's heading and gyro readings
-			logger.log(true, "R:%-3.0f P:%-3.0f Y:%-3.0f GX:%-3.0f GY:%-3.0f GZ:%-3.0f Ax:%-4.1f Ay:%-4.1f Az:%-4.1f",
-										 imuReading.roll, imuReading.pitch, imuReading.yaw, imuReading.gyroX, imuReading.gyroY, imuReading.gyroZ, 
-										 imuReading.accX, imuReading.accY, imuReading.accZ);
-
 			break;
 
-		case CALIBRATION:
+		case IMU_CALIBRATION:
 			// logging the current state while waiting performing the imu calibration
-			logger.log(true, "[%.1f]-current state: CALIBRATION", millis() / 1000.0);
+			logger.log(true, "[%.1f]-current state: IMU_CALIBRATION", millis() / 1000.0);
 
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
-			if (lastState != CALIBRATION)
+			if (lastState != IMU_CALIBRATION)
 			{
-				lastState = CALIBRATION;
+				lastState = IMU_CALIBRATION;
 				car.stop();
 			}
 

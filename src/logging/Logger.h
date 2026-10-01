@@ -54,7 +54,7 @@ public:
 	// called by other classes to add messages to the queue to be sent via UDP
 	// overload for just a string to be logged
 	void log(const std::string &message, bool rateLimit = false);
-	
+
 	// formats the logs to be of size QUEUE_ITEM_SIZE and truncates the rest of the message
 	// this is because the logQueue uses QUEUE_ITEM_SIZE to cap the memory used in the log
 	// the template call allows different argument types (int, long, float) for be passed in depending on message
@@ -73,9 +73,10 @@ public:
 		xQueueSend(logQueue, buffer, 0);
 	}
 
-	//overload for the "default" ratelimit value of false
+	// overload for the "default" ratelimit value of false
 	template <typename... Args>
-	void log(const char *fmt, Args... args){
+	void log(const char *fmt, Args... args)
+	{
 		log(false, fmt, args...); // delegates to other template, supplying the "default" ratelimiter bool
 	}
 };

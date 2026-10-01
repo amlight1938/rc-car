@@ -13,6 +13,7 @@ Encoder::Encoder(uint8_t phaseAPin, uint8_t phaseBPin)
 double Encoder::getVelocity()
 {
 	unsigned long currentTime = millis();
+
 	// reading out the encoder values
 	int64_t motorCount = encoder.getCount();
 
@@ -25,19 +26,23 @@ double Encoder::getVelocity()
 	// (m/s) = (trig/s) / (trig/m)
 	double newVelocity = triggerRate / TRIGGERS_PER_METER;
 
-	//use the deque to calculate a rolling average over the last DEQUE_MAX_SIZE steps to reduce noise
-	if(rollingAverageDeque.size() >= DEQUE_MAX_SIZE){
-		//remove the front and subtract it from the rolling sum then add the new velocity
-		const auto& oldVelocity = rollingAverageDeque.front();
+	// using the deque to calculate a rolling average over the last DEQUE_MAX_SIZE steps to reduce noise
+	if (rollingAverageDeque.size() >= DEQUE_MAX_SIZE)
+	{
+		// remove the front and subtract it from the rolling sum then add the new velocity
+		const auto &oldVelocity = rollingAverageDeque.front();
 		currentDequeSum -= oldVelocity;
 		rollingAverageDeque.pop_front();
 		rollingAverageDeque.push_back(newVelocity);
 		currentDequeSum += newVelocity;
-	}else{
-		//not at capacity yet so just add the new velocity
+	}
+	else
+	{
+		// not at capacity yet so just add the new velocity
 		rollingAverageDeque.push_back(newVelocity);
 		currentDequeSum += newVelocity;
 	}
 
-	return currentDequeSum / rollingAverageDeque.size();
+	// returning the average velocity of the previous DEQUE_MAX_SIZE measurements
+	return currentDequeSum / rollingAverageDeque.size(); // m/s
 }

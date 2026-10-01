@@ -44,7 +44,7 @@ void Logger::loggingTask(void *params)
 bool Logger::sendUdp()
 {
 	// take item off queue
-	char buffer[QUEUE_ITEM_SIZE];					// allocat space on the stack for xQueueReceive to populate with the next up item in the queue
+	char buffer[QUEUE_ITEM_SIZE];					// allocate space on the stack for xQueueReceive to populate with the next up item in the queue
 	xQueueReceive(logQueue, buffer, portMAX_DELAY); // portMAX_DELAY means wait indefinitely for something to come to the queue
 
 	// send it over UDP to receiveing IP

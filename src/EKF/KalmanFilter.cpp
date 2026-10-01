@@ -10,41 +10,43 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startAngle
 
 	// initializing the R matrix
 	// uncertainties are small due to radians being a small unit
-	// values derived from variance calculation with variances_calculation.py
+	// values were derived from variances_calculation.py using stationary and relative movement data
 	R << 4.0020766, 0,
 		0, 8.035852e-07;
+
+	// both Z values correspond to X[3]
 	H << 0, 0, 0, 1,
 		0, 0, 0, 1;
 
 	// assuming the time step is approx 10ms
-	dt = 0.01;	  // in units of seconds
+	dt = 0.01; // seconds
 
 	// initializing the Aj matrix
-	Aj << 1, 0, -v * dt* sin(X[2]), 0,
-		0, 1, v * dt* cos(X[2]), 0,
+	Aj << 1, 0, -v * dt * sin(X[2]), 0,
+		0, 1, v * dt * cos(X[2]), 0,
 		0, 0, 1, dt,
 		0, 0, 0, 1;
 
 	// initializing the P and Q matrices
 	// starting car at origin allow the x and y uncertainty to be very small
-	P << 0.0001, 0, 0, 0, 	// 1 cm uncertainty
-		0, 0.0001, 0, 0,	// 1 cm uncertainty
-		0, 0, 0.001, 0,		// 2 degrees uncertainty
-		0, 0, 0, 0.001;		// 2 degrees uncertainty
-	Q << 0.0001, 0, 0, 0,	// 1 cm
-		0, 0.0001, 0, 0,	// 1 cm
-		0, 0, 0.007, 0,		// 5 degrees
-		0, 0, 0, 0.007;		// 5 degrees
+	P << 0.0001, 0, 0, 0, // 1 cm uncertainty
+		0, 0.0001, 0, 0,  // 1 cm uncertainty
+		0, 0, 0.001, 0,	  // 2 degrees uncertainty
+		0, 0, 0, 0.001;	  // 2 degrees uncertainty
+	Q << 0.0001, 0, 0, 0, // 1 cm
+		0, 0.0001, 0, 0,  // 1 cm
+		0, 0, 0.007, 0,	  // 5 degrees
+		0, 0, 0, 0.007;	  // 5 degrees
 }
 
-void KalmanFilter::iterate(const MeasurementState& measurementState)
+void KalmanFilter::iterate(const MeasurementState &measurementState)
 {
 	// instantiating the matrices only used in this function
-	Vector4d Xp;
+	Vector<double, 4> Xp;
 	Matrix<double, 4, 4> Pp;
 	Matrix<double, 4, 2> K;
 
-	dt = measurementState.timeSinceLastMeasurement; //seconds
+	dt = measurementState.timeSinceLastMeasurement; // seconds
 
 	// computing the Xp matrix
 	// Xp = f(Xprev) using previous state value of v
@@ -67,30 +69,35 @@ void KalmanFilter::iterate(const MeasurementState& measurementState)
 
 	Z << measurementState.omega_encoder, measurementState.omega_gyro;
 
-	// computing the new X and P matrices
-	Vector2d innovation = Z - (H * Xp);
-	X = Xp + (K * (innovation));
+	// computing the new X matrix
+	Vector<double, 2> innovation = Z - (H * Xp); // saving the innovation for troubleshooting and tuning of the EKF
+	X = Xp + (K * innovation);
+
+	// making sure theta is between 0 and 2π
 	X[2] = std::fmod(X[2], 2 * PI);
-	if(X[2] < 0){
+	if (X[2] < 0)
+	{
 		X[2] += 2 * PI;
 	}
+
+	// computing the new P matrix
 	P = Pp - (K * H * Pp);
 
-	//logging EKF values
+	// logging EKF values for troubleshooting and tuning of the EKF
 	Logger::getInstance().log(true, "%6.1f- rE: %-7.4f rG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
-		millis() / 1000.0, Z[0], Z[1], X[0], X[1], X[2], X[3]);
+							  millis() / 1000.0, Z[0], Z[1], X[0], X[1], X[2], X[3]);
 	Logger::getInstance().log(true, "%6.1f- Px: %-7.4f Py: %-7.4f Po: %-7.4f Pw: %-7.4f",
-		millis() / 1000.0, P(0,0),P(1,1), P(2,2), P(3,3));
+							  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3));
 }
 
-Matrix<double, 4, 1> KalmanFilter::getState()
+Vector<double, 4> KalmanFilter::getState()
 {
 	return X;
 }
 
 void KalmanFilter::updateAj()
 {
-	Aj(0, 2) = -v * dt * sin(X(2, 0));
-	Aj(1, 2) = v * dt * cos(X(2, 0));
+	Aj(0, 2) = -v * dt * sin(X[2]);
+	Aj(1, 2) = v * dt * cos(X[2]);
 	Aj(2, 3) = dt;
 }

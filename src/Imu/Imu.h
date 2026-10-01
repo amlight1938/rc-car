@@ -7,7 +7,7 @@
 
 // Calculated values based on data recording variances_calculation.py
 // Variances:
-// GyroZ    8.035852e-07 rad^2/s^2
+// GyroZ    8.035852e-07 (rad/s)^2
 // Biases:
 // GyroZ   -0.012497 rad/s
 

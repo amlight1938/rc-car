@@ -14,7 +14,8 @@ Imu::Imu()
 		}
 	}
 
-	imu.setMagneticDeclination(7.5); //7.5 degrees in Denver, CO
+	// Denver, CO sits at 7.5deg North
+	imu.setMagneticDeclination(7.5);
 
 	lastMeasurementTime = millis();
 }
@@ -25,19 +26,22 @@ ImuReading Imu::getImuReading()
 	unsigned long currentTime = millis(); // called after I2C update() call to get more accurate measurement time
 	ImuReading imuState;
 	imuState.isFreshData = fresh;
-	imuState.timeSinceLastMeasurement = (currentTime - lastMeasurementTime) / 1000.0; //seconds
-	imuState.roll = imu.getRoll() * DEG_TO_RAD; // rad
+	imuState.timeSinceLastMeasurement = (currentTime - lastMeasurementTime) / 1000.0; // seconds
+
+	imuState.roll = imu.getRoll() * DEG_TO_RAD;	  // rad
 	imuState.pitch = imu.getPitch() * DEG_TO_RAD; // rad
-	imuState.yaw = imu.getYaw() * DEG_TO_RAD; // rad
+	imuState.yaw = imu.getYaw() * DEG_TO_RAD;	  // rad
+
 	imuState.gyroX = imu.getGyroX() * DEG_TO_RAD; // rad/s
 	imuState.gyroY = imu.getGyroY() * DEG_TO_RAD; // rad/s
 	// compensating for the fact that stationary gyroZ value is offset from zero (biased)
 	imuState.gyroZ = imu.getGyroZ() * DEG_TO_RAD - GYRO_Z_BIAS; // rad/s
+
 	imuState.accX = imu.getAccX() * 9.81; // m/s^2
 	imuState.accY = imu.getAccY() * 9.81; // m/s^2
 	imuState.accZ = imu.getAccZ() * 9.81; // m/s^2
 
-	lastMeasurementTime = currentTime;
+	lastMeasurementTime = currentTime; // seconds
 	return imuState;
 }
 
