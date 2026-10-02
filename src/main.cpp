@@ -51,7 +51,8 @@ void controlTask(void *params)
 		DISARMED,
 		MANUAL,
 		AUTONOMOUS,
-		IMU_CALIBRATION
+		IMU_CALIBRATION,
+		GYRO_CALIBRATION
 	};
 
 	State currentState = PAIRING; // start in pairing mode
@@ -145,6 +146,14 @@ void controlTask(void *params)
 				break;
 			}
 
+			// switching to GYRO_CALIBRATION based on controller inputs
+			if (controllerState.dpadUp && controllerState.buttonA)
+			{
+				lastState = currentState;
+				currentState = GYRO_CALIBRATION;
+				break;
+			}
+
 			break;
 
 		case MANUAL:
@@ -176,6 +185,12 @@ void controlTask(void *params)
 				lastState = currentState;
 				currentState = AUTONOMOUS;
 				break;
+			}
+
+			// capping the motor throttle based on controller inputs
+			if (controllerState.buttonX)
+			{
+				car.throttleToggle();
 			}
 
 			// powering the motors with manual control
@@ -264,6 +279,32 @@ void controlTask(void *params)
 
 			// calibrating the IMUs Magnetometer
 			imu.calibrateImuMag(CAL_LED_PIN);
+
+			// returning to DISARMED after calibration is complete
+			lastState = currentState;
+			currentState = DISARMED;
+			break;
+
+		case GYRO_CALIBRATION:
+			// logging the current state while waiting performing the gyro calibration
+			logger.log(true, "[%.1f]-current state: GYRO_CALIBRATION", millis() / 1000.0);
+
+			// turning the both motors off when entering the state
+			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
+			if (lastState != GYRO_CALIBRATION)
+			{
+				lastState = GYRO_CALIBRATION;
+				car.stop();
+			}
+
+			// turning the bluetooth LED and Standby off when calbrating
+			btLedState = LOW;
+			digitalWrite(BT_LED_PIN, btLedState);
+			stbyState = LOW;
+			digitalWrite(STBY_PIN, stbyState);
+
+			// calibrating the IMUs Accelerometer and Gyroscope
+			imu.calibrateImuAccelGyro();
 
 			// returning to DISARMED after calibration is complete
 			lastState = currentState;

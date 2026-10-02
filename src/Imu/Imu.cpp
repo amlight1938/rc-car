@@ -35,7 +35,7 @@ ImuReading Imu::getImuReading()
 	imuState.gyroX = imu.getGyroX() * DEG_TO_RAD; // rad/s
 	imuState.gyroY = imu.getGyroY() * DEG_TO_RAD; // rad/s
 	// compensating for the fact that stationary gyroZ value is offset from zero (biased)
-	imuState.gyroZ = imu.getGyroZ() * DEG_TO_RAD - GYRO_Z_BIAS; // rad/s
+	imuState.gyroZ = imu.getGyroZ() * DEG_TO_RAD - gyroZBias; // rad/s
 
 	imuState.accX = imu.getAccX() * 9.81; // m/s^2
 	imuState.accY = imu.getAccY() * 9.81; // m/s^2
@@ -54,6 +54,9 @@ void Imu::calibrateImuAccelGyro()
 
 	// starting the Accelerometer and Gyroscope calibration
 	imu.calibrateAccelGyro();
+
+	// updating our default gyro bias to 0 now that a fresh calibration has been performed
+	gyroZBias = 0;
 
 	// logging the completion of the Accelerometer and Gyroscope calibration
 	logger.log("[%.1f]-Accel Gyro Calibration Complete", millis() / 1000.0);

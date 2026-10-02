@@ -23,8 +23,10 @@ ControllerState Controller::getControllerState()
 		returnState.rightStickY = xboxControlsState.rightStickY;
 		returnState.leftBumper = xboxControlsState.leftBumper && !lastRawControllerState.leftBumper;
 		returnState.rightBumper = xboxControlsState.rightBumper && !lastRawControllerState.rightBumper;
+		returnState.dpadUp = xboxControlsState.dpadUp && !lastRawControllerState.dpadUp;
 		returnState.dpadDown = xboxControlsState.dpadDown && !lastRawControllerState.dpadDown;
 		returnState.buttonA = xboxControlsState.buttonA && !lastRawControllerState.buttonA;
+		returnState.buttonX = xboxControlsState.buttonX && !lastRawControllerState.buttonX;
 		returnState.buttonY = xboxControlsState.buttonY && !lastRawControllerState.buttonY;
 
 		// make raw controller state to be saved for next cycle edge detection
@@ -35,8 +37,10 @@ ControllerState Controller::getControllerState()
 		rawControllerState.rightStickY = xboxControlsState.rightStickY;
 		rawControllerState.leftBumper = xboxControlsState.leftBumper;
 		rawControllerState.rightBumper = xboxControlsState.rightBumper;
+		rawControllerState.dpadUp = xboxControlsState.dpadUp;
 		rawControllerState.dpadDown = xboxControlsState.dpadDown;
 		rawControllerState.buttonA = xboxControlsState.buttonA;
+		rawControllerState.buttonX = xboxControlsState.buttonX;
 		rawControllerState.buttonY = xboxControlsState.buttonY;
 	}
 	else

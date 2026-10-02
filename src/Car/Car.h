@@ -15,6 +15,7 @@ public:
 	CarMotionState getCarMotionState();
 	void control(double leftStickY, double rightStickX);
 	void stop();
+	void throttleToggle();
 
 private:
 	static constexpr double TRACK_WIDTH = 0.145; // meters

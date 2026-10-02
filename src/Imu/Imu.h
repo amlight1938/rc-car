@@ -28,5 +28,8 @@ private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
 	Logger &logger;
-	const double GYRO_Z_BIAS = -0.012497; // rad/s calculated with variance_calculation.py, possible value could change with calibration
+
+	// gyroZBias was calculated with variance_calculation.py
+	// but this can be recalculated with calibrateImuAccelGyro()
+	double gyroZBias = -0.012497; // rad/s
 };

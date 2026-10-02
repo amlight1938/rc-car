@@ -9,7 +9,9 @@ struct ControllerState
 	double rightStickY;
 	bool leftBumper;
 	bool rightBumper;
+	bool dpadUp;
 	bool dpadDown;
 	bool buttonA;
+	bool buttonX;
 	bool buttonY;
 };
