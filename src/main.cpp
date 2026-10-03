@@ -68,6 +68,20 @@ void controlTask(void *params)
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
 
+	// setting up the lambda function for getting the pose
+	// this is expected to be used multiple times in the switch-case
+	auto getPose = [&]() -> Vector<double, 4>
+	{
+		imuReading = imu.getImuReading();
+		motion = car.getCarMotionState();
+		measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
+		measurementState.velocity = motion.forwardVelocity;
+		measurementState.omega_encoder = motion.turnRate;
+		measurementState.omega_gyro = imuReading.gyroZ;
+		ekf.iterate(measurementState);
+		return ekf.getState();
+	};
+
 	while (true)
 	{
 		unsigned long currentTime = millis();
@@ -196,22 +210,15 @@ void controlTask(void *params)
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
-			// getting the measurements and updating the EKF
-			imuReading = imu.getImuReading();
-			motion = car.getCarMotionState();
-			measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
-			measurementState.velocity = motion.forwardVelocity;
-			measurementState.omega_encoder = motion.turnRate;
-			measurementState.omega_gyro = imuReading.gyroZ;
-			ekf.iterate(measurementState);
-			pose = ekf.getState();
+			// getting the measurements and updating the EKF using the lambda function
+			pose = getPose();
 
 			// logging data for troubleshooting
 			//  logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			//  	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			 logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
-			 	imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
+			logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
+					   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
 
 			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
@@ -256,6 +263,9 @@ void controlTask(void *params)
 			}
 
 			// future autonomous capabilities go here
+
+			// getting the measurements and updating the EKF using the lambda function
+			pose = getPose();
 
 			break;
 
