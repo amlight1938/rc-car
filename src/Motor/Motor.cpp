@@ -3,6 +3,7 @@
 Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
 	: plusPin(plusPin), minusPin(minusPin), speedPin(speedPin)
 {
+	throttleCapped = false;
 }
 
 void Motor::control(double leftStickY, double rightStickX)
@@ -45,7 +46,14 @@ void Motor::control(double leftStickY, double rightStickX)
 	speedControl = min(abs(speedControl), 1.0) * 1000;
 
 	// map() internally converts doubles to long and will truncate decimals. This is okay for human control
-	speedControl = map(speedControl, 0, 1000, 0, 255);
+	if (throttleCapped)
+	{
+		speedControl = map(speedControl, 0, 1000, 0, 100);
+	}
+	else
+	{
+		speedControl = map(speedControl, 0, 1000, 0, 255);
+	}
 	this->spin(forward, speedControl);
 }
 
@@ -83,4 +91,9 @@ void Motor::stop()
 bool Motor::isStopped()
 {
 	return lastSpeedValue == 0;
+}
+
+void Motor::throttleToggle()
+{
+	throttleCapped = !throttleCapped;
 }

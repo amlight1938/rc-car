@@ -8,8 +8,6 @@
 // Calculated values based on data recording variances_calculation.py
 // Variances:
 // GyroZ    8.035852e-07 (rad/s)^2
-// Biases:
-// GyroZ   -0.012497 rad/s
 
 class Imu
 {
@@ -22,11 +20,18 @@ public:
 
 	void calibrateImuMag(uint8_t ledPin);
 
+	void calibrateImuAccelGyroBias();
+
 	ImuReading getImuReading();
 
 private:
 	MPU9250 imu;
 	unsigned long lastMeasurementTime;
 	Logger &logger;
-	const double GYRO_Z_BIAS = -0.012497; // rad/s calculated with variance_calculation.py, possible value could change with calibration
+
+	// the Accel and Gyro get thier own bias, but this doesn't get the accuracy desired
+	// therefore, we add our own bias compensation
+	// this can be adjusted with calibrateImuAccelGyroBias()
+	double accelXBias = 0.0; // m/s
+	double gyroZBias = 0.0; // rad/s
 };

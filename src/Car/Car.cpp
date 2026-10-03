@@ -38,3 +38,9 @@ void Car::stop()
 	leftMotor.stop();
 	rightMotor.stop();
 }
+
+void Car::throttleToggle()
+{
+	leftMotor.throttleToggle();
+	rightMotor.throttleToggle();
+}

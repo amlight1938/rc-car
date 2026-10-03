@@ -51,7 +51,8 @@ void controlTask(void *params)
 		DISARMED,
 		MANUAL,
 		AUTONOMOUS,
-		IMU_CALIBRATION
+		IMU_CALIBRATION,
+		BIAS_CALIBRATION
 	};
 
 	State currentState = PAIRING; // start in pairing mode
@@ -145,6 +146,14 @@ void controlTask(void *params)
 				break;
 			}
 
+			// switching to BIAS_CALIBRATION based on controller inputs
+			if (controllerState.dpadUp && controllerState.buttonA)
+			{
+				lastState = currentState;
+				currentState = BIAS_CALIBRATION;
+				break;
+			}
+
 			break;
 
 		case MANUAL:
@@ -178,6 +187,12 @@ void controlTask(void *params)
 				break;
 			}
 
+			// capping the motor throttle based on controller inputs
+			if (controllerState.buttonX)
+			{
+				car.throttleToggle();
+			}
+
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
 
@@ -194,6 +209,9 @@ void controlTask(void *params)
 			// logging data for troubleshooting
 			//  logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			//  	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+
+			 logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
+			 	imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
 
 			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
@@ -264,6 +282,32 @@ void controlTask(void *params)
 
 			// calibrating the IMUs Magnetometer
 			imu.calibrateImuMag(CAL_LED_PIN);
+
+			// returning to DISARMED after calibration is complete
+			lastState = currentState;
+			currentState = DISARMED;
+			break;
+
+		case BIAS_CALIBRATION:
+			// logging the current state while waiting performing the gyro calibration
+			logger.log(true, "[%.1f]-current state: BIAS_CALIBRATION", millis() / 1000.0);
+
+			// turning the both motors off when entering the state
+			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
+			if (lastState != BIAS_CALIBRATION)
+			{
+				lastState = BIAS_CALIBRATION;
+				car.stop();
+			}
+
+			// turning the bluetooth LED and Standby off when calbrating
+			btLedState = LOW;
+			digitalWrite(BT_LED_PIN, btLedState);
+			stbyState = LOW;
+			digitalWrite(STBY_PIN, stbyState);
+
+			// calibrating the IMUs Accelerometer and Gyroscope
+			imu.calibrateImuAccelGyroBias();
 
 			// returning to DISARMED after calibration is complete
 			lastState = currentState;

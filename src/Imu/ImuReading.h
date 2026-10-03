@@ -14,3 +14,13 @@ struct ImuReading
 	double accY;					 // m/s^2
 	double accZ;					 // m/s^2
 };
+
+// gyroX: roll
+// gyroY: pitch
+// gyroZ: yaw
+
+// accX: bow (forward)
+// accY: port (left)
+// accZ: zenith (up)
+
+// accZ at stationary includes gravity (+9.81m/s^2)

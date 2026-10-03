@@ -11,6 +11,8 @@ public:
 
 	void stop();
 
+	void throttleToggle();
+
 private:
 	static constexpr double DEADZONE = 0.15;
 	static constexpr double MOTOR_TURN_GAIN = 0.5;
@@ -23,4 +25,6 @@ private:
 	uint8_t minusPin;
 	uint8_t speedPin;
 	uint8_t lastSpeedValue;
+
+	bool throttleCapped;
 };
