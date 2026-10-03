@@ -84,8 +84,8 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	Logger::getInstance().log(true, "%6.1f- rE: %-7.4f rG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
-							  millis() / 1000.0, Z[0], Z[1], X[0], X[1], X[2], X[3]);
+	// Logger::getInstance().log(true, "%6.1f- rE: %-7.4f rG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
+	// 						  millis() / 1000.0, Z[0], Z[1], X[0], X[1], X[2], X[3]);
 	// Logger::getInstance().log(true, "%6.1f- Px: %-7.4f Py: %-7.4f Po: %-7.4f Pw: %-7.4f",
 							//   millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3));
 }

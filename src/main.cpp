@@ -52,7 +52,7 @@ void controlTask(void *params)
 		MANUAL,
 		AUTONOMOUS,
 		IMU_CALIBRATION,
-		GYRO_CALIBRATION
+		BIAS_CALIBRATION
 	};
 
 	State currentState = PAIRING; // start in pairing mode
@@ -146,11 +146,11 @@ void controlTask(void *params)
 				break;
 			}
 
-			// switching to GYRO_CALIBRATION based on controller inputs
+			// switching to BIAS_CALIBRATION based on controller inputs
 			if (controllerState.dpadUp && controllerState.buttonA)
 			{
 				lastState = currentState;
-				currentState = GYRO_CALIBRATION;
+				currentState = BIAS_CALIBRATION;
 				break;
 			}
 
@@ -209,6 +209,9 @@ void controlTask(void *params)
 			// logging data for troubleshooting
 			//  logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			//  	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+
+			 logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
+			 	imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
 
 			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
@@ -285,15 +288,15 @@ void controlTask(void *params)
 			currentState = DISARMED;
 			break;
 
-		case GYRO_CALIBRATION:
+		case BIAS_CALIBRATION:
 			// logging the current state while waiting performing the gyro calibration
-			logger.log(true, "[%.1f]-current state: GYRO_CALIBRATION", millis() / 1000.0);
+			logger.log(true, "[%.1f]-current state: BIAS_CALIBRATION", millis() / 1000.0);
 
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
-			if (lastState != GYRO_CALIBRATION)
+			if (lastState != BIAS_CALIBRATION)
 			{
-				lastState = GYRO_CALIBRATION;
+				lastState = BIAS_CALIBRATION;
 				car.stop();
 			}
 
@@ -304,7 +307,7 @@ void controlTask(void *params)
 			digitalWrite(STBY_PIN, stbyState);
 
 			// calibrating the IMUs Accelerometer and Gyroscope
-			imu.calibrateImuAccelGyro();
+			imu.calibrateImuAccelGyroBias();
 
 			// returning to DISARMED after calibration is complete
 			lastState = currentState;
