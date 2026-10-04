@@ -97,7 +97,7 @@ void Imu::calibrateImuAccelGyroBias()
 	gyroZBias = 0;
 
 	// starting the Gyroscope calibration
-	static const uint16_t dataCount = 200;
+	static const uint16_t dataCount = 500;
 	uint16_t collected = 0;
 	double accelSum = 0.0;
 	double gyroSum = 0.0;
