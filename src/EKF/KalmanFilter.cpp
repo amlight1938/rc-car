@@ -11,7 +11,7 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startAngle
 	// initializing the R matrix
 	// uncertainties are small due to radians being a small unit
 	// values were derived from variances_calculation.py using stationary and relative movement data
-	R << 4.0020766, 0,
+	R << 0.0337665, 0,   // Tuned for gradual movements (see Encoder.h for other R values)
 		0, 8.035852e-07;
 
 	// both Z values correspond to X[3]
@@ -32,11 +32,11 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startAngle
 	P << 0.0001, 0, 0, 0, // 1 cm uncertainty
 		0, 0.0001, 0, 0,  // 1 cm uncertainty
 		0, 0, 0.001, 0,	  // 2 degrees uncertainty
-		0, 0, 0, 0.001;	  // 2 degrees uncertainty
-	Q << 0.0001, 0, 0, 0, // 1 cm
-		0, 0.0001, 0, 0,  // 1 cm
-		0, 0, 0.007, 0,	  // 5 degrees - this is the size of the noise added each step
-		0, 0, 0, 0.007;	  // 5 degrees
+		0, 0, 0, 0.001;	  // 2 degrees/s uncertainty
+	Q << 1e-5, 0, 0, 0, // 1 cm
+		0, 1e-5, 0, 0,  // 1 cm
+		0, 0, 1e-4, 0,	  // - this is the size of the noise added each step
+		0, 0, 0, 0.0015;	  // 
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)

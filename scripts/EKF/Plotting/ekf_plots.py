@@ -33,7 +33,7 @@ def process_file(filepath: Path):
 
 
 	#put data into pandas dataframe to be plotted
-	FIELDS = ["rE", "rG", "x", "y", "o", "w", "Px", "Py", "Po", "Pw"]
+	FIELDS = ["nrE", "nrG", "x", "y", "o", "w", "Px", "Py", "Po", "Pw"]
 	df = pd.DataFrame.from_dict(data, orient="index")   # rows = timestamps, columns = fields
 	df.index = df.index.astype(float)                   # "84.2" -> 84.2
 	df = df.sort_index().reindex(columns=FIELDS)        # sorts rows by timestamp
@@ -46,7 +46,7 @@ def process_file(filepath: Path):
 	sigma_omega = np.sqrt(df["Pw"])
 
 	### PLOTTING ###
-	PLOT_GROUP_NAME = "Small Rectangle"
+	PLOT_GROUP_NAME = filepath.stem
 
 	#State
 	fig_1, axes_dict = plt.subplot_mosaic([["Position"], ["Heading"], ["Turn_Rate"]], sharex=True)
@@ -79,8 +79,8 @@ def process_file(filepath: Path):
 	# Residual
 	fig_2, ax_residual = plt.subplots(figsize=(8, 5))
 	fig_2.suptitle(PLOT_GROUP_NAME + " Normalized Residual")
-	ax_residual.plot(df.index, df["rE"], label="Encoder")
-	ax_residual.plot(df.index, df["rG"], label="Gyro")
+	ax_residual.scatter(df.index, df["nrE"], label="Encoder")
+	ax_residual.scatter(df.index, df["nrG"], label="Gyro")
 	ax_residual.set_ylabel("Residual / Predicted Residual")
 	ax_residual.set_xlabel("Time (s)")
 	ax_residual.legend(loc="upper right")
