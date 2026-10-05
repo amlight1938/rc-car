@@ -10,7 +10,7 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	// values were derived from variances_calculation.py using stationary and relative movement data
 	R << 100, 0, 0, 0,
 		0, 100, 0, 0,
-		0, 0, 4.0020766, 0,
+		0, 0, 0.0337665, 0,   // Tuned for gradual movements (see Encoder.h for other R values)
 		0, 0, 0, 8.035852e-07;
 
 	// both Omega values correspond to X[5]
@@ -33,12 +33,12 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 		0, 0, 0, 100, 0, 0,		// 100 cm/s uncertainty
 		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
 		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
-	Q << 0.0001, 0, 0, 0, 0, 0, // 1 cm
-		0, 0.0001, 0, 0, 0, 0,	// 1 cm
+	Q << 1e-5, 0, 0, 0, 0, 0, // 1 cm
+		0, 1e-5, 0, 0, 0, 0,	// 1 cm
 		0, 0, 100, 0, 0, 0, 0,	// 100 cm/s
 		0, 0, 0, 100, 0, 0,		// 100 cm/s
-		0, 0, 0, 0, 0.007, 0,	// 5 degrees/s
-		0, 0, 0, 0, 0, 0.007;	// 5 degrees/s
+		0, 0, 0, 0, 1e-4, 0,	// - this is the size of the noise added each step
+		0, 0, 0, 0, 0, 0.0015;
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)
@@ -71,8 +71,13 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	// gathering new data
 	Z << measurementState.velocity, measurementState.acceleration, measurementState.omega_encoder, measurementState.omega_gyro;
 
+	// saving the innovation for troubleshooting and tuning of the EKF
+	Vector<double, 4> innovation = Z - (H * Xp); 
+	Vector<double, 4> normalized_innovation; //used for plotting/tuning filter. This compares the actual residual and the expected residual (expected comes from what Pp and R currently are)
+	normalized_innovation[0] = innovation[0] / std::sqrt(Pp(3,3) + R(0,0)); //encoder
+	normalized_innovation[1] = innovation[1] / std::sqrt(Pp(3,3) + R(1,1)); //gyro
+
 	// computing the new X matrix
-	Vector<double, 4> innovation = Z - (H * Xp); // saving the innovation for troubleshooting and tuning of the EKF
 	X = Xp + (K * innovation);
 
 	// making sure theta is between 0 and 2π
@@ -86,11 +91,11 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	// INCORRECT PRINTS DUE TO CHANGED MATRIX ARCHITECTURES
-	// Logger::getInstance().log(true, "%6.1f- rE: %-7.4f rG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
-	// 						  millis() / 1000.0, Z[0], Z[1], X[0], X[1], X[2], X[3]);
-	// Logger::getInstance().log(true, "%6.1f- Px: %-7.4f Py: %-7.4f Po: %-7.4f Pw: %-7.4f",
-	//   millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3));
+	//NEED UPDATING DUE TO NEW MATRIX DIMENSIONS
+	Logger::getInstance().log(true, "%6.1f- nrE: %-7.4f nrG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
+							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], X[0], X[1], X[2], X[3]);
+	Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Po: %.3e Pw: %.3e",
+						 	  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3));
 }
 
 Vector<double, 6> KalmanFilter::getState()

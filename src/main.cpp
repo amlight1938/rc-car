@@ -209,8 +209,8 @@ void controlTask(void *params)
 			pose = getPose();
 
 			// logging data for troubleshooting
-			logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
-					   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			// logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
 			// 		   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
@@ -309,7 +309,7 @@ void controlTask(void *params)
 				digitalWrite(STBY_PIN, stbyState);
 
 				// calibrating the IMUs Accelerometer and Gyroscope
-				imu.calibrateImuAccelGyroBias();
+				imu.calibrateImuAccelGyroBias(CAL_LED_PIN);
 
 				// returning to DISARMED after calibration is complete
 				currentState = DISARMED;

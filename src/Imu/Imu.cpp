@@ -85,8 +85,11 @@ void Imu::calibrateImuMag(uint8_t ledPin)
 	digitalWrite(ledPin, LOW);
 }
 
-void Imu::calibrateImuAccelGyroBias()
+void Imu::calibrateImuAccelGyroBias(uint8_t ledPin)
 {
+	// setting the bluetooth LED HIGH to indicate the Mag calibration has started
+	digitalWrite(ledPin, HIGH);
+
 	// logging the start of the Accelerometer and Gyroscope Bias calibration
 	logger.log("[%.1f]-Accel Gyro Bias calibration starts in 3sec", millis() / 1000.0);
 	logger.log("[%.1f]-Leave device still on flat plane", millis() / 1000.0);
@@ -130,4 +133,7 @@ void Imu::calibrateImuAccelGyroBias()
 
 	// logging the completion of the Accelerometer and Gyroscope calibration
 	logger.log("[%.1f]-Accel Gyro Bias Calibration Complete", millis() / 1000.0);
+
+	// setting the bluetooth LED LOW to indicate the Mag calibration has ended
+	digitalWrite(ledPin, LOW);
 }
