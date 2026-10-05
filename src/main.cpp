@@ -63,19 +63,20 @@ void controlTask(void *params)
 	CarMotionState motion;
 	MeasurementState measurementState;
 	KalmanFilter ekf;
-	Vector<double, 4> pose;
+	Vector<double, 6> pose;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
 
 	// setting up the lambda function for getting the pose
 	// this is expected to be used multiple times in the switch-case
-	auto getPose = [&]() -> Vector<double, 4>
+	auto getPose = [&]() -> Vector<double, 6>
 	{
 		imuReading = imu.getImuReading();
 		motion = car.getCarMotionState();
 		measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
 		measurementState.velocity = motion.forwardVelocity;
+		measurementState.acceleration = imuReading.accX;
 		measurementState.omega_encoder = motion.turnRate;
 		measurementState.omega_gyro = imuReading.gyroZ;
 		ekf.iterate(measurementState);
@@ -208,8 +209,8 @@ void controlTask(void *params)
 			pose = getPose();
 
 			// logging data for troubleshooting
-			logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
-					   pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+			logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+					   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			// logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
 			// 		   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
