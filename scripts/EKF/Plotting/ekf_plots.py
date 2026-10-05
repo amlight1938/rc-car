@@ -33,7 +33,7 @@ def process_file(filepath: Path):
 
 
 	#put data into pandas dataframe to be plotted
-	FIELDS = ["nrE", "nrG", "x", "y", "o", "w", "Px", "Py", "Po", "Pw"]
+	FIELDS = ["nrV", "nrA", "nrE", "nrG", "x", "y", "v", "a", "o", "w", "Px", "Py", "Pv", "Pa", "Po", "Pw"]
 	df = pd.DataFrame.from_dict(data, orient="index")   # rows = timestamps, columns = fields
 	df.index = df.index.astype(float)                   # "84.2" -> 84.2
 	df = df.sort_index().reindex(columns=FIELDS)        # sorts rows by timestamp
@@ -63,7 +63,7 @@ def process_file(filepath: Path):
 
 	#Heading
 	ax_heading = axes_dict["Heading"]
-	ax_heading.plot(df.index, df["o"], label="theta")
+	ax_heading.plot(df.index, df["o"], label="θ")
 	ax_heading.fill_between(df.index, df["o"] - 3*sigma_theta, df["o"] + 3*sigma_theta, alpha=.1, label = "±3σ")
 	ax_heading.set_ylabel("Heading (rad)")
 	ax_heading.legend(loc="upper left")
@@ -79,8 +79,10 @@ def process_file(filepath: Path):
 	# Residual
 	fig_2, ax_residual = plt.subplots(figsize=(8, 5))
 	fig_2.suptitle(PLOT_GROUP_NAME + " Normalized Residual")
-	ax_residual.scatter(df.index, df["nrE"], label="Encoder")
-	ax_residual.scatter(df.index, df["nrG"], label="Gyro")
+	ax_residual.scatter(df.index, df["nrV"], label="Velocity")
+	ax_residual.scatter(df.index, df["nrA"], label="Acceleration")
+	ax_residual.scatter(df.index, df["nrE"], label="ω Encoder")
+	ax_residual.scatter(df.index, df["nrG"], label="ω Gyro")
 	ax_residual.set_ylabel("Residual / Predicted Residual")
 	ax_residual.set_xlabel("Time (s)")
 	ax_residual.legend(loc="upper right")
@@ -95,8 +97,8 @@ def process_file(filepath: Path):
 	ax_pxy.legend()
 
 	ax_po = axes_dict_2["Po"]
-	ax_po.plot(df.index, df["Po"], label = "$σ_{theta}^2$")
-	ax_po.set_ylabel("$σ_{theta}^2 (rad^2)$")
+	ax_po.plot(df.index, df["Po"], label = "$σ_{θ}^2$")
+	ax_po.set_ylabel("$σ_{θ}^2 (rad^2)$")
 	ax_po.legend()
 
 	ax_pw = axes_dict_2["Pw"]

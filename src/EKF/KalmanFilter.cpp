@@ -8,10 +8,10 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	// initializing the R matrix
 	// uncertainties are small due to radians being a small unit
 	// values were derived from variances_calculation.py using stationary and relative movement data
-	R << 100, 0, 0, 0,
-		0, 100, 0, 0,
-		0, 0, 0.0337665, 0,   // Tuned for gradual movements (see Encoder.h for other R values)
-		0, 0, 0, 8.035852e-07;
+	R << 0.0025, 0, 0, 0,	   // educated guess
+		0, 2.81e-4, 0, 0,	   // based on variance_calulation.py
+		0, 0, 0.0337665, 0,	   // Tuned for gradual movements (see Encoder.h for other R values)
+		0, 0, 0, 8.035852e-07; // based on variance_calulation.py
 
 	// both Omega values correspond to X[5]
 	H << 0, 0, 1, 0, 0, 0,
@@ -23,22 +23,28 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	dt = 0.01; // seconds
 
 	// initializing the Aj matrix
-	updateAj();
+	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
+		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
+		0, 0, 1, dt, 0, 0,
+		0, 0, 0, 1, 0, 0,
+		0, 0, 0, 0, 1, dt,
+		0, 0, 0, 0, 0, 1;
 
 	// initializing the P and Q matrices
 	// starting car at origin allow the x and y uncertainty to be very small
 	P << 0.0001, 0, 0, 0, 0, 0, // 1 cm uncertainty
 		0, 0.0001, 0, 0, 0, 0,	// 1 cm uncertainty
-		0, 0, 100, 0, 0, 0, 0,	// 100 cm/s uncertainty
-		0, 0, 0, 100, 0, 0,		// 100 cm/s uncertainty
+		0, 0, 0.0001, 0, 0, 0,	// 1 cm/s uncertainty
+		0, 0, 0, 0.0001, 0, 0,	// 1 cm/s^2 uncertainty
 		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
 		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
-	Q << 1e-5, 0, 0, 0, 0, 0, // 1 cm
-		0, 1e-5, 0, 0, 0, 0,	// 1 cm
-		0, 0, 100, 0, 0, 0, 0,	// 100 cm/s
-		0, 0, 0, 100, 0, 0,		// 100 cm/s
-		0, 0, 0, 0, 1e-4, 0,	// - this is the size of the noise added each step
-		0, 0, 0, 0, 0, 0.0015;
+
+	Q << 1e-5, 0, 0, 0, 0, 0,  // 1 cm
+		0, 1e-5, 0, 0, 0, 0,   // 1 cm
+		0, 0, 1e-4, 0, 0, 0,   // educated guess
+		0, 0, 0, 1e-2, 0, 0,   // educated guess
+		0, 0, 0, 0, 1e-4, 0,   // educated guess on normalized innovation plots
+		0, 0, 0, 0, 0, 0.0015; // educated guess on normalized innovation plots
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)
@@ -72,10 +78,12 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	Z << measurementState.velocity, measurementState.acceleration, measurementState.omega_encoder, measurementState.omega_gyro;
 
 	// saving the innovation for troubleshooting and tuning of the EKF
-	Vector<double, 4> innovation = Z - (H * Xp); 
-	Vector<double, 4> normalized_innovation; //used for plotting/tuning filter. This compares the actual residual and the expected residual (expected comes from what Pp and R currently are)
-	normalized_innovation[0] = innovation[0] / std::sqrt(Pp(3,3) + R(0,0)); //encoder
-	normalized_innovation[1] = innovation[1] / std::sqrt(Pp(3,3) + R(1,1)); //gyro
+	Vector<double, 4> innovation = Z - (H * Xp);
+	Vector<double, 4> normalized_innovation;								  // used for plotting/tuning filter. This compares the actual residual and the expected residual (expected comes from what Pp and R currently are)
+	normalized_innovation[0] = innovation[0] / std::sqrt(Pp(2, 2) + R(0, 0)); // velocity
+	normalized_innovation[1] = innovation[1] / std::sqrt(Pp(3, 3) + R(1, 1)); // acceleration
+	normalized_innovation[2] = innovation[2] / std::sqrt(Pp(5, 5) + R(2, 2)); // omega_encoder
+	normalized_innovation[3] = innovation[3] / std::sqrt(Pp(5, 5) + R(3, 3)); // omega_gyro
 
 	// computing the new X matrix
 	X = Xp + (K * innovation);
@@ -91,11 +99,12 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	//NEED UPDATING DUE TO NEW MATRIX DIMENSIONS
-	Logger::getInstance().log(true, "%6.1f- nrE: %-7.4f nrG: %-7.4f x: %-7.4f y: %-7.4f o: %-7.4f w: %-7.4f",
-							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], X[0], X[1], X[2], X[3]);
-	Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Po: %.3e Pw: %.3e",
-						 	  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3));
+	Logger::getInstance().log(true, "%6.1f- nrV: %-7.4f nrA: %-7.4f nrE: %-7.4f nrG: %-7.4f",
+							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3]);
+	Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
+							  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
+	// Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
+	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }
 
 Vector<double, 6> KalmanFilter::getState()
@@ -105,10 +114,12 @@ Vector<double, 6> KalmanFilter::getState()
 
 void KalmanFilter::updateAj()
 {
-	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
-		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
-		0, 0, 1, dt, 0, 0,
-		0, 0, 0, 1, 0, 0,
-		0, 0, 0, 0, 1, dt,
-		0, 0, 0, 0, 0, 1;
+	Aj(0, 2) = dt * cos(X[4]);
+	Aj(0, 3) = (dt * dt / 2) * cos(X[4]);
+	Aj(0, 4) = (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4]));
+	Aj(1, 2) = dt * sin(X[4]);
+	Aj(1, 3) = (dt * dt / 2) * sin(X[4]);
+	Aj(1, 4) = (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4]));
+	Aj(2, 3) = dt;
+	Aj(4, 5) = dt;
 }
