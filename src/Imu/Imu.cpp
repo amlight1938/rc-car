@@ -121,7 +121,7 @@ void Imu::calibrateImuAccelGyroBias()
 			break;
 		}
 
-		delay(10);
+		delay(5);
 	}
 
 	// averaging the accel and gyro readings
