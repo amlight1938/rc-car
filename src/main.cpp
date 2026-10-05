@@ -98,17 +98,6 @@ void controlTask(void *params)
 		switch (currentState)
 		{
 		case PAIRING:
-			// logging the current state while waiting to pair to a controller
-			logger.log(true, "[%.1f]-current state: PAIRING", millis() / 1000.0);
-
-			// leaving the pairing state when a controller connects
-			if (controllerState.connected)
-			{
-				lastState = currentState;
-				currentState = DISARMED;
-				break;
-			}
-
 			// stopping the motors if the controller disconnects
 			if (lastState != PAIRING)
 			{
@@ -117,6 +106,16 @@ void controlTask(void *params)
 				digitalWrite(STBY_PIN, stbyState);
 				car.stop();
 			}
+
+			// leaving the pairing state when a controller connects
+			if (controllerState.connected)
+			{
+				currentState = DISARMED;
+				break;
+			}
+
+			// logging the current state while waiting to pair to a controller
+			logger.log(true, "[%.1f]-current state: PAIRING", millis() / 1000.0);
 
 			// causing the bluetooth LED to blink while searching for a controller
 			// blinking will occur at a frequency based on pairingBlinkDuration
@@ -130,9 +129,6 @@ void controlTask(void *params)
 			break;
 
 		case DISARMED:
-			// logging the current state while waiting in the disarmed state
-			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
-
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
@@ -147,7 +143,6 @@ void controlTask(void *params)
 			// switching to MANUAL based on controller inputs
 			if (controllerState.leftBumper)
 			{
-				lastState = currentState;
 				currentState = MANUAL; // always go straight to manual once stby button is toggled on
 				break;
 			}
@@ -155,7 +150,6 @@ void controlTask(void *params)
 			// switching to IMU_CALIBRATION based on controller inputs
 			if (controllerState.dpadDown && controllerState.buttonA)
 			{
-				lastState = currentState;
 				currentState = IMU_CALIBRATION;
 				break;
 			}
@@ -163,10 +157,12 @@ void controlTask(void *params)
 			// switching to BIAS_CALIBRATION based on controller inputs
 			if (controllerState.dpadUp && controllerState.buttonA)
 			{
-				lastState = currentState;
 				currentState = BIAS_CALIBRATION;
 				break;
 			}
+
+			// logging the current state while waiting in the disarmed state
+			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
 
 			break;
 
@@ -188,7 +184,6 @@ void controlTask(void *params)
 			// switching to DISARMED based on controller inputs
 			if (controllerState.leftBumper)
 			{
-				lastState = currentState;
 				currentState = DISARMED;
 				break;
 			}
@@ -196,7 +191,6 @@ void controlTask(void *params)
 			// switching to AUTONOMOUS based on controller inputs
 			if (controllerState.buttonY)
 			{
-				lastState = currentState;
 				currentState = AUTONOMOUS;
 				break;
 			}
@@ -214,11 +208,11 @@ void controlTask(void *params)
 			pose = getPose();
 
 			// logging data for troubleshooting
-			//  logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
-			//  	pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
+			logger.log(true, "x: %-7.3f y: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+					   pose[0], pose[1], pose[2], pose[3], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
-					   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
+			// logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
+			// 		   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
 
 			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
 			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
@@ -237,19 +231,9 @@ void controlTask(void *params)
 				car.stop();
 			}
 
-			// causing the bluetooth LED to blink quickly while in AUTONOMOUS mode
-			// blinking will occur at a frequency based on autonomousBlinkDuration
-			if (currentTime - lastBlinkSwitch > autonomousBlinkDuration)
-			{
-				lastBlinkSwitch = currentTime;
-				digitalWrite(BT_LED_PIN, btLedState);
-				btLedState = !btLedState;
-			}
-
 			// switching to DISARMED based on controller inputs
 			if (controllerState.leftBumper)
 			{
-				lastState = currentState;
 				currentState = DISARMED;
 				break;
 			}
@@ -257,9 +241,17 @@ void controlTask(void *params)
 			// switching to MANUAL based on controller inputs
 			if (controllerState.buttonY)
 			{
-				lastState = currentState;
 				currentState = MANUAL;
 				break;
+			}
+
+			// causing the bluetooth LED to blink quickly while in AUTONOMOUS mode
+			// blinking will occur at a frequency based on autonomousBlinkDuration
+			if (currentTime - lastBlinkSwitch > autonomousBlinkDuration)
+			{
+				lastBlinkSwitch = currentTime;
+				digitalWrite(BT_LED_PIN, btLedState);
+				btLedState = !btLedState;
 			}
 
 			// future autonomous capabilities go here
@@ -270,58 +262,58 @@ void controlTask(void *params)
 			break;
 
 		case IMU_CALIBRATION:
-			// logging the current state while waiting performing the imu calibration
-			logger.log(true, "[%.1f]-current state: IMU_CALIBRATION", millis() / 1000.0);
-
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != IMU_CALIBRATION)
 			{
 				lastState = IMU_CALIBRATION;
 				car.stop();
+
+				// logging the current state while waiting performing the imu calibration
+				logger.log(true, "[%.1f]-current state: IMU_CALIBRATION", millis() / 1000.0);
+
+				// turning the bluetooth LED and Standby off when calbrating
+				btLedState = LOW;
+				digitalWrite(BT_LED_PIN, btLedState);
+				stbyState = LOW;
+				digitalWrite(STBY_PIN, stbyState);
+
+				// calibrating the IMUs Accelerometer and Gyroscope
+				imu.calibrateImuAccelGyro();
+
+				// calibrating the IMUs Magnetometer
+				imu.calibrateImuMag(CAL_LED_PIN);
+
+				// returning to DISARMED after calibration is complete
+				currentState = DISARMED;
 			}
 
-			// turning the bluetooth LED and Standby off when calbrating
-			btLedState = LOW;
-			digitalWrite(BT_LED_PIN, btLedState);
-			stbyState = LOW;
-			digitalWrite(STBY_PIN, stbyState);
-
-			// calibrating the IMUs Accelerometer and Gyroscope
-			imu.calibrateImuAccelGyro();
-
-			// calibrating the IMUs Magnetometer
-			imu.calibrateImuMag(CAL_LED_PIN);
-
-			// returning to DISARMED after calibration is complete
-			lastState = currentState;
-			currentState = DISARMED;
 			break;
 
 		case BIAS_CALIBRATION:
-			// logging the current state while waiting performing the gyro calibration
-			logger.log(true, "[%.1f]-current state: BIAS_CALIBRATION", millis() / 1000.0);
-
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != BIAS_CALIBRATION)
 			{
 				lastState = BIAS_CALIBRATION;
 				car.stop();
+
+				// logging the current state while waiting performing the bias calibration
+				logger.log(true, "[%.1f]-current state: BIAS_CALIBRATION", millis() / 1000.0);
+
+				// turning the bluetooth LED and Standby off when calbrating
+				btLedState = LOW;
+				digitalWrite(BT_LED_PIN, btLedState);
+				stbyState = LOW;
+				digitalWrite(STBY_PIN, stbyState);
+
+				// calibrating the IMUs Accelerometer and Gyroscope
+				imu.calibrateImuAccelGyroBias();
+
+				// returning to DISARMED after calibration is complete
+				currentState = DISARMED;
 			}
 
-			// turning the bluetooth LED and Standby off when calbrating
-			btLedState = LOW;
-			digitalWrite(BT_LED_PIN, btLedState);
-			stbyState = LOW;
-			digitalWrite(STBY_PIN, stbyState);
-
-			// calibrating the IMUs Accelerometer and Gyroscope
-			imu.calibrateImuAccelGyroBias();
-
-			// returning to DISARMED after calibration is complete
-			lastState = currentState;
-			currentState = DISARMED;
 			break;
 		}
 
