@@ -308,7 +308,7 @@ void controlTask(void *params)
 				digitalWrite(STBY_PIN, stbyState);
 
 				// calibrating the IMUs Accelerometer and Gyroscope
-				imu.calibrateImuAccelGyroBias();
+				imu.calibrateImuAccelGyroBias(CAL_LED_PIN);
 
 				// returning to DISARMED after calibration is complete
 				currentState = DISARMED;

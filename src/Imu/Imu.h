@@ -20,7 +20,7 @@ public:
 
 	void calibrateImuMag(uint8_t ledPin);
 
-	void calibrateImuAccelGyroBias();
+	void calibrateImuAccelGyroBias(uint8_t ledPin);
 
 	ImuReading getImuReading();
 

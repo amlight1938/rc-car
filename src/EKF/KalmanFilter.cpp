@@ -70,8 +70,8 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	Z << measurementState.omega_encoder, measurementState.omega_gyro;
 
 	// saving the innovation for troubleshooting and tuning of the EKF
-	Vector2d innovation = Z - (H * Xp); 
-	Vector2d normalized_innovation; //used for plotting/tuning filter. This compares the actual residual and the expected residual (expected comes from what Pp and R currently are)
+	Vector<double,2> innovation = Z - (H * Xp); 
+	Vector<double,2> normalized_innovation; //used for plotting/tuning filter. This compares the actual residual and the expected residual (expected comes from what Pp and R currently are)
 	normalized_innovation[0] = innovation[0] / std::sqrt(Pp(3,3) + R(0,0)); //encoder
 	normalized_innovation[1] = innovation[1] / std::sqrt(Pp(3,3) + R(1,1)); //gyro
 
