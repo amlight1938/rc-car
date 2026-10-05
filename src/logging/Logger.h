@@ -25,7 +25,7 @@ private:
 
 	// Queue items
 	static const uint16_t QUEUE_LENGTH = 500;						   // the total number of items that can be on the queue at once. New logs are dropped if queue is full
-	static const uint8_t QUEUE_ITEM_SIZE = 100;						   // the max item size of each message in bytes
+	static const uint8_t QUEUE_ITEM_SIZE = 75;						   // the max item size of each message in bytes
 	static uint8_t ucQueueStorageArea[QUEUE_LENGTH * QUEUE_ITEM_SIZE]; // the actual space in memeory for the queue to keep its item, passed into the xQueueCreateStatic function
 	static StaticQueue_t xStaticQueue;								   // how the queue tracks its state, used internally by FreeRTOS and passed into the xQueueCreateStatic function
 	static QueueHandle_t logQueue;									   // the actual queue that we can use push and pop log messages to and from

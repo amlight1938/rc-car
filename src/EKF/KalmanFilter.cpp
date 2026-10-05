@@ -42,7 +42,7 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	Q << 1e-5, 0, 0, 0, 0, 0,  // 1 cm
 		0, 1e-5, 0, 0, 0, 0,   // 1 cm
 		0, 0, 1e-4, 0, 0, 0,   // educated guess
-		0, 0, 0, 1e-2, 0, 0,   // educated guess
+		0, 0, 0, 1e-1, 0, 0,   // educated guess
 		0, 0, 0, 0, 1e-4, 0,   // educated guess on normalized innovation plots
 		0, 0, 0, 0, 0, 0.0015; // educated guess on normalized innovation plots
 }
