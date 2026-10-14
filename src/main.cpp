@@ -7,6 +7,7 @@
 #include "Imu/Imu.h"
 #include "Logging/Logger.h"
 #include "Motor/Motor.h"
+#include "PID/PID.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -63,14 +64,14 @@ void controlTask(void *params)
 	CarMotionState motion;
 	MeasurementState measurementState;
 	KalmanFilter ekf;
-	Vector<double, 6> pose;
+	Vector<double, 7> pose;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
 
 	// setting up the lambda function for getting the pose
 	// this is expected to be used multiple times in the switch-case
-	auto getPose = [&]() -> Vector<double, 6>
+	auto getPose = [&]() -> Vector<double, 7>
 	{
 		imuReading = imu.getImuReading();
 		motion = car.getCarMotionState();
@@ -212,7 +213,6 @@ void controlTask(void *params)
 			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
-
 			break;
 
 		case AUTONOMOUS:
@@ -250,6 +250,24 @@ void controlTask(void *params)
 
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
+
+			static bool velControl = false;
+			static PID pid;
+
+			// turning on the velocity PID control based on controller inputs
+			if (controllerState.buttonA)
+			{
+				velControl = !velControl;
+			}
+			if (velControl)
+			{
+				double velInput = pid.calculateInput(pose[2], pose[6]);
+				car.control(velInput, 0);
+			}
+			else
+			{
+				car.stop();
+			}
 
 			break;
 
