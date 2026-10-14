@@ -36,5 +36,8 @@ private:
 
 	void updateAj();
 
+	bool validateMeasurementState(const MeasurementState& state);
+
+	double dtOffset = 0;
 	double dt;
 };

@@ -33,11 +33,11 @@ def process_file(filepath: Path):
 
 
 	#put data into pandas dataframe to be plotted
-	USE_P_MATRIX = False
+	USE_P_MATRIX = True
 	if USE_P_MATRIX:
-		FIELDS = ["nrV", "nrA", "nrE", "nrG", "x", "y", "v", "a", "o", "w", "Px", "Py", "Pv", "Pa", "Po", "Pw"]  
+		FIELDS = ["nV", "nA", "nE", "nG", "x", "y", "v", "a", "o", "w", "Px", "Py", "Pv", "Pa", "Po", "Pw"]  
 	else :
-		FIELDS = ["nrV", "nrA", "nrE", "nrG", "x", "y", "v", "a", "o", "w"]
+		FIELDS = ["nV", "nA", "nE", "nG", "x", "y", "v", "a", "o", "w"]
 	df = pd.DataFrame.from_dict(data, orient="index")   # rows = timestamps, columns = fields
 	df.index = df.index.astype(float)                   # "84.2" -> 84.2
 	df = df.sort_index().reindex(columns=FIELDS)        # sorts rows by timestamp
@@ -69,7 +69,7 @@ def process_file(filepath: Path):
 		figsize=(14, 10),
 	)
 	fig_1.suptitle(PLOT_GROUP_NAME + " States")
-	fig_1.tight_layout()
+	# fig_1.tight_layout()
 
 	#Position plot
 	ax_position = axes_dict["Position"]
@@ -117,7 +117,7 @@ def process_file(filepath: Path):
 	# Residual
 	ax_residual = axes_dict["Residual"]
 	LIM = 6
-	cols = {"Velocity":"nrV", "Acceleration":"nrA", "ω Encoder":"nrE", "ω Gyro":"nrG"}
+	cols = {"Velocity":"nV", "Acceleration":"nA", "ω Encoder":"nE", "ω Gyro":"nG"}
 	for label, col in cols.items():
 		r = df[col]
 		pts = ax_residual.scatter(df.index, r.clip(-LIM, LIM), s=10, label=label)
@@ -157,14 +157,24 @@ def process_file(filepath: Path):
 	
 	#P matrix 
 	if USE_P_MATRIX: 
-		fig_3, axes_dict_2 = plt.subplot_mosaic([["Pxy"],["Po"], ["Pw"]], sharex=True)
+		fig_3, axes_dict_2 = plt.subplot_mosaic([["Pxy"], ["Pv"], ["Pa"], ["Po"], ["Pw"]], sharex=True)
 		fig_3.suptitle(PLOT_GROUP_NAME + " P Matrix Diagonals")
 		ax_pxy = axes_dict_2["Pxy"]
 		ax_pxy.plot(df.index, df["Px"], label = "$σ_x^2$")
 		ax_pxy.plot(df.index, df["Py"], label = "$σ_y^2$")
-		ax_pxy.set_ylabel("σ ($m^2$)")
+		ax_pxy.set_ylabel("$σ^2$ ($m^2$)")
 		ax_pxy.legend(loc="upper right")
 
+		ax_pv = axes_dict_2["Pv"]
+		ax_pv.plot(df.index, df["Pv"], label = "$σ_v^2$")
+		ax_pv.set_ylabel("$σ_v^2 (m/s)^2$")
+		ax_pv.legend(loc="upper right")
+
+		ax_pa = axes_dict_2["Pa"]
+		ax_pa.plot(df.index, df["Pa"], label = "$σ_a^2$")
+		ax_pa.set_ylabel("$σ_a^2 (m/s^2)^2$")
+		ax_pa.legend(loc="upper right")
+		
 		ax_po = axes_dict_2["Po"]
 		ax_po.plot(df.index, df["Po"], label = "$σ_{θ}^2$")
 		ax_po.set_ylabel("$σ_{θ}^2 (rad^2)$")

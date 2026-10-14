@@ -8,10 +8,10 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	// initializing the R matrix
 	// uncertainties are small due to radians being a small unit
 	// values were derived from variances_calculation.py using stationary and relative movement data
-	R << 0.0025, 0, 0, 0,	   // educated guess
-		0, 2.81e-4, 0, 0,	   // based on variance_calulation.py
-		0, 0, 0.0337665, 0,	   // Tuned for gradual movements (see Encoder.h for other R values)
-		0, 0, 0, 8.035852e-07; // based on variance_calulation.py
+	R << 0.5e-5, 0, 0, 0,	   // v, educated guess
+		0, 2.81e-4, 0, 0,	   // a, based on variance_calulation.py
+		0, 0, 0.0337, 0,		   // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
+		0, 0, 0, 8.035852e-07; // w_gyro, based on variance_calulation.py
 
 	// both Omega values correspond to X[5]
 	H << 0, 0, 1, 0, 0, 0,
@@ -39,22 +39,29 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
 		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
 
-	Q << 1e-5, 0, 0, 0, 0, 0,  // 1 cm
-		0, 1e-5, 0, 0, 0, 0,   // 1 cm
-		0, 0, 1e-4, 0, 0, 0,   // educated guess
-		0, 0, 0, 1e-1, 0, 0,   // educated guess
-		0, 0, 0, 0, 1e-4, 0,   // educated guess on normalized innovation plots
-		0, 0, 0, 0, 0, 0.0015; // educated guess on normalized innovation plots
+	Q << 1e-5, 0, 0, 0, 0, 0,  // x, 1 cm
+		0, 1e-5, 0, 0, 0, 0,   // y, 1 cm
+		0, 0, 1e-5, 0, 0, 0,   // v, educated guess
+		0, 0, 0, 1e-1, 0, 0,   // a, educated guess
+		0, 0, 0, 0, 1e-4, 0,   // theta, educated guess on normalized innovation plots
+		0, 0, 0, 0, 0, 0.0015; // omega, educated guess on normalized innovation plots
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)
 {
+	if (!validateMeasurementState(measurementState))
+	{
+		dtOffset += measurementState.timeSinceLastMeasurement;
+		return;
+	}
+
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
 	Matrix<double, 6, 6> Pp;
 	Matrix<double, 6, 4> K;
 
-	dt = measurementState.timeSinceLastMeasurement; // seconds
+	dt = measurementState.timeSinceLastMeasurement + dtOffset; // seconds
+	dtOffset = 0.0;
 
 	// computing the Xp matrix
 	// Xp = f(Xprev) using previous state value of v
@@ -99,8 +106,8 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	Logger::getInstance().log(true, "%6.1f- nrV: %-7.4f nrA: %-7.4f nrE: %-7.4f nrG: %-7.4f",
-							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3]);
+	Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
+							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 	Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
 							  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
 	// Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
@@ -122,4 +129,12 @@ void KalmanFilter::updateAj()
 	Aj(1, 4) = (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4]));
 	Aj(2, 3) = dt;
 	Aj(4, 5) = dt;
+}
+
+bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
+{
+	return std::abs(state.velocity) < 1.0 &&
+		   std::abs(state.acceleration) < 7.0 &&
+		   std::abs(state.omega_encoder) < 10.0 &&
+		   std::abs(state.omega_gyro) < 6.0;
 }

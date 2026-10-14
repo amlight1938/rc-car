@@ -208,6 +208,9 @@ void controlTask(void *params)
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
+			// logger.log(true, "v: %-7.3f a: %-7.3f we: %-7.3f wg: %-7.3f",
+			// 				measurementState.velocity, measurementState.acceleration, measurementState.omega_encoder, measurementState.omega_gyro);
+
 			// logging data for troubleshooting
 			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
