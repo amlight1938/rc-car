@@ -12,30 +12,32 @@ class KalmanFilter
 {
 public:
 	// creating a constructor with default arguments
-	KalmanFilter(double xStartPos = 0, double yStartPos = 0, double startAngle = 0, double startRotationRate = 0);
+	KalmanFilter(double xStartPos = 0, double yStartPos = 0, double startVel = 0, double startAccel = 0, double startAngle = 0, double startRotationRate = 0);
 
 	void iterate(const MeasurementState &measurementState);
 
-	Vector<double, 4> getState();
+	Vector<double, 6> getState();
 
 private:
-	// creating the 4-dim X vector and 2-dim Z vector
-	Vector<double, 2> Z;
-	Vector<double, 4> X;
+	// creating the 6-dim X vector and 4-dim Z vector
+	Vector<double, 4> Z;
+	Vector<double, 6> X;
 
-	// creating the 2x2 R matrix and 2x4 H matrix
-	Matrix<double, 2, 2> R;
-	Matrix<double, 2, 4> H;
+	// creating the 4x4 R matrix and 2x4 H matrix
+	Matrix<double, 4, 4> R;
+	Matrix<double, 4, 6> H;
 
 	// creating the Aj matrix, the jacobian of f(X)
-	Matrix<double, 4, 4> Aj;
+	Matrix<double, 6, 6> Aj;
 
 	// creating the P and Q matrices
-	Matrix<double, 4, 4> P;
-	Matrix<double, 4, 4> Q;
+	Matrix<double, 6, 6> P;
+	Matrix<double, 6, 6> Q;
 
 	void updateAj();
 
-	double v;
+	bool validateMeasurementState(const MeasurementState& state);
+
+	double dtOffset = 0;
 	double dt;
 };
