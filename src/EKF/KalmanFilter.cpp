@@ -106,10 +106,10 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
-							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
-	Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
-							  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
+	// Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
+	// 						  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
+	// Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
+	// 						  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
 	// Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
 	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }

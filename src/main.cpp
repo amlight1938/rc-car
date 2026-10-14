@@ -208,22 +208,10 @@ void controlTask(void *params)
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
-			// logger.log(true, "v: %-7.3f a: %-7.3f we: %-7.3f wg: %-7.3f",
-			// 				measurementState.velocity, measurementState.acceleration, measurementState.omega_encoder, measurementState.omega_gyro);
-
 			// logging data for troubleshooting
 			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			// logger.log(true, "Ax: %-7.3f Ay: %-7.3f Az: %-7.3f Gz: %-7.3f",
-			// 		   imuReading.accX, imuReading.accY, imuReading.accZ, imuReading.gyroZ);
-
-			// logger.log(true, "[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.2f",
-			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
-
-			// Serial.printf("[%6.1f] - V: %-7.2f LW: %-7.2f RW: %-7.2f w: %-7.2f GZ: %-7.4f",
-			// 	millis() / 1000.0, motion.forwardVelocity, motion.leftWheelVelocity, motion.rightWheelVelocity, motion.turnRate, imuReading.gyroZ);
-			// Serial.println();
 
 			break;
 
