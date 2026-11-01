@@ -16,7 +16,7 @@ public:
 
 	void iterate(const MeasurementState &measurementState);
 
-	Vector<double, 6> getState();
+	Vector<double, 7> getState();
 
 private:
 	// creating the 6-dim X vector and 4-dim Z vector

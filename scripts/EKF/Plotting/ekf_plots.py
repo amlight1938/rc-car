@@ -20,7 +20,7 @@ def main():
 
 def process_file(filepath: Path):
 	#collect data from file
-	LINE_RE = re.compile(r"received message:\s*(?P<ts>\d+(?:\.\d+)?)-\s*(?P<payload>.*)")
+	LINE_RE = re.compile(r"received message:\s*\[?(?P<ts>\d+(?:\.\d+)?)\]?-\s*(?P<payload>.*)")
 	PAIR_RE = re.compile(r"(\w+):\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
 	data = defaultdict(dict)
 	with open(filepath, "r") as f:
