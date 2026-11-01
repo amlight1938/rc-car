@@ -10,7 +10,7 @@ KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, 
 	// values were derived from variances_calculation.py using stationary and relative movement data
 	R << 0.5e-5, 0, 0, 0,	   // v, educated guess
 		0, 2.81e-4, 0, 0,	   // a, based on variance_calulation.py
-		0, 0, 0.0337, 0,		   // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
+		0, 0, 0.0337, 0,	   // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
 		0, 0, 0, 8.035852e-07; // w_gyro, based on variance_calulation.py
 
 	// both Omega values correspond to X[5]
@@ -117,8 +117,14 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 Vector<double, 7> KalmanFilter::getState()
 {
 	Vector<double, 7> fullState;
-	fullState << X;
-	fullState[6] = dt;
+	fullState << X, dt;
+	// fullState[0] = X[0];
+	// fullState[1] = X[1];
+	// fullState[2] = X[2];
+	// fullState[3] = X[3];
+	// fullState[4] = X[4];
+	// fullState[5] = X[5];
+	// fullState[6] = dt;
 	return fullState;
 }
 

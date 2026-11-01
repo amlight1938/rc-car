@@ -65,6 +65,7 @@ void controlTask(void *params)
 	MeasurementState measurementState;
 	KalmanFilter ekf;
 	Vector<double, 7> pose;
+	PID pid;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
@@ -216,11 +217,17 @@ void controlTask(void *params)
 			break;
 
 		case AUTONOMOUS:
+			static bool velControl = false;
+
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
 			{
 				lastState = AUTONOMOUS;
 				car.stop();
+
+				// restarting the PID without having to restart car
+				pid.reset();
+				velControl = false;
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -251,8 +258,6 @@ void controlTask(void *params)
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
-			static bool velControl = false;
-			static PID pid;
 
 			// turning on the velocity PID control based on controller inputs
 			if (controllerState.buttonA)
@@ -263,6 +268,8 @@ void controlTask(void *params)
 			{
 				double velInput = pid.calculateInput(pose[2], pose[6]);
 				car.control(velInput, 0);
+				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
+				logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f" , millis() / 1000.0, velInput, pose[2]);
 			}
 			else
 			{
