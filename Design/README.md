@@ -2,13 +2,23 @@
 
 ## Car Controls
 
-| Input | Behavior |
-|------:|:---------|
-| Left Stick | Drives Wheels Equally Forward/Backward |
-| Right Stick  | Drives Wheels In Opposite Directions for Turning |
-| Left Bumper | Toggles Armed/Disarmed |
-| Y Button | Toggles Manual/Autonomous |
-| X Button | Toggles Motor Throttle while in Manual Mode |
-| A Button | Toggles PID Control while in Autonomous Mode |
-| dPad Down + A Button | Performs a Complete IMU Calibration |
-| dPad Up + A Button | Performs a Local Bias Only IMU Calibration |
+| State | Input | Behavior |
+|------:|------:|:---------|
+| Any | Left Bumper | Toggles Armed/Disarmed |
+|   |   |   |
+| Disarmed | dPad Down + A Button | Performs a Complete IMU Calibration |
+| Disarmed | dPad Up + A Button | Performs a Local Bias Only IMU Calibration |
+|   |   |   |
+| Manual | Left Stick | Drives the Vehicle Forward/Backward |
+| Manual | Right Stick  | Turns the Vehicle |
+| Manual | X Button | Toggles Motor Throttle |
+|   |   |   |
+| Manual/Autonomous | Y Button | Toggles Manual/Autonomous |
+|   |   |   |
+| Autonomous | A Button | Toggles PID Control |
+| Autonomous | dPad Right | Increments Kp |
+| Autonomous | dPad Left | Decrements Kp |
+| Autonomous | dPad Up | Increments Ki |
+| Autonomous | dPad Down | Decrements Ki |
+| Autonomous | B Button | Increments Kd |
+| Autonomous | X Button | Decrements Kd |

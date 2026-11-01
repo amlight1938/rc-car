@@ -258,7 +258,6 @@ void controlTask(void *params)
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
-
 			// turning on the velocity PID control based on controller inputs
 			if (controllerState.buttonA)
 			{
@@ -269,11 +268,40 @@ void controlTask(void *params)
 				double velInput = pid.calculateInput(pose[2], pose[6]);
 				car.control(velInput, 0);
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
-				logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f" , millis() / 1000.0, velInput, pose[2]);
+				logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
 			}
 			else
 			{
+				// stopping the car when PID control is disabled
 				car.stop();
+
+				// allowing Kp, Ki, and Kd adjustments while PID control is disabled
+				if (controllerState.dpadRight)
+				{
+					pid.incrementKp();
+				}
+				if (controllerState.dpadLeft)
+				{
+					pid.decrementKp();
+				}
+				if (controllerState.dpadUp)
+				{
+					pid.incrementKi();
+				}
+				if (controllerState.dpadDown)
+				{
+					pid.decrementKi();
+				}
+				if (controllerState.buttonB)
+				{
+					pid.incrementKd();
+				}
+				if (controllerState.buttonX)
+				{
+					pid.decrementKd();
+				}
+
+				logger.log(true, "[%.2f]- Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pid.getKp(), pid.getKi(), pid.getKd());
 			}
 
 			break;

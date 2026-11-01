@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class PID
 {
@@ -9,11 +10,23 @@ public:
 
 	double calculateInput(double velocity, double dt);
 
+	void decrementKd();
+	void incrementKp();
+	void decrementKp();
+	void incrementKi();
+	void decrementKi();
+	void incrementKd();
+
+	double getKp();
+	double getKi();
+	double getKd();
+
 private:
 	const double TARGET_VELOCITY = 0.3;
-	const double Kp = 0.75;
-	const double Ki = 6.4;
-	const double Kd = 0.0;
+
+	double Kp = 0.7;
+	double Ki = 6.4;
+	double Kd = 0.0;
 
 	double prevError = 0;
 	double totalTime = 0;
