@@ -4,7 +4,8 @@ PID::PID()
 {
 }
 
-void PID::reset(){
+void PID::reset()
+{
 	prevError = 0;
 	totalTime = 0;
 	integralError = 0;
@@ -23,4 +24,49 @@ double PID::calculateInput(double velocity, double dt)
 	prevError = pidError;
 
 	return porportional + integral + derivative;
+}
+
+void PID::incrementKp()
+{
+	Kp = Kp + 0.1;
+}
+
+void PID::decrementKp()
+{
+	Kp = Kp - 0.1;
+}
+
+void PID::incrementKi()
+{
+	Ki = Ki + 0.1;
+}
+
+void PID::decrementKi()
+{
+	Ki = Ki - 0.1;
+}
+
+void PID::incrementKd()
+{
+	Kd = Kd + 0.1;
+}
+
+void PID::decrementKd()
+{
+	Kd = Kd - 0.1;
+}
+
+double PID::getKp()
+{
+	return Kp;
+}
+
+double PID::getKi()
+{
+	return Ki;
+}
+
+double PID::getKd()
+{
+	return Kd;
 }
