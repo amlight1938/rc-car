@@ -11,8 +11,8 @@ public:
 
 private:
 	const double TARGET_VELOCITY = 0.3;
-	const double Kp = 0.75;
-	const double Ki = 6.4;
+	const double Kp = 3;
+	const double Ki = 1.0;
 	const double Kd = 0.0;
 
 	double prevError = 0;
