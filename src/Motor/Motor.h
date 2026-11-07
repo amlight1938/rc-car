@@ -24,7 +24,7 @@ private:
 	uint8_t plusPin;
 	uint8_t minusPin;
 	uint8_t speedPin;
-	uint8_t lastSpeedValue;
+	uint8_t lastSpeedValue = 0;
 
 	bool throttleCapped;
 };

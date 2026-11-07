@@ -9,33 +9,6 @@
 // a singleton class pattern - we want there to only ever be one instance of this class for the entirety of the car's lifecycle
 class Logger
 {
-private:
-	Logger();
-
-	// declaring the destructor to be private so it cannot be called externally
-	// however, we want the destructor to still behave in the default manner
-	~Logger() = default;
-
-	bool connectToWifi();
-
-	bool sendUdp();
-
-	// defines the task that logging is running on
-	static void loggingTask(void *params);
-
-	// Queue items
-	static const uint16_t QUEUE_LENGTH = 200;						   // the total number of items that can be on the queue at once. New logs are dropped if queue is full
-	static const uint8_t QUEUE_ITEM_SIZE = 150;						   // the max item size of each message in bytes
-	static uint8_t ucQueueStorageArea[QUEUE_LENGTH * QUEUE_ITEM_SIZE]; // the actual space in memeory for the queue to keep its item, passed into the xQueueCreateStatic function
-	static StaticQueue_t xStaticQueue;								   // how the queue tracks its state, used internally by FreeRTOS and passed into the xQueueCreateStatic function
-	static QueueHandle_t logQueue;									   // the actual queue that we can use push and pop log messages to and from
-
-	WiFiUDP udp; // the object that sends the data over wifi
-
-	// used to log every RATE_LIMIT_COUNT_MAX control loop cycles so we dont overload udp sends
-	uint8_t rateLimitIterationCounter = 0;
-	uint8_t const RATE_LIMIT_COUNT_MAX = 10; // will log at a rate of 1 log per RATE_LIMIT_COUNT_MAX * control loop fixed rate
-
 public:
 	// singleton class pattern requires we delete the copy, move, and assignment ctors so there's no backdoor to create a second instance of Logger
 	Logger(const Logger &) = delete;
@@ -79,4 +52,31 @@ public:
 	{
 		log(false, fmt, args...); // delegates to other template, supplying the "default" ratelimiter bool
 	}
+
+private:
+	Logger();
+
+	// declaring the destructor to be private so it cannot be called externally
+	// however, we want the destructor to still behave in the default manner
+	~Logger() = default;
+
+	bool connectToWifi();
+
+	bool sendUdp();
+
+	// defines the task that logging is running on
+	static void loggingTask(void *params);
+
+	// Queue items
+	static const uint16_t QUEUE_LENGTH = 200;						   // the total number of items that can be on the queue at once. New logs are dropped if queue is full
+	static const uint8_t QUEUE_ITEM_SIZE = 150;						   // the max item size of each message in bytes
+	static uint8_t ucQueueStorageArea[QUEUE_LENGTH * QUEUE_ITEM_SIZE]; // the actual space in memeory for the queue to keep its item, passed into the xQueueCreateStatic function
+	static StaticQueue_t xStaticQueue;								   // how the queue tracks its state, used internally by FreeRTOS and passed into the xQueueCreateStatic function
+	static QueueHandle_t logQueue;									   // the actual queue that we can use push and pop log messages to and from
+
+	WiFiUDP udp; // the object that sends the data over wifi
+
+	// used to log every RATE_LIMIT_COUNT_MAX control loop cycles so we dont overload udp sends
+	uint8_t rateLimitIterationCounter = 0;
+	uint8_t const RATE_LIMIT_COUNT_MAX = 10; // will log at a rate of 1 log per RATE_LIMIT_COUNT_MAX * control loop fixed rate
 };

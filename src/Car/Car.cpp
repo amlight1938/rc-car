@@ -1,14 +1,19 @@
 #include "Car/Car.h"
 
-Car::Car(uint8_t leftPlusPin, uint8_t leftMinusPin, uint8_t leftSpeedPin,
-		 uint8_t rightPlusPin, uint8_t rightMinusPin, uint8_t rightSpeedPin,
-		 uint8_t leftEncoderPhaseAPin, uint8_t leftEncoderPhaseBPin,
-		 uint8_t rightEncoderPhaseAPin, uint8_t rightEncoderPhaseBPin)
-	: leftMotor(leftPlusPin, leftMinusPin, leftSpeedPin),
-	  rightMotor(rightPlusPin, rightMinusPin, rightSpeedPin),
-	  leftEncoder(leftEncoderPhaseAPin, leftEncoderPhaseBPin),
-	  rightEncoder(rightEncoderPhaseAPin, rightEncoderPhaseBPin)
+Car::Car()
+    : leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN),
+      rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN),
+      leftEncoder(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN),
+      rightEncoder(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN)
 {
+}
+
+Car &Car::getInstance()
+{
+	// the first time this is called, instance is created and then never created again after that
+	// every time after that the same object is returned when this function is called
+	static Car instance;
+	return instance;
 }
 
 CarMotionState Car::getCarMotionState()

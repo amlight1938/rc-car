@@ -24,11 +24,8 @@ void controlTask(void *params)
 	// instantiating the bluetooth controller and motors
 	Controller controller;
 
-	// instantiating the car
-	Car car(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN,
-			R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN,
-			L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN,
-			R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN);
+	// getting a reference to the car singleton
+	Car &car = Car::getInstance();
 
 	// instantiating the IMU
 	Imu imu;
