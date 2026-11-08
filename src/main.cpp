@@ -177,8 +177,8 @@ void controlTask(void *params)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 
-				// restarting the EKF without having to restart car
-				ekf = KalmanFilter();
+				// resetting the EKF without having to restart car
+				ekf.reset();
 			}
 
 			// switching to DISARMED based on controller inputs

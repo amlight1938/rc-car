@@ -1,50 +1,8 @@
 #include "KalmanFilter.h"
 
-KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, double startAccel, double startAngle, double startRotationRate)
+KalmanFilter::KalmanFilter()
 {
-	// initializing the Z and X matrices
-	X << startPosX, startPosY, startVel, startAccel, startAngle, startRotationRate;
-
-	// initializing the R matrix
-	// uncertainties are small due to radians being a small unit
-	// values were derived from variances_calculation.py using stationary and relative movement data
-	R << 0.5e-5, 0, 0, 0,	   // v, educated guess
-		0, 2.81e-4, 0, 0,	   // a, based on variance_calulation.py
-		0, 0, 0.0337, 0,	   // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
-		0, 0, 0, 8.035852e-07; // w_gyro, based on variance_calulation.py
-
-	// both Omega values correspond to X[5]
-	H << 0, 0, 1, 0, 0, 0,
-		0, 0, 0, 1, 0, 0,
-		0, 0, 0, 0, 0, 1,
-		0, 0, 0, 0, 0, 1;
-
-	// assuming the time step is approx 10ms
-	dt = 0.01; // seconds
-
-	// initializing the Aj matrix
-	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
-		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
-		0, 0, 1, dt, 0, 0,
-		0, 0, 0, 1, 0, 0,
-		0, 0, 0, 0, 1, dt,
-		0, 0, 0, 0, 0, 1;
-
-	// initializing the P and Q matrices
-	// starting car at origin allow the x and y uncertainty to be very small
-	P << 0.0001, 0, 0, 0, 0, 0, // 1 cm uncertainty
-		0, 0.0001, 0, 0, 0, 0,	// 1 cm uncertainty
-		0, 0, 0.0001, 0, 0, 0,	// 1 cm/s uncertainty
-		0, 0, 0, 0.0001, 0, 0,	// 1 cm/s^2 uncertainty
-		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
-		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
-
-	Q << 1e-5, 0, 0, 0, 0, 0,  // x, 1 cm
-		0, 1e-5, 0, 0, 0, 0,   // y, 1 cm
-		0, 0, 1e-5, 0, 0, 0,   // v, educated guess
-		0, 0, 0, 1e-1, 0, 0,   // a, educated guess
-		0, 0, 0, 0, 1e-4, 0,   // theta, educated guess on normalized innovation plots
-		0, 0, 0, 0, 0, 0.0015; // omega, educated guess on normalized innovation plots
+	initialize();
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)
@@ -118,13 +76,6 @@ Vector<double, 7> KalmanFilter::getState()
 {
 	Vector<double, 7> fullState;
 	fullState << X, dt;
-	// fullState[0] = X[0];
-	// fullState[1] = X[1];
-	// fullState[2] = X[2];
-	// fullState[3] = X[3];
-	// fullState[4] = X[4];
-	// fullState[5] = X[5];
-	// fullState[6] = dt;
 	return fullState;
 }
 
@@ -146,4 +97,32 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 		   std::abs(state.acceleration) < 7.0 &&
 		   std::abs(state.omega_encoder) < 10.0 &&
 		   std::abs(state.omega_gyro) < 6.0;
+}
+
+void KalmanFilter::reset(){
+	dtOffset = 0;
+	dt = 0.01; //set back to the assumed 10ms
+	initialize();
+}
+
+void KalmanFilter::initialize(){
+	// initializing the X matrices
+	X << 0, 0, 0, 0, 0, 0;
+
+	// initializing the Aj matrix
+	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
+		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
+		0, 0, 1, dt, 0, 0,
+		0, 0, 0, 1, 0, 0,
+		0, 0, 0, 0, 1, dt,
+		0, 0, 0, 0, 0, 1;
+
+	// initializing the P and Q matrices
+	// starting car at origin allow the x and y uncertainty to be very small
+	P << 0.0001, 0, 0, 0, 0, 0, // 1 cm uncertainty
+		0, 0.0001, 0, 0, 0, 0,	// 1 cm uncertainty
+		0, 0, 0.0001, 0, 0, 0,	// 1 cm/s uncertainty
+		0, 0, 0, 0.0001, 0, 0,	// 1 cm/s^2 uncertainty
+		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
+		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
 }
