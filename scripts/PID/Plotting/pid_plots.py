@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-FIELDS = ["PidV", "EkfV"]
+# this script can either take a single file as input or a folder that contains multiple data files to plot them all on the same axes for comparison
+
+FIELDS = ["PidV", "EkfV"] # the fields in the data files to read
 
 def main():
 	parser = argparse.ArgumentParser(description="A script that processes a CSV file of EKF data and creates plots")
@@ -27,6 +29,7 @@ def main():
 	else:
 		raise FileNotFoundError(f"File does not exist {args.filepath}")
 
+# read the data file and place the data in a pandas dataframe to be used for plotting
 def process_file(filepath: Path) -> tuple[str, pd.DataFrame]:
 	#collect data from file
 	LINE_RE = re.compile(r"(?:received message:\s*)?\[?(?P<ts>\d+(?:\.\d+)?)\]?(?:-\s*|\s+)(?P<payload>.*)")
@@ -47,7 +50,7 @@ def process_file(filepath: Path) -> tuple[str, pd.DataFrame]:
 	df.index = df.index - df.index[0]					# subtracting the first timestamp from all timestamps so time starts at 0
 	return (get_gains_from_filepath(filepath), df)
 
-### PLOTTING ###
+# plot a single data file
 def plot_single_ax(title: str, df: pd.DataFrame):
 	ax = df.plot(y='EkfV', kind='line', label="Velocity")
 	ax.axhline(y=.3, color="red", linestyle="-", linewidth=1.5, label="Target")
@@ -59,6 +62,7 @@ def plot_single_ax(title: str, df: pd.DataFrame):
 	ax.set_title(title)
 	plt.show()
 
+# plot multiple runs on one plot for comparison
 def plot_all_in_dir(dfs: list[tuple[str,pd.DataFrame]]):
 	fig, ax = plt.subplots()
 	for title, df in dfs:
