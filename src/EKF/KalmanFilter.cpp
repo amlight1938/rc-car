@@ -1,8 +1,8 @@
 #include "KalmanFilter.h"
 
-KalmanFilter::KalmanFilter(double startPosX, double startPosY, double startVel, double startAccel, double startAngle, double startRotationRate)
+KalmanFilter::KalmanFilter()
 {
-	initialize(startPosX, startPosY, startVel, startAccel, startAngle, startRotationRate);
+	initialize();
 }
 
 void KalmanFilter::iterate(const MeasurementState &measurementState)
@@ -105,9 +105,9 @@ void KalmanFilter::reset(){
 	initialize();
 }
 
-void KalmanFilter::initialize(double startPosX, double startPosY, double startVel, double startAccel, double startAngle, double startRotationRate){
+void KalmanFilter::initialize(){
 	// initializing the X matrices
-	X << startPosX, startPosY, startVel, startAccel, startAngle, startRotationRate;
+	X << 0, 0, 0, 0, 0, 0;
 
 	// initializing the Aj matrix
 	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,

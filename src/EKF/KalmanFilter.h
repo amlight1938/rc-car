@@ -12,7 +12,7 @@ class KalmanFilter
 {
 public:
 	// creating a constructor with default arguments
-	KalmanFilter(double xStartPos = 0, double yStartPos = 0, double startVel = 0, double startAccel = 0, double startAngle = 0, double startRotationRate = 0);
+	KalmanFilter();
 
 	void iterate(const MeasurementState &measurementState);
 
@@ -53,7 +53,7 @@ private:
 		{0, 0, 0, 0, 1e-4, 0},	  // theta, educated guess on normalized innovation plots
 		{0, 0, 0, 0, 0, 0.0015}}; // omega, educated guess on normalized innovation plots
 
-	void initialize(double xStartPos = 0, double yStartPos = 0, double startVel = 0, double startAccel = 0, double startAngle = 0, double startRotationRate = 0);
+	void initialize();
 
 	void updateAj();
 
