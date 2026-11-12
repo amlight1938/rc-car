@@ -7,7 +7,8 @@
 #include "Imu/Imu.h"
 #include "Logging/Logger.h"
 #include "Motor/Motor.h"
-#include "PID/PID.h"
+#include "Pid/TurnPid.h"
+#include "Pid/VelocityPid.h"
 
 // the purpose of this task is to replace arduino's default loop() with a FreeRTOS task for multiple reasons:
 // Deterministic timing - allows us to execute on a guarantee schedule wheras delay() or millis() scheduing drifts
@@ -61,8 +62,11 @@ void controlTask(void *params)
 	CarMotionState motion;
 	MeasurementState measurementState;
 	KalmanFilter ekf;
-	Vector<double, 7> pose;
-	PID pid;
+	Vector<double, 7> pose; // x, y, v, a, theta, omega, dt
+	VelocityPid velPid(0.7, 6.4, 0.0, 1.0);
+	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD); 
+	Pid* pids[2] = {&velPid, &thetaPid}; //pointers since we cant have objects of Pid class
+	int currentPid = 0;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
@@ -79,7 +83,7 @@ void controlTask(void *params)
 		measurementState.omega_encoder = motion.turnRate;
 		measurementState.omega_gyro = imuReading.gyroZ;
 		ekf.iterate(measurementState);
-		return ekf.getState();
+		return ekf.getState(); // x, y, v, a, theta, omega, dt
 	};
 
 	while (true)
@@ -210,11 +214,17 @@ void controlTask(void *params)
 			// logging data for troubleshooting
 			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			
+			Serial.printf("[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
+					    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			Serial.println();
+			// logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
+			// 		    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			break;
 
 		case AUTONOMOUS:
-			static bool velControl = false;
+			static bool pidRunning = false;
 
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
@@ -222,9 +232,10 @@ void controlTask(void *params)
 				lastState = AUTONOMOUS;
 				car.stop();
 
-				// restarting the PID without having to restart car
-				pid.reset();
-				velControl = false;
+				// restarting the Pid without having to restart car
+				velPid.reset();
+				thetaPid.reset();
+				pidRunning = false;
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -255,50 +266,50 @@ void controlTask(void *params)
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
-			// turning on the velocity PID control based on controller inputs
+			// turning on the velocity Pid control based on controller inputs
 			if (controllerState.buttonA)
 			{
-				velControl = !velControl;
+				pidRunning = !pidRunning;
 			}
-			if (velControl)
+			if (pidRunning)
 			{
-				double velInput = pid.calculateInput(pose[2], pose[6]);
-				car.control(velInput, 0);
+				double targetTheta = 90*DEG_TO_RAD;
+				double thetaInput = thetaPid.calculateInput(pose[4], targetTheta, pose[6]);
+
+				double targetVelocity = .3; // m/s
+				double velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
+				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
+				car.control(0, -thetaInput, true); 
+				// car.control(velocityInput, 0, true); 
+
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
-				logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
+				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
+				logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfTheta: %-7.3f", millis() / 1000.0, thetaInput, pose[4]);
+				// logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfVel: %-7.3f", millis() / 1000.0, velocityInput, pose[2]);
 			}
 			else
 			{
-				// stopping the car when PID control is disabled
+				// stopping the car when Pid control is disabled
 				car.stop();
 
-				// allowing Kp, Ki, and Kd adjustments while PID control is disabled
-				if (controllerState.dpadRight)
-				{
-					pid.incrementKp();
-				}
-				if (controllerState.dpadLeft)
-				{
-					pid.decrementKp();
-				}
+				// allowing Kp, Ki, and Kd adjustments while Pid control is disabled
 				if (controllerState.dpadUp)
 				{
-					pid.incrementKi();
+					pids[currentPid]->incrementGain();
 				}
 				if (controllerState.dpadDown)
 				{
-					pid.decrementKi();
+					pids[currentPid]->decrementGain();
+				}
+				if (controllerState.buttonX){
+					pids[currentPid]->toggleGainToAdjust();
 				}
 				if (controllerState.buttonB)
-				{
-					pid.incrementKd();
-				}
-				if (controllerState.buttonX)
-				{
-					pid.decrementKd();
+				{	
+					currentPid = (currentPid + 1) % 2;
 				}
 
-				logger.log(true, "[%.2f]- Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pid.getKp(), pid.getKi(), pid.getKd());
+				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd());
 			}
 
 			break;

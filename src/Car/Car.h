@@ -21,7 +21,7 @@ public:
 
 	CarMotionState getCarMotionState();
 
-	void control(double leftStickY, double rightStickX);
+	void control(double leftStickY, double rightStickX, bool ignoreDeadzone = false);
 
 	void stop();
 

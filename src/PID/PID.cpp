@@ -1,72 +1,59 @@
-#include "PID/PID.h"
+#include "Pid/Pid.h"
 
-PID::PID()
+Pid::Pid(double Kp, double Ki, double Kd, double maxOutput) : gains{Kp, Ki, Kd}, maxOutput(maxOutput)
 {
 }
 
-void PID::reset()
+void Pid::reset()
 {
 	prevError = 0;
 	totalTime = 0;
 	integralError = 0;
 }
 
-// should return a straight direction controller input (Left Stick only) between -1.0 and 1.0
-double PID::calculateInput(double velocity, double dt)
+// should return a controller input between -maxOutput and maxOutput
+double Pid::calculateInput(double currentState, double targetState, double dt)
 {
-	double pidError = TARGET_VELOCITY - velocity;
+	double pidError = targetState - currentState;
+	
 	integralError += (pidError * dt);
 
-	double porportional = Kp * pidError;
-	double integral = Ki * (integralError);
-	double derivative = Kd * (pidError - prevError) / dt;
+	double porportional = gains[P] * pidError;
+	double integral = gains[I] * (integralError);
+	double derivative = gains[D] * (pidError - prevError) / dt;
 
 	prevError = pidError;
 
-	return porportional + integral + derivative;
+	double output = porportional + integral + derivative;
+
+	return std::min(std::max(output, -maxOutput), maxOutput);
 }
 
-void PID::incrementKp()
-{
-	Kp = Kp + 0.1;
+void Pid::toggleGainToAdjust(){
+	currentToggleGain = (currentToggleGain + 1) % 3;
 }
 
-void PID::decrementKp()
+void Pid::incrementGain()
 {
-	Kp = Kp - 0.1;
+	gains[currentToggleGain] += 0.1; 
 }
 
-void PID::incrementKi()
+void Pid::decrementGain()
 {
-	Ki = Ki + 0.1;
+	gains[currentToggleGain] -= 0.1; 
 }
 
-void PID::decrementKi()
+double Pid::getKp()
 {
-	Ki = Ki - 0.1;
+	return gains[P];
 }
 
-void PID::incrementKd()
+double Pid::getKi()
 {
-	Kd = Kd + 0.1;
+	return gains[I];
 }
 
-void PID::decrementKd()
+double Pid::getKd()
 {
-	Kd = Kd - 0.1;
-}
-
-double PID::getKp()
-{
-	return Kp;
-}
-
-double PID::getKi()
-{
-	return Ki;
-}
-
-double PID::getKd()
-{
-	return Kd;
+	return gains[D];
 }

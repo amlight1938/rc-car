@@ -32,10 +32,10 @@ CarMotionState Car::getCarMotionState()
 	return state;
 }
 
-void Car::control(double leftStickY, double rightStickX)
+void Car::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
 {
-	leftMotor.control(leftStickY, rightStickX);
-	rightMotor.control(leftStickY, -rightStickX); // negative right stick to account for chirality differences for the motors
+	leftMotor.control(leftStickY, rightStickX, ignoreDeadzone);
+	rightMotor.control(leftStickY, -rightStickX, ignoreDeadzone); // negative right stick to account for chirality differences for the motors
 }
 
 void Car::stop()
