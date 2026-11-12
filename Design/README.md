@@ -15,10 +15,8 @@
 |   |   |   |
 | Manual/Autonomous | Y Button | Toggles Manual/Autonomous |
 |   |   |   |
-| Autonomous | A Button | Toggles PID Control |
-| Autonomous | dPad Right | Increments Kp |
-| Autonomous | dPad Left | Decrements Kp |
-| Autonomous | dPad Up | Increments Ki |
-| Autonomous | dPad Down | Decrements Ki |
-| Autonomous | B Button | Increments Kd |
-| Autonomous | X Button | Decrements Kd |
+| Autonomous | A Button | Toggles PID car control |
+| Autonomous | dPad Up | Increments current PID's current gain |
+| Autonomous | dPad Down | Decrements current PID's current gain |
+| Autonomous | B Button | Toggle between PID controllers to adjust |
+| Autonomous | X Button | Toggle between gains to adjust |
