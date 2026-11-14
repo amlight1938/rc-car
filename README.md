@@ -1,16 +1,25 @@
-## Overview
+## Features / Overview
+- A deterministic, fault-tolerant embedded control system in C++ on a resource constrained ESP32 microcontroller with FreeRTOS priority-scheduled tasks, a fixed rate control loop, and hardware abstraction across motors, sensors, and vehicle classes
+- State machine architecture that safely handles faults, state transitions, and hardware fail-safes on communication loss
+- UDP telemetry pipeline for remote logging with pre-allocated queuing and a dedicated FreeRTOS task to separate logging from the time constrained, prioritized control loop 
+- Extended Kalman Filter (EKF) estimates pose in real time by fusing IMU and odometry measurements
+- Autonomous open-field return to home navigation capability using EKF state estimation and PID controller in a Sense -> Estimate -> Control cycle 
+- Remote control manual operation via Bluetooth
+
+
+
+PICTURES / VIDEOS GO HERE
+
+
 
 ## Skills developed
 - Kalman Filtering, Extended Kalman Filtering
 - PID control
-- Embedded software, RTOS, prioritized control tasks
+- Embedded real-time control software, RTOS, prioritized control tasks
 - UDP, remote telemetry logging
 - State machine design
+- Data processing and plotting (Pandas, Matplotlib) 
 - Circuitry, circuit schematic design, 3D modeling
-
-## Features
-- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control loop
-- Remote control manual operation
 
 
 
@@ -19,10 +28,11 @@
 - Memory / speed considerations
 - Queue + singleton architecture
 - Separate lower priority task
+- UDP vs TCP
 
 #### State machine, handles fault tolerance
 - Manual remote control
-- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control loop
+- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control 
 - Bluetooth pairing
 - Sensor calibration
 - Disarmed -> safety critical design philosphy
@@ -31,6 +41,7 @@
 - Seperate prioritized RTOS tasks for logging and control
 	- Allow task prioritization
 	- Deterministic fixed timing loop control task for EKF and PID
+	- Hardware abstraction accross motors, sensors, and vehicle classes
 
 #### Extended Kalman Filter
 - The following state vector $\bar{x}$ and differential drive physics model was defined to be:
@@ -45,19 +56,17 @@ $$
 	&\omega_{k+1} = \omega_k
 	\end{aligned}
 	$$
+- This required an Extended Kalman Filter since the motion model was nonlinear
 
 #### PID controllers
 - Abstract base class
-
-#### 3D modeling / Physics
-- Differential drive mechanics
-
 
 
 
 
 ## Verification and Validation
 
+PLOTS GO HERE
 
 
 
