@@ -10,7 +10,7 @@ import pandas as pd
 
 # this script can either take a single file as input or a folder that contains multiple data files to plot them all on the same axes for comparison
 
-FIELDS = ["PidV", "EkfV"] # the fields in the data files to read
+FIELDS = ["PidV", "EkfVel"] # the fields in the data files to read
 
 def main():
 	parser = argparse.ArgumentParser(description="A script that processes a CSV file of EKF data and creates plots")
@@ -52,7 +52,7 @@ def process_file(filepath: Path) -> tuple[str, pd.DataFrame]:
 
 # plot a single data file
 def plot_single_ax(title: str, df: pd.DataFrame):
-	ax = df.plot(y='EkfV', kind='line', label="Velocity")
+	ax = df.plot(y=FIELDS[1], kind='line', label="Velocity")
 	ax.axhline(y=.3, color="red", linestyle="-", linewidth=1.5, label="Target")
 	ax.axhline(y=.33, color="green", linestyle="--", linewidth=1.5, label="10% overshoot")
 	ax.axhline(y=.27, color="green", linestyle="--", linewidth=1.5, label="10% undershoot")
@@ -66,7 +66,7 @@ def plot_single_ax(title: str, df: pd.DataFrame):
 def plot_all_in_dir(dfs: list[tuple[str,pd.DataFrame]]):
 	fig, ax = plt.subplots()
 	for title, df in dfs:
-		df.plot(y='EkfV', ax=ax, kind='line', label=title)
+		df.plot(y=FIELDS[1], ax=ax, kind='line', label=title)
 	ax.axhline(y=.3,  color="red",   linestyle="-",  linewidth=1.5, alpha=0.3, label="Target")
 	ax.axhline(y=.33, color="green", linestyle="--", linewidth=1.5, alpha=0.3, label="10% over/undershoot")
 	ax.axhline(y=.27, color="green", linestyle="--", linewidth=1.5, alpha=0.3, label=None)

@@ -6,13 +6,13 @@ Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
 	throttleCapped = false;
 }
 
-void Motor::control(double leftStickY, double rightStickX)
+void Motor::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
 {
-	if (-DEADZONE <= leftStickY && leftStickY <= DEADZONE)
+	if (!ignoreDeadzone && -DEADZONE <= leftStickY && leftStickY <= DEADZONE)
 	{
 		leftStickY = 0.0;
 	}
-	if (-DEADZONE <= rightStickX && rightStickX <= DEADZONE)
+	if (!ignoreDeadzone && -DEADZONE <= rightStickX && rightStickX <= DEADZONE)
 	{
 		rightStickX = 0.0;
 	}

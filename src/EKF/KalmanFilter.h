@@ -23,7 +23,7 @@ public:
 private:
 	// creating the 6-dim X vector and 4-dim Z vector
 	Vector<double, 4> Z;
-	Vector<double, 6> X;
+	Vector<double, 6> X; // x, y, v, a, theta, omega
 	
 	// creating the Aj matrix, the jacobian of f(X)
 	Matrix<double, 6, 6> Aj;

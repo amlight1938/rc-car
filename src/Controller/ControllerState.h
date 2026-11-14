@@ -11,8 +11,6 @@ struct ControllerState
 	bool rightBumper;
 	bool dpadUp;
 	bool dpadDown;
-	bool dpadLeft;
-	bool dpadRight;
 	bool buttonA;
 	bool buttonB;
 	bool buttonX;

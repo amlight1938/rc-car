@@ -76,7 +76,7 @@ Vector<double, 7> KalmanFilter::getState()
 {
 	Vector<double, 7> fullState;
 	fullState << X, dt;
-	return fullState;
+	return fullState; // x, y, v, a, theta, omega, dt
 }
 
 void KalmanFilter::updateAj()

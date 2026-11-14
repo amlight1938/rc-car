@@ -1,34 +1,37 @@
 #pragma once
-#include <string>
+#include <Arduino.h>
 
-class PID
+class Pid
 {
 public:
-	PID();
-
 	void reset();
 
-	double calculateInput(double velocity, double dt);
+	virtual double calculateInput(double currentState, double targetState, double dt);
 
-	void decrementKd();
-	void incrementKp();
-	void decrementKp();
-	void incrementKi();
-	void decrementKi();
-	void incrementKd();
+	void toggleGainToAdjust();
+	void decrementGain();
+	void incrementGain();
 
 	double getKp();
 	double getKi();
 	double getKd();
 
-private:
-	const double TARGET_VELOCITY = 0.3;
+	virtual const char* getName() const = 0;
 
-	double Kp = 0.7;
-	double Ki = 6.4;
-	double Kd = 0.0;
+	virtual ~Pid() = default; // destructor required for inheritance cleanup
+
+protected:
+	Pid(double Kp, double Ki, double Kd, double maxOutput); //ctor protected so we cant create a Pid object (must create an object of its child classes types)
+
+	static const int P=0, I=1, D=2;
+
+	double gains[3]; //Kp, Ki, Kd
 
 	double prevError = 0;
 	double totalTime = 0;
 	double integralError = 0;
+
+	const double maxOutput; // should be between 0 and 1 (inclusive of 1)
+
+	int currentToggleGain = 0;
 };

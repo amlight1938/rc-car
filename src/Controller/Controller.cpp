@@ -25,8 +25,6 @@ ControllerState Controller::getControllerState()
 		returnState.rightBumper = xboxControlsState.rightBumper && !lastRawControllerState.rightBumper;
 		returnState.dpadUp = xboxControlsState.dpadUp && !lastRawControllerState.dpadUp;
 		returnState.dpadDown = xboxControlsState.dpadDown && !lastRawControllerState.dpadDown;
-		returnState.dpadLeft = xboxControlsState.dpadLeft && !lastRawControllerState.dpadLeft;
-		returnState.dpadRight = xboxControlsState.dpadRight && !lastRawControllerState.dpadRight;
 		returnState.buttonA = xboxControlsState.buttonA && !lastRawControllerState.buttonA;
 		returnState.buttonB = xboxControlsState.buttonB && !lastRawControllerState.buttonB;
 		returnState.buttonX = xboxControlsState.buttonX && !lastRawControllerState.buttonX;
@@ -42,8 +40,6 @@ ControllerState Controller::getControllerState()
 		rawControllerState.rightBumper = xboxControlsState.rightBumper;
 		rawControllerState.dpadUp = xboxControlsState.dpadUp;
 		rawControllerState.dpadDown = xboxControlsState.dpadDown;
-		rawControllerState.dpadLeft = xboxControlsState.dpadLeft;
-		rawControllerState.dpadRight = xboxControlsState.dpadRight;
 		rawControllerState.buttonA = xboxControlsState.buttonA;
 		rawControllerState.buttonB = xboxControlsState.buttonB;
 		rawControllerState.buttonX = xboxControlsState.buttonX;
