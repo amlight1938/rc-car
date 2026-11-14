@@ -3,7 +3,7 @@
 Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
 	: plusPin(plusPin), minusPin(minusPin), speedPin(speedPin)
 {
-	throttleCapped = false;
+	throttleCapped = true;
 }
 
 void Motor::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
@@ -96,4 +96,14 @@ bool Motor::isStopped()
 void Motor::throttleToggle()
 {
 	throttleCapped = !throttleCapped;
+}
+
+void Motor::throttleOff()
+{
+	throttleCapped = false;
+}
+
+void Motor::throttleOn()
+{
+	throttleCapped = true;
 }
