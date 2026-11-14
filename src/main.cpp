@@ -63,7 +63,7 @@ void controlTask(void *params)
 	MeasurementState measurementState;
 	KalmanFilter ekf;
 	Vector<double, 7> pose; // x, y, v, a, theta, omega, dt
-	VelocityPid velPid(0.7, 6.4, 0.0, 1.0);
+	VelocityPid velPid(0.7, 6.4, 0.0);
 	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD); 
 	Pid* pids[2] = {&velPid, &thetaPid}; //pointers since we cant have objects of Pid class
 	int currentPid = 0;
@@ -292,17 +292,21 @@ void controlTask(void *params)
 				// allowing Kp, Ki, and Kd adjustments while Pid control is disabled
 				if (controllerState.dpadUp)
 				{
+					//increase current gain on current PID
 					pids[currentPid]->incrementGain();
 				}
 				if (controllerState.dpadDown)
 				{
+					//decrease current gain on current PID
 					pids[currentPid]->decrementGain();
 				}
 				if (controllerState.buttonX){
+					//toggle which gain we are adjusting currently
 					pids[currentPid]->toggleGainToAdjust();
 				}
 				if (controllerState.buttonB)
 				{	
+					//toggle which PID we are tuning when we hit the dpad up down buttons
 					currentPid = (currentPid + 1) % 2;
 				}
 
