@@ -15,45 +15,68 @@
 
 
 ## Design Considerations
-- Remote Logging
-	- Memory / speed considerations
-	- Queue + singleton architecture
-	- Separate lower priority task
+#### Remote Logging
+- Memory / speed considerations
+- Queue + singleton architecture
+- Separate lower priority task
 
-- State machine, handles fault tolerance
-	- Manual remote control
-	- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control loop
-	- Bluetooth pairing
-	- Sensor calibration
-	- Disarmed -> safety critical design philosphy
+#### State machine, handles fault tolerance
+- Manual remote control
+- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control loop
+- Bluetooth pairing
+- Sensor calibration
+- Disarmed -> safety critical design philosphy
  
-- Embedded software design
-	- Seperate prioritized RTOS tasks for logging and control
-		- Allow task prioritization
-		- Deterministic fixed timing loop control task for EKF and PID
+#### Embedded software design
+- Seperate prioritized RTOS tasks for logging and control
+	- Allow task prioritization
+	- Deterministic fixed timing loop control task for EKF and PID
 
-- Extended Kalman Filter
-	- $\vec{x}$ = [x, y, v, a, $\theta$, $\omega$]
+#### Extended Kalman Filter
+- The following state vector $\bar{x}$ and differential drive physics model was defined to be:
+$$
+	\begin{aligned}
+	&\bar{x} = [x,\ y,\ v,\ a,\ \theta,\ \omega]^T \\[1em]
+	&x_{k+1} = x_k + \left(v_k\,\Delta t + \tfrac{1}{2}a_k\,\Delta t^2\right)\cos(\theta_k) \\
+	&y_{k+1} = y_k + \left(v_k\,\Delta t + \tfrac{1}{2}a_k\,\Delta t^2\right)\sin(\theta_k) \\
+	&v_{k+1} = v_k + a_k\,\Delta t \\
+	&a_{k+1} = a_k \\
+	&\theta_{k+1} = \theta_k + \omega_k\,\Delta t \\
+	&\omega_{k+1} = \omega_k
+	\end{aligned}
+	$$
 
-- PID controllers
-	- Abstract base class
+#### PID controllers
+- Abstract base class
 
-- 3D modeling / Physics
-	- Differential drive mechanics
+#### 3D modeling / Physics
+- Differential drive mechanics
+
+
+
 
 
 ## Verification and Validation
+
+
+
 
 
 ## Difficult bugs/challenges overcome
 - Wheel slippage
 
 
+
+
 ## Project Limitations
 - IMU magnetometer
 - Limited sensors, integration error buildup
 
+
+
 ## Future Work
+
+
 
 ## Design Directory
 
