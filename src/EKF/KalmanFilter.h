@@ -30,34 +30,73 @@ private:
 
 	Matrix<double, 6, 6> P;
 
-	// initializing the R matrix
+	// initializing the R matrices for the 3 unique states
+	// the main R will contain pointers to the const matrices based on encoder readout
 	// uncertainties are small due to radians being a small unit
 	// values were derived from variances_calculation.py using stationary and relative movement data
-	const Matrix<double, 4, 4> R{
+	Matrix<double, 4, 4> R;
+
+	const Matrix<double, 4, 4> R_STATIONARY{
 		{0.5e-5, 0, 0, 0},		  // v, educated guess
 		{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
-		{0, 0, 0.0337, 0},		  // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
+		{0, 0, 1e-15, 0},		  // w_encoder, extremely accurate when stationary
 		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
 
+	const Matrix<double, 4, 4> R_GRADUAL{
+		{0.5e-5, 0, 0, 0},		  // v, educated guess
+		{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
+		{0, 0, 0.0737, 0},		  // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
+		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
+
+	const Matrix<double, 4, 4> R_INTENSE{
+		{0.5e-5, 0, 0, 0},		  // v, educated guess
+		{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
+		{0, 0, 9.81, 0},		  // w_encoder, Tuned for intense movements (see Encoder.h for other R values)
+		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
+
+
+		// initializing the H matrix
 	const Matrix<double, 4, 6> H{
 		{0, 0, 1, 0, 0, 0},
 		{0, 0, 0, 1, 0, 0},
 		{0, 0, 0, 0, 0, 1},
 		{0, 0, 0, 0, 0, 1}}; // both Omega values correspond to X[5]
 
-	const Matrix<double, 6, 6> Q{
+	// initializing the Q matrices for the 3 unique states
+	// the main Q will contain pointers to the const matrices based on encoder readout
+	Matrix<double, 6, 6> Q;
+
+	const Matrix<double, 6, 6> Q_STATIONARY{
 		{1e-5, 0, 0, 0, 0, 0},	  // x, 1 cm
 		{0, 1e-5, 0, 0, 0, 0},	  // y, 1 cm
 		{0, 0, 1e-5, 0, 0, 0},	  // v, educated guess
 		{0, 0, 0, 1e-1, 0, 0},	  // a, educated guess
 		{0, 0, 0, 0, 1e-4, 0},	  // theta, educated guess on normalized innovation plots
-		{0, 0, 0, 0, 0, 0.0015}}; // omega, educated guess on normalized innovation plots
+		{0, 0, 0, 0, 0, 0.00001}}; // omega, extremely small when stationary
+
+	const Matrix<double, 6, 6> Q_GRADUAL{
+		{1e-5, 0, 0, 0, 0, 0},	  // x, 1 cm
+		{0, 1e-5, 0, 0, 0, 0},	  // y, 1 cm
+		{0, 0, 1e-5, 0, 0, 0},	  // v, educated guess
+		{0, 0, 0, 1e-1, 0, 0},	  // a, educated guess
+		{0, 0, 0, 0, 1e-4, 0},	  // theta, educated guess on normalized innovation plots
+		{0, 0, 0, 0, 0, 0.0005}}; // omega, educated guess on normalized innovation plots
+
+	const Matrix<double, 6, 6> Q_INTENSE{
+		{1e-5, 0, 0, 0, 0, 0},	  // x, 1 cm
+		{0, 1e-5, 0, 0, 0, 0},	  // y, 1 cm
+		{0, 0, 1e-5, 0, 0, 0},	  // v, educated guess
+		{0, 0, 0, 1e-1, 0, 0},	  // a, educated guess
+		{0, 0, 0, 0, 1e-4, 0},	  // theta, educated guess on normalized innovation plots
+		{0, 0, 0, 0, 0, 0.0045}}; // omega, educated guess on normalized innovation plots
 
 	void initialize();
 
 	void updateAj();
 
 	bool validateMeasurementState(const MeasurementState &state);
+
+	void updateMatrixState(double gyro_encoder);
 
 	double dtOffset = 0;
 	double dt = 0.01; // assuming the time step is approx 10ms

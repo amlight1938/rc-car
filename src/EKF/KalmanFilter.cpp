@@ -13,6 +13,9 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 		return;
 	}
 
+	// updating the R and Q matrices based on the encoder outputs
+	updateMatrixState(measurementState.omega_encoder);
+
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
 	Matrix<double, 6, 6> Pp;
@@ -79,6 +82,39 @@ Vector<double, 7> KalmanFilter::getState()
 	return fullState; // x, y, v, a, theta, omega, dt
 }
 
+void KalmanFilter::reset()
+{
+	dtOffset = 0;
+	dt = 0.01; // set back to the assumed 10ms
+	initialize();
+}
+
+void KalmanFilter::initialize()
+{
+	// initializing the X matrices
+	X << 0, 0, 0, 0, 0, 0;
+
+	// initializing the R and Q Matricies for stationary start
+	R = R_STATIONARY;
+	Q = Q_STATIONARY;
+
+	// initializing the Aj matrix
+	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
+		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
+		0, 0, 1, dt, 0, 0,
+		0, 0, 0, 1, 0, 0,
+		0, 0, 0, 0, 1, dt,
+		0, 0, 0, 0, 0, 1;
+
+	// initializing the P and Q matrices
+	// starting car at origin allow the x and y uncertainty to be very small
+	P << 0.0001, 0, 0, 0, 0, 0, // 1 cm uncertainty
+		0, 0.0001, 0, 0, 0, 0,	// 1 cm uncertainty
+		0, 0, 0.0001, 0, 0, 0,	// 1 cm/s uncertainty
+		0, 0, 0, 0.0001, 0, 0,	// 1 cm/s^2 uncertainty
+		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
+		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
+}
 void KalmanFilter::updateAj()
 {
 	Aj(0, 2) = dt * cos(X[4]);
@@ -99,30 +135,21 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 		   std::abs(state.omega_gyro) < 6.0;
 }
 
-void KalmanFilter::reset(){
-	dtOffset = 0;
-	dt = 0.01; //set back to the assumed 10ms
-	initialize();
-}
-
-void KalmanFilter::initialize(){
-	// initializing the X matrices
-	X << 0, 0, 0, 0, 0, 0;
-
-	// initializing the Aj matrix
-	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
-		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
-		0, 0, 1, dt, 0, 0,
-		0, 0, 0, 1, 0, 0,
-		0, 0, 0, 0, 1, dt,
-		0, 0, 0, 0, 0, 1;
-
-	// initializing the P and Q matrices
-	// starting car at origin allow the x and y uncertainty to be very small
-	P << 0.0001, 0, 0, 0, 0, 0, // 1 cm uncertainty
-		0, 0.0001, 0, 0, 0, 0,	// 1 cm uncertainty
-		0, 0, 0.0001, 0, 0, 0,	// 1 cm/s uncertainty
-		0, 0, 0, 0.0001, 0, 0,	// 1 cm/s^2 uncertainty
-		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
-		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
+void KalmanFilter::updateMatrixState(double gyro_encoder)
+{
+	if (gyro_encoder < 0.001)
+	{
+		R = R_STATIONARY;
+		Q = Q_STATIONARY;
+	}
+	else if (0.001 <= gyro_encoder < 0.500)
+	{
+		R = R_GRADUAL;
+		Q = Q_GRADUAL;
+	}
+	else if (gyro_encoder >= 0.500)
+	{
+		R = R_INTENSE;
+		Q = Q_INTENSE;
+	}
 }
