@@ -45,7 +45,8 @@ PICTURES / VIDEOS GO HERE
 
 #### Extended Kalman Filter
 - The following state vector $\bar{x}$ and differential drive physics model was defined to be:
-  ```math
+
+  $$
   \begin{aligned}
   &\bar{x} = [x,\ y,\ v,\ a,\ \theta,\ \omega]^T \\[1em]
   &x_{k+1} = x_k + \left(v_k\,\Delta t + \tfrac{1}{2}a_k\,\Delta t^2\right)\cos(\theta_k) \\
@@ -55,7 +56,8 @@ PICTURES / VIDEOS GO HERE
   &\theta_{k+1} = \theta_k + \omega_k\,\Delta t \\
   &\omega_{k+1} = \omega_k
   \end{aligned}
-  ```
+  $$
+
 - This required an Extended Kalman Filter since the motion model was nonlinear
 
 #### PID controllers
