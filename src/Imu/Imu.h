@@ -33,5 +33,5 @@ private:
 	// therefore, we add our own bias compensation
 	// this can be adjusted with calibrateImuAccelGyroBias()
 	double accelXBias = 0.0; // m/s^2
-	double gyroZBias = 0.0; // rad/s
+	double gyroZBias = 0.0;	 // rad/s
 };

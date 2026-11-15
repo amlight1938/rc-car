@@ -9,21 +9,16 @@ Motor::Motor(uint8_t plusPin, uint8_t minusPin, uint8_t speedPin)
 void Motor::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
 {
 	if (!ignoreDeadzone && -DEADZONE <= leftStickY && leftStickY <= DEADZONE)
-	{
 		leftStickY = 0.0;
-	}
+
 	if (!ignoreDeadzone && -DEADZONE <= rightStickX && rightStickX <= DEADZONE)
-	{
 		rightStickX = 0.0;
-	}
 
 	// turning the motors off and performing an early exit if the sticks are in a neutral position
 	if (leftStickY == 0.0 && rightStickX == 0.0)
 	{
 		if (!this->isStopped())
-		{
 			this->stop();
-		}
 		return;
 	}
 
@@ -31,13 +26,9 @@ void Motor::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
 
 	// combining the two inputs to determine motor speed
 	if (leftStickY == 0)
-	{
 		speedControl = rightStickX;
-	}
 	else
-	{
 		speedControl = leftStickY + (MOTOR_TURN_GAIN * rightStickX);
-	}
 
 	// determining the motor direction
 	bool forward = speedControl > 0;
@@ -47,13 +38,10 @@ void Motor::control(double leftStickY, double rightStickX, bool ignoreDeadzone)
 
 	// map() internally converts doubles to long and will truncate decimals. This is okay for human control
 	if (throttleCapped)
-	{
 		speedControl = map(speedControl, 0, 1000, 0, 100);
-	}
 	else
-	{
 		speedControl = map(speedControl, 0, 1000, 0, 255);
-	}
+		
 	this->spin(forward, speedControl);
 }
 

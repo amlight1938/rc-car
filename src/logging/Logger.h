@@ -37,9 +37,7 @@ public:
 	{
 		// skip log in order to rate limit the logging if boolean is true and we are not on the start of the rate limit cycle
 		if (rateLimit && rateLimitIterationCounter != 0)
-		{
 			return;
-		}
 
 		char buffer[QUEUE_ITEM_SIZE];
 		snprintf(buffer, QUEUE_ITEM_SIZE, fmt, args...);
