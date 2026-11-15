@@ -94,9 +94,7 @@ void controlTask(void *params)
 
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
-		{
 			currentState = PAIRING;
-		}
 
 		// performing unique actions based on the cars state
 		switch (currentState)
@@ -207,9 +205,7 @@ void controlTask(void *params)
 
 			// capping the motor throttle based on controller inputs
 			if (controllerState.buttonX)
-			{
 				car.throttleToggle();
-			}
 
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
@@ -274,9 +270,8 @@ void controlTask(void *params)
 
 			// turning on the velocity Pid control based on controller inputs
 			if (controllerState.buttonA)
-			{
 				pidRunning = !pidRunning;
-			}
+
 			if (pidRunning)
 			{
 				double targetTheta = 90 * DEG_TO_RAD;
@@ -299,26 +294,18 @@ void controlTask(void *params)
 				car.stop();
 
 				// allowing Kp, Ki, and Kd adjustments while Pid control is disabled
+				// increase current gain on current PID
 				if (controllerState.dpadUp)
-				{
-					// increase current gain on current PID
 					pids[currentPid]->incrementGain();
-				}
+				// decrease current gain on current PID
 				if (controllerState.dpadDown)
-				{
-					// decrease current gain on current PID
 					pids[currentPid]->decrementGain();
-				}
+				// toggle which gain we are adjusting currently
 				if (controllerState.buttonX)
-				{
-					// toggle which gain we are adjusting currently
 					pids[currentPid]->toggleGainToAdjust();
-				}
+				// toggle which PID we are tuning when we hit the dpad up down buttons
 				if (controllerState.buttonB)
-				{
-					// toggle which PID we are tuning when we hit the dpad up down buttons
 					currentPid = (currentPid + 1) % 2;
-				}
 
 				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd());
 			}

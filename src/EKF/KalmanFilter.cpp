@@ -56,9 +56,7 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	// making sure theta is between 0 and 2π
 	X[4] = std::fmod(X[4], 2 * PI);
 	if (X[4] < 0)
-	{
 		X[4] += 2 * PI;
-	}
 
 	// computing the new P matrix
 	P = Pp - (K * H * Pp);
@@ -99,13 +97,15 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 		   std::abs(state.omega_gyro) < 6.0;
 }
 
-void KalmanFilter::reset(){
+void KalmanFilter::reset()
+{
 	dtOffset = 0;
-	dt = 0.01; //set back to the assumed 10ms
+	dt = 0.01; // set back to the assumed 10ms
 	initialize();
 }
 
-void KalmanFilter::initialize(){
+void KalmanFilter::initialize()
+{
 	// initializing the X matrices
 	X << 0, 0, 0, 0, 0, 0;
 
