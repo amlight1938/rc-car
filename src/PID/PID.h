@@ -16,16 +16,16 @@ public:
 	double getKi();
 	double getKd();
 
-	virtual const char* getName() const = 0;
+	virtual const char *getName() const = 0;
 
 	virtual ~Pid() = default; // destructor required for inheritance cleanup
 
 protected:
-	Pid(double Kp, double Ki, double Kd, double maxOutput); //ctor protected so we cant create a Pid object (must create an object of its child classes types)
+	Pid(double Kp, double Ki, double Kd, double maxOutput); // ctor protected so we cant create a Pid object (must create an object of its child classes types)
 
-	static const int P=0, I=1, D=2;
+	static const int P = 0, I = 1, D = 2;
 
-	double gains[3]; //Kp, Ki, Kd
+	double gains[3]; // Kp, Ki, Kd
 
 	double prevError = 0;
 	double totalTime = 0;

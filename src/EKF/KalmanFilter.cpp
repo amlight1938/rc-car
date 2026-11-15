@@ -15,8 +15,8 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 
 	// updating the R and Q matrices based on the encoder outputs
 	RQPair RQ = updateMatrixState(measurementState);
-	const auto& R = RQ.first;
-	const auto& Q = RQ.second;
+	const auto &R = RQ.first;
+	const auto &Q = RQ.second;
 
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
@@ -135,10 +135,11 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 
 KalmanFilter::RQPair KalmanFilter::updateMatrixState(const MeasurementState &state)
 {
-	if (std::abs(state.omega_encoder) < 0.01)
+	if (std::abs(state.omega_encoder) < 0.001 && std::abs(state.velocity) < 0.01)
 		return {R_STATIONARY, Q_STATIONARY};
-	else if (0.01 <= std::abs(state.omega_gyro) < 1.500)
+	else if (std::abs(state.omega_encoder) < 1.500 && std::abs(state.velocity) < 0.500)
 		return {R_GRADUAL, Q_GRADUAL};
 	else
 		return {R_INTENSE, Q_INTENSE};
 }
+
