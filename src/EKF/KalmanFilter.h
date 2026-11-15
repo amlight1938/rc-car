@@ -30,12 +30,8 @@ private:
 
 	Matrix<double, 6, 6> P;
 
-	// initializing the R matrices for the 3 unique states
-	// the main R will contain pointers to the const matrices based on encoder readout
 	// uncertainties are small due to radians being a small unit
 	// values were derived from variances_calculation.py using stationary and relative movement data
-	Matrix<double, 4, 4> R;
-
 	const Matrix<double, 4, 4> R_STATIONARY{
 		{0.5e-5, 0, 0, 0},		  // v, educated guess
 		{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
@@ -54,17 +50,12 @@ private:
 		{0, 0, 9.81, 0},		  // w_encoder, Tuned for intense movements (see Encoder.h for other R values)
 		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
 
-
 		// initializing the H matrix
 	const Matrix<double, 4, 6> H{
 		{0, 0, 1, 0, 0, 0},
 		{0, 0, 0, 1, 0, 0},
 		{0, 0, 0, 0, 0, 1},
 		{0, 0, 0, 0, 0, 1}}; // both Omega values correspond to X[5]
-
-	// initializing the Q matrices for the 3 unique states
-	// the main Q will contain pointers to the const matrices based on encoder readout
-	Matrix<double, 6, 6> Q;
 
 	const Matrix<double, 6, 6> Q_STATIONARY{
 		{1e-5, 0, 0, 0, 0, 0},	  // x, 1 cm
@@ -96,7 +87,8 @@ private:
 
 	bool validateMeasurementState(const MeasurementState &state);
 
-	void updateMatrixState(double gyro_encoder);
+	using RQPair = std::pair<const Matrix<double, 4, 4>&, const Matrix<double, 6, 6>&>;
+	RQPair updateMatrixState(const MeasurementState& state);
 
 	double dtOffset = 0;
 	double dt = 0.01; // assuming the time step is approx 10ms

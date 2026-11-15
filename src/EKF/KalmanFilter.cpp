@@ -14,7 +14,9 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	}
 
 	// updating the R and Q matrices based on the encoder outputs
-	updateMatrixState(measurementState.omega_encoder);
+	RQPair RQ = updateMatrixState(measurementState);
+	const auto& R = RQ.first;
+	const auto& Q = RQ.second;
 
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
@@ -94,10 +96,6 @@ void KalmanFilter::initialize()
 	// initializing the X matrices
 	X << 0, 0, 0, 0, 0, 0;
 
-	// initializing the R and Q Matricies for stationary start
-	R = R_STATIONARY;
-	Q = Q_STATIONARY;
-
 	// initializing the Aj matrix
 	Aj << 1, 0, dt * cos(X[4]), (dt * dt / 2) * cos(X[4]), (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4])), 0,
 		0, 1, dt * sin(X[4]), (dt * dt / 2) * sin(X[4]), (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4])), 0,
@@ -135,21 +133,12 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 		   std::abs(state.omega_gyro) < 6.0;
 }
 
-void KalmanFilter::updateMatrixState(double gyro_encoder)
+KalmanFilter::RQPair KalmanFilter::updateMatrixState(const MeasurementState &state)
 {
-	if (gyro_encoder < 0.001)
-	{
-		R = R_STATIONARY;
-		Q = Q_STATIONARY;
-	}
-	else if (0.001 <= gyro_encoder < 0.500)
-	{
-		R = R_GRADUAL;
-		Q = Q_GRADUAL;
-	}
-	else if (gyro_encoder >= 0.500)
-	{
-		R = R_INTENSE;
-		Q = Q_INTENSE;
-	}
+	if (std::abs(state.omega_encoder) < 0.01)
+		return {R_STATIONARY, Q_STATIONARY};
+	else if (0.01 <= std::abs(state.omega_gyro) < 1.500)
+		return {R_GRADUAL, Q_GRADUAL};
+	else
+		return {R_INTENSE, Q_INTENSE};
 }
