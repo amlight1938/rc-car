@@ -26,6 +26,8 @@ public:
 	void stop();
 
 	void throttleToggle();
+	void throttleOff();
+	void throttleOn();
 
 private:
 	Car();

@@ -12,6 +12,8 @@ public:
 	void stop();
 
 	void throttleToggle();
+	void throttleOff();
+	void throttleOn();
 
 private:
 	static constexpr double DEADZONE = 0.15;
