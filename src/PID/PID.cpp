@@ -43,17 +43,17 @@ void Pid::decrementGain()
 	gains[currentToggleGain] -= 0.1; 
 }
 
-double Pid::getKp()
+double Pid::getKp() const
 {
 	return gains[P];
 }
 
-double Pid::getKi()
+double Pid::getKi() const
 {
 	return gains[I];
 }
 
-double Pid::getKd()
+double Pid::getKd() const
 {
 	return gains[D];
 }

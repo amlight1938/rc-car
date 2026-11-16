@@ -21,7 +21,7 @@ private:
 
 	void spin(bool forward, uint8_t speedValue);
 
-	bool isStopped();
+	bool isStopped() const;
 
 	uint8_t plusPin;
 	uint8_t minusPin;
