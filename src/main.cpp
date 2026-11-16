@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <cmath>
 #include "Pins.h"
 #include "Car/Car.h"
 #include "Controller/Controller.h"
@@ -263,8 +264,6 @@ void controlTask(void *params)
 				btLedState = !btLedState;
 			}
 
-			// future autonomous capabilities go here
-
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
@@ -274,14 +273,36 @@ void controlTask(void *params)
 
 			if (pidRunning)
 			{
-				double targetTheta = 90 * DEG_TO_RAD;
+				// converting pose into polar coordinates
+				double targetTheta = -atan2(pose[1], pose[0]);
+				double r = std::hypot(pose[0], pose[1]);
+
 				double thetaInput = thetaPid.calculateInput(pose[4], targetTheta, pose[6]);
 
-				double targetVelocity = .3; // m/s
-				double velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
-				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
-				car.control(0, -thetaInput);
-				// car.control(velocityInput, 0, true);
+				// setting the trashcan lid to slow down and stop at the target
+				double targetVelocity = 0.0;
+				if (r >= 0.1) // large trashcan lid is 10cm
+				{
+					targetVelocity = 0.3; // m/s
+				}
+				else if (r >= 0.05) // small trashcan lid is 5cm
+				{
+					targetVelocity = 0.05; // m/s
+				}
+
+				// determining to drive toward the target if we are facing the correct direction
+				double velocityInput = 0.0;
+				if (std::abs(std::remainder(targetTheta - pose[4], 2 * PI)) < 15 * DEG_TO_RAD)
+				{	
+					velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
+				}
+
+				// moving the car if the car is outside of the trashcan lid
+				if (r >= 0.05)
+				{
+					// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
+					car.control(velocityInput, -thetaInput);
+				}
 
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
 				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
