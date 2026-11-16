@@ -76,7 +76,7 @@ void Motor::stop()
 	spin(true, 0);
 }
 
-bool Motor::isStopped()
+bool Motor::isStopped() const
 {
 	return lastSpeedValue == 0;
 }

@@ -16,7 +16,7 @@ public:
 
 	void iterate(const MeasurementState &measurementState);
 
-	Vector<double, 7> getState();
+	Vector<double, 7> getState() const;
 
 	void reset();
 

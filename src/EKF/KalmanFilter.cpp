@@ -70,7 +70,7 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }
 
-Vector<double, 7> KalmanFilter::getState()
+Vector<double, 7> KalmanFilter::getState() const
 {
 	Vector<double, 7> fullState;
 	fullState << X, dt;
