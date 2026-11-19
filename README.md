@@ -26,23 +26,27 @@ PICTURES / VIDEOS GO HERE
 
 ## Design Considerations
 #### Remote Logging
-- Memory / speed considerations
-- Queue + singleton architecture
-- Separate lower priority task
-- UDP vs TCP
+- Singleton design pattern to ensure one logger and one log queue
+- Separate logging FreeRTOS task with lower priority than control task to ensure control is not held up by telemetry
+- Non-blocking queue, if the queue is full messages are purposely dropped so the control task is not held up 
+- Pre-allocated memory for log message queue to prevent dynamic memory allocation faults with queue size being determined by available RAM, expected log rate, and message size
+- Log messages sent over UDP for its low overhead as opposed to TCP since a delivery acknowledgment was not necessary and an occasionally dropped log was acceptable
+- Formatted consistently with timestamp so python scripts can parse logged data for analysis and tuning 
 
-#### State machine, handles fault tolerance
-- Manual remote control
-- Autonomous return to home navigation with EKF state estimation and PID controller, Sense -> Estimate -> Control 
-- Bluetooth pairing
-- Sensor calibration
-- Disarmed -> safety critical design philosphy
+#### State machine and fault tolerance
+- Explicit state machine with states: Manual, Autonomous, Bluetooth Pairing, Connected and Disarmed, Sensor Calibration
+- State transitions handled explicitly and each mode runs its own per-cycle operations, including on entry setup
+- Safety critical arming: a connection or reconnection always lands in Connected and Disarmed, forcing an operator to arm the system once it's connected in order to operate it
+- Fault handling such as a sudden disconnect forces Pairing mode and stops the motors
+- Operator can switch to Manual at any time during Autonomous control with single button push
+- Status LEDs show the mode (slow blink while pairing, fast blink in autonomous, red LED while armed, yellow while calibrating sensors)
+- Bounded WiFi connection retries 
 
-- A disconnect forces PAIRING and stops the motors, and a reconnect lands in DISARMED, so the operator has to re-arm
-- Status LEDs show the mode (slow blink while pairing, fast blink in autonomous)
+
+
  
 #### Embedded software design
-- Seperate prioritized RTOS tasks for logging and control
+- Seperate prioritized FreeRTOS tasks for logging and control
 	- Allow task prioritization
 	- Deterministic fixed timing loop control task for EKF and PID
 	- Hardware abstraction accross motors, sensors, and vehicle classes
