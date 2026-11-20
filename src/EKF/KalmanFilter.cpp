@@ -14,9 +14,9 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	}
 
 	// updating the R and Q matrices based on the encoder outputs
-	RQPair RQ = updateMatrixState(measurementState);
-	const auto &R = RQ.first;
-	const auto &Q = RQ.second;
+	const auto s = updateMatrixState(measurementState);
+	const auto& R = s.R;
+	const auto& Q = s.Q;
 
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
@@ -69,10 +69,10 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	// Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
-	// 						  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
-	// Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
-	// 						  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
+	Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e R: %d",
+							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5), static_cast<int>(s.regime));
+	Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
+							  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
 	// Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
 	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }
@@ -133,13 +133,14 @@ bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
 		   std::abs(state.omega_gyro) < 6.0;
 }
 
-KalmanFilter::RQPair KalmanFilter::updateMatrixState(const MeasurementState &state)
+KalmanFilter::RegimeMatrices KalmanFilter::updateMatrixState(const MeasurementState &state)
 {
+	//struct order regime, R, Q
 	if (std::abs(state.omega_encoder) < 0.001 && std::abs(state.velocity) < 0.01)
-		return {R_STATIONARY, Q_STATIONARY};
+		return {Regime::STATIONARY, R_STATIONARY, Q_STATIONARY};
 	else if (std::abs(state.omega_encoder) < 1.500 && std::abs(state.velocity) < 0.500)
-		return {R_GRADUAL, Q_GRADUAL};
+		return {Regime::GRADUAL, R_GRADUAL, Q_GRADUAL};
 	else
-		return {R_INTENSE, Q_INTENSE};
+		return {Regime::INTENSE, R_INTENSE, Q_INTENSE};
 }
 

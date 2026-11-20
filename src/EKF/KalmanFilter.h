@@ -87,8 +87,15 @@ private:
 
 	bool validateMeasurementState(const MeasurementState &state);
 
-	using RQPair = std::pair<const Matrix<double, 4, 4> &, const Matrix<double, 6, 6> &>;
-	RQPair updateMatrixState(const MeasurementState &state);
+	// using RQPair = std::pair<const Matrix<double, 4, 4> &, const Matrix<double, 6, 6> &>;
+	enum class Regime : uint8_t { STATIONARY, GRADUAL, INTENSE };
+
+	struct RegimeMatrices {
+		Regime regime;
+		const Matrix<double, 4, 4>& R;
+		const Matrix<double, 6, 6>& Q;
+	};
+	RegimeMatrices updateMatrixState(const MeasurementState &state);
 
 	double dtOffset = 0;
 	double dt = 0.01; // assuming the time step is approx 10ms
