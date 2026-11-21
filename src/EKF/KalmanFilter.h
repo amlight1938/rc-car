@@ -39,16 +39,10 @@ private:
 		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
 
 	const Matrix<double, 4, 4> R_GRADUAL{
-		{1.67e-5, 0, 0, 0},	  // v, educated guess
+		{0.5e-5, 0, 0, 0},		  // v, educated guess
 		{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
 		{0, 0, 0.0337, 0},		  // w_encoder, Tuned for gradual movements (see Encoder.h for other R values)
 		{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
-
-	// const Matrix<double, 4, 4> R_INTENSE{
-	// 	{0.5e-4, 0, 0, 0},		  // v, educated guess
-	// 	{0, 2.81e-4, 0, 0},		  // a, based on variance_calulation.py
-	// 	{0, 0, 9.81, 0},		  // w_encoder, Tuned for intense movements (see Encoder.h for other R values)
-	// 	{0, 0, 0, 8.035852e-07}}; // w_gyro, based on variance_calulation.py
 
 	// initializing the H matrix
 	const Matrix<double, 4, 6> H{
@@ -66,20 +60,12 @@ private:
 		{0, 0, 0, 0, 0, 1e-5}}; // omega, extremely small when stationary
 
 	const Matrix<double, 6, 6> Q_GRADUAL{
-		{1e-5, 0, 0, 0, 0, 0},	// x, 1 cm
-		{0, 1e-5, 0, 0, 0, 0},	// y, 1 cm
-		{0, 0, 1.67e-5, 0, 0, 0},	// v, educated guess
-		{0, 0, 0, 2.15e-1, 0, 0},	// a, educated guess
-		{0, 0, 0, 0, 1e-4, 0},	// theta, educated guess on normalized innovation plots
-		{0, 0, 0, 0, 0, 2.979e-3}}; // omega, educated guess on normalized innovation plots
-
-	// const Matrix<double, 6, 6> Q_INTENSE{
-	// 	{5e-5, 0, 0, 0, 0, 0},	// x, 1 cm
-	// 	{0, 5e-5, 0, 0, 0, 0},	// y, 1 cm
-	// 	{0, 0, 5e-5, 0, 0, 0},	// v, educated guess
-	// 	{0, 0, 0, 1e-1, 0, 0},	// a, educated guess
-	// 	{0, 0, 0, 0, 1e-4, 0},	// theta, educated guess on normalized innovation plots
-	// 	{0, 0, 0, 0, 0, 1e-3}}; // omega, educated guess on normalized innovation plots
+		{1e-5, 0, 0, 0, 0, 0},	  // x, 1 cm
+		{0, 1e-5, 0, 0, 0, 0},	  // y, 1 cm
+		{0, 0, 1e-5, 0, 0, 0},	  // v, educated guess
+		{0, 0, 0, 1e-1, 0, 0},	  // a, educated guess
+		{0, 0, 0, 0, 1e-4, 0},	  // theta, educated guess on normalized innovation plots
+		{0, 0, 0, 0, 0, 0.0015}}; // omega, educated guess on normalized innovation plots
 
 	void initialize();
 
@@ -88,7 +74,7 @@ private:
 	bool validateMeasurementState(const MeasurementState &state);
 
 	// using RQPair = std::pair<const Matrix<double, 4, 4> &, const Matrix<double, 6, 6> &>;
-	enum class Regime : uint8_t { STATIONARY, GRADUAL, INTENSE };
+	enum class Regime : uint8_t { STATIONARY, GRADUAL};
 
 	struct RegimeMatrices {
 		Regime regime;
