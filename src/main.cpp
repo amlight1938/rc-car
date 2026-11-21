@@ -64,8 +64,8 @@ void controlTask(void *params)
 	KalmanFilter ekf;
 	Vector<double, 7> pose; // x, y, v, a, theta, omega, dt
 	VelocityPid velPid(0.7, 6.4, 0.0);
-	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD); 
-	Pid* pids[2] = {&velPid, &thetaPid}; //pointers since we cant have objects of Pid class
+	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD);
+	Pid *pids[2] = {&velPid, &thetaPid}; // pointers since we cant have objects of Pid class
 	int currentPid = 0;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
@@ -94,9 +94,7 @@ void controlTask(void *params)
 
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
-		{
 			currentState = PAIRING;
-		}
 
 		// performing unique actions based on the cars state
 		switch (currentState)
@@ -142,6 +140,9 @@ void controlTask(void *params)
 				stbyState = LOW;
 				digitalWrite(STBY_PIN, stbyState);
 				car.stop();
+
+				// resetting the throttle to default OFF
+				car.throttleOff();
 			}
 
 			// switching to MANUAL based on controller inputs
@@ -183,6 +184,9 @@ void controlTask(void *params)
 
 				// resetting the EKF without having to restart car
 				ekf.reset();
+
+				// resetting the throttle to default ON
+				car.throttleOn();
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -201,9 +205,7 @@ void controlTask(void *params)
 
 			// capping the motor throttle based on controller inputs
 			if (controllerState.buttonX)
-			{
 				car.throttleToggle();
-			}
 
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
@@ -233,6 +235,9 @@ void controlTask(void *params)
 				velPid.reset();
 				thetaPid.reset();
 				pidRunning = false;
+
+				// resetting the throttle to default OFF
+				car.throttleOff();
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -265,19 +270,18 @@ void controlTask(void *params)
 
 			// turning on the velocity Pid control based on controller inputs
 			if (controllerState.buttonA)
-			{
 				pidRunning = !pidRunning;
-			}
+
 			if (pidRunning)
 			{
-				double targetTheta = 90*DEG_TO_RAD;
+				double targetTheta = 90 * DEG_TO_RAD;
 				double thetaInput = thetaPid.calculateInput(pose[4], targetTheta, pose[6]);
 
 				double targetVelocity = .3; // m/s
 				double velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
 				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
-				car.control(0, -thetaInput); 
-				// car.control(velocityInput, 0, true); 
+				car.control(0, -thetaInput);
+				// car.control(velocityInput, 0, true);
 
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
 				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
@@ -290,25 +294,18 @@ void controlTask(void *params)
 				car.stop();
 
 				// allowing Kp, Ki, and Kd adjustments while Pid control is disabled
+				// increase current gain on current PID
 				if (controllerState.dpadUp)
-				{
-					//increase current gain on current PID
 					pids[currentPid]->incrementGain();
-				}
+				// decrease current gain on current PID
 				if (controllerState.dpadDown)
-				{
-					//decrease current gain on current PID
 					pids[currentPid]->decrementGain();
-				}
-				if (controllerState.buttonX){
-					//toggle which gain we are adjusting currently
+				// toggle which gain we are adjusting currently
+				if (controllerState.buttonX)
 					pids[currentPid]->toggleGainToAdjust();
-				}
+				// toggle which PID we are tuning when we hit the dpad up down buttons
 				if (controllerState.buttonB)
-				{	
-					//toggle which PID we are tuning when we hit the dpad up down buttons
 					currentPid = (currentPid + 1) % 2;
-				}
 
 				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd());
 			}

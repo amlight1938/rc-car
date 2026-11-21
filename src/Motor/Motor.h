@@ -12,6 +12,8 @@ public:
 	void stop();
 
 	void throttleToggle();
+	void throttleOff();
+	void throttleOn();
 
 private:
 	static constexpr double DEADZONE = 0.15;
@@ -19,7 +21,7 @@ private:
 
 	void spin(bool forward, uint8_t speedValue);
 
-	bool isStopped();
+	bool isStopped() const;
 
 	uint8_t plusPin;
 	uint8_t minusPin;

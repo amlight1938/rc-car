@@ -12,9 +12,9 @@ public:
 	void decrementGain();
 	void incrementGain();
 
-	double getKp();
-	double getKi();
-	double getKd();
+	double getKp() const;
+	double getKi() const;
+	double getKd() const;
 
 	virtual const char *getName() const = 0;
 

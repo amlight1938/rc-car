@@ -49,3 +49,15 @@ void Car::throttleToggle()
 	leftMotor.throttleToggle();
 	rightMotor.throttleToggle();
 }
+
+void Car::throttleOff()
+{
+	leftMotor.throttleOff();
+	rightMotor.throttleOff();
+}
+
+void Car::throttleOn()
+{
+	leftMotor.throttleOn();
+	rightMotor.throttleOn();
+}

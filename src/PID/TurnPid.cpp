@@ -8,19 +8,13 @@ double TurnPid::calculateInput(double currentState, double targetState, double d
 	double pidError = targetState - currentState;
 
 	if (pidError > 180 * DEG_TO_RAD)
-	{
 		pidError -= 360 * DEG_TO_RAD;
-	}
 
 	if (pidError < -180 * DEG_TO_RAD)
-	{
 		pidError += 360 * DEG_TO_RAD;
-	}
 
 	if (std::abs(pidError) < errorThreshold)
-	{
 		return 0;
-	}
 
 	integralError += (pidError * dt);
 

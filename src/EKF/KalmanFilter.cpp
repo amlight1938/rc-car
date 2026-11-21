@@ -61,9 +61,7 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	// making sure theta is between 0 and 2π
 	X[4] = std::fmod(X[4], 2 * PI);
 	if (X[4] < 0)
-	{
 		X[4] += 2 * PI;
-	}
 
 	// computing the new P matrix
 	P = Pp - (K * H * Pp);
@@ -77,7 +75,7 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }
 
-Vector<double, 7> KalmanFilter::getState()
+Vector<double, 7> KalmanFilter::getState() const
 {
 	Vector<double, 7> fullState;
 	fullState << X, dt;
@@ -138,9 +136,7 @@ KalmanFilter::RegimeMatrices KalmanFilter::updateMatrixState(const MeasurementSt
 	//struct order regime, R, Q
 	if (std::abs(state.omega_encoder) < 0.001 && std::abs(state.velocity) < 0.01)
 		return {Regime::STATIONARY, R_STATIONARY, Q_STATIONARY};
-	else if (std::abs(state.omega_encoder) < 1.500 && std::abs(state.velocity) < 0.500)
-		return {Regime::GRADUAL, R_GRADUAL, Q_GRADUAL};
 	else
-		return {Regime::INTENSE, R_INTENSE, Q_INTENSE};
+		return {Regime::GRADUAL, R_GRADUAL, Q_GRADUAL};
 }
 
