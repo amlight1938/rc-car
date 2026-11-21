@@ -13,6 +13,11 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 		return;
 	}
 
+	// updating the R and Q matrices based on the encoder outputs
+	const auto s = updateMatrixState(measurementState);
+	const auto& R = s.R;
+	const auto& Q = s.Q;
+
 	// instantiating the matrices only used in this function
 	Vector<double, 6> Xp;
 	Matrix<double, 6, 6> Pp;
@@ -62,10 +67,10 @@ void KalmanFilter::iterate(const MeasurementState &measurementState)
 	P = Pp - (K * H * Pp);
 
 	// logging EKF values for troubleshooting and tuning of the EKF
-	// Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
-	// 						  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
-	// Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
-	// 						  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
+	Logger::getInstance().log(true, "%6.1f- nV: %-7.4f nA: %-7.4f nE: %-7.4f nG: %-7.4f Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e R: %d",
+							  millis() / 1000.0, normalized_innovation[0], normalized_innovation[1], normalized_innovation[2], normalized_innovation[3], P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5), static_cast<int>(s.regime));
+	Logger::getInstance().log(true, "%6.1f- x: %-7.4f y: %-7.4f v: %-7.4f a: %-7.4f o: %-7.4f w: %-7.4f",
+							  millis() / 1000.0, X[0], X[1], X[2], X[3], X[4], X[5]);
 	// Logger::getInstance().log(true, "%6.1f- Px: %.3e Py: %.3e Pv: %.3e Pa: %.3e Po: %.3e Pw: %.3e",
 	// 						  millis() / 1000.0, P(0, 0), P(1, 1), P(2, 2), P(3, 3), P(4, 4), P(5, 5));
 }
@@ -75,26 +80,6 @@ Vector<double, 7> KalmanFilter::getState() const
 	Vector<double, 7> fullState;
 	fullState << X, dt;
 	return fullState; // x, y, v, a, theta, omega, dt
-}
-
-void KalmanFilter::updateAj()
-{
-	Aj(0, 2) = dt * cos(X[4]);
-	Aj(0, 3) = (dt * dt / 2) * cos(X[4]);
-	Aj(0, 4) = (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4]));
-	Aj(1, 2) = dt * sin(X[4]);
-	Aj(1, 3) = (dt * dt / 2) * sin(X[4]);
-	Aj(1, 4) = (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4]));
-	Aj(2, 3) = dt;
-	Aj(4, 5) = dt;
-}
-
-bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
-{
-	return std::abs(state.velocity) < 1.0 &&
-		   std::abs(state.acceleration) < 7.0 &&
-		   std::abs(state.omega_encoder) < 10.0 &&
-		   std::abs(state.omega_gyro) < 6.0;
 }
 
 void KalmanFilter::reset()
@@ -126,3 +111,32 @@ void KalmanFilter::initialize()
 		0, 0, 0, 0, 0.001, 0,	// 2 degrees/s uncertainty
 		0, 0, 0, 0, 0, 0.001;	// 2 degrees/s uncertainty
 }
+void KalmanFilter::updateAj()
+{
+	Aj(0, 2) = dt * cos(X[4]);
+	Aj(0, 3) = (dt * dt / 2) * cos(X[4]);
+	Aj(0, 4) = (-X[2] * dt * sin(X[4])) + (-X[3] * (dt * dt / 2) * sin(X[4]));
+	Aj(1, 2) = dt * sin(X[4]);
+	Aj(1, 3) = (dt * dt / 2) * sin(X[4]);
+	Aj(1, 4) = (X[2] * dt * cos(X[4])) + (X[3] * (dt * dt / 2) * cos(X[4]));
+	Aj(2, 3) = dt;
+	Aj(4, 5) = dt;
+}
+
+bool KalmanFilter::validateMeasurementState(const MeasurementState &state)
+{
+	return std::abs(state.velocity) < 1.0 &&
+		   std::abs(state.acceleration) < 7.0 &&
+		   std::abs(state.omega_encoder) < 10.0 &&
+		   std::abs(state.omega_gyro) < 6.0;
+}
+
+KalmanFilter::RegimeMatrices KalmanFilter::updateMatrixState(const MeasurementState &state)
+{
+	//struct order regime, R, Q
+	if (std::abs(state.omega_encoder) < 0.001 && std::abs(state.velocity) < 0.01)
+		return {Regime::STATIONARY, R_STATIONARY, Q_STATIONARY};
+	else
+		return {Regime::GRADUAL, R_GRADUAL, Q_GRADUAL};
+}
+

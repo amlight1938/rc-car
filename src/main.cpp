@@ -217,8 +217,8 @@ void controlTask(void *params)
 			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
 			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
-					   millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
+			// 		    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			break;
 
@@ -280,13 +280,13 @@ void controlTask(void *params)
 				double targetVelocity = .3; // m/s
 				double velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
 				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
-				car.control(0, -thetaInput);
-				// car.control(velocityInput, 0, true);
+				// car.control(0, -thetaInput);
+				car.control(velocityInput, 0);
 
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
 				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
-				logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
-				// logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfVel: %-7.3f", millis() / 1000.0, velocityInput, pose[2]);
+				// logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
+				logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfVel: %-7.3f", millis() / 1000.0, velocityInput, pose[2]);
 			}
 			else
 			{
