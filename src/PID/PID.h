@@ -28,7 +28,6 @@ protected:
 	double gains[3]; // Kp, Ki, Kd
 
 	double prevError = 0;
-	double totalTime = 0;
 	double integralError = 0;
 
 	const double maxOutput; // should be between 0 and 1 (inclusive of 1)
