@@ -58,6 +58,7 @@ PICTURES / VIDEOS GO HERE
 The Kalman Filter fuses acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state. The state vector $\bar{x}$ evolves as a function of the previous state: 
 
 ```math
+\bar{x} = [x,\ y,\ v,\ a,\ \theta,\ \omega]^T \\[6pt]
 \bar{x}_{k+1} = f(\bar{x}_k) 
 ```
 
@@ -65,7 +66,6 @@ Since this motion model is nonlinear, an Extended Kalman Filter (EKF) was requir
 
 ```math
 \begin{array}{rcl}
-\bar{x} & = & [x,\ y,\ v,\ a,\ \theta,\ \omega]^T \\[6pt]
 x_{k+1} & = & x_k + (v_k\,\Delta t + a_k\,\Delta t^2/2)\cos(\theta_k) \\[6pt]
 y_{k+1} & = & y_k + (v_k\,\Delta t + a_k\,\Delta t^2/2)\sin(\theta_k) \\[6pt]
 v_{k+1} & = & v_k + a_k\,\Delta t \\[6pt]
@@ -84,6 +84,8 @@ A_{jacobian} = \begin{bmatrix}
 \end{bmatrix}
 ```
 
+<br><br>
+
 Measurement update timing, $\Delta t$
 - Although a fixed rate control loop was implemented, a jitter analysis was not performed, therefore a variable $\Delta t$ (measured at the time of measurement) was used in the prediction step of the EKF and PID loop to increase accuracy of the filter
 
@@ -92,29 +94,29 @@ Variable motion model and sensor noise matrices
 - Driving intensely -> $Q \uparrow$ (motion noise increases due to wheel slip), $R_{encoders} \uparrow$ (trust encoders less)
 - Stationary -> $Q \downarrow$ (motion noise decreases due to no wheel slip), $R_{encoders} \downarrow$ (trust encoders more)
 
-#### PID controllers
-- Abstract base class
-- 1 pid for velocity
-- 1 pid for heading
-
-
-
-
-## Verification and Validation
-#### EKF
-Tuned R with data recorded from sensors
-Tuned Q empirically using plots
-- NIS plots
-	- Mean of 0, NIS was around 1
+Verification and Validation
+- Tuned R with data recorded from sensors
+- Tuned Q empirically using plots
+- NI plots
+	- Mean of 0, NI std of 1
 - State plots
 	- Matched semi-known paths
 - P diagonal plots
 
 PLOTS GO HERE
 
-#### PID
-PLOTS GO HERE
 
+
+
+
+
+#### PID controllers
+- Abstract base class
+- 1 pid for velocity
+- 1 pid for heading
+
+Verification and Validation
+PLOTS GO HERE
 
 
 
@@ -129,10 +131,6 @@ PLOTS GO HERE
 ## Project Limitations
 - IMU magnetometer
 - Limited sensors, integration error buildup
-
-
-
-## Future Work
 
 
 
