@@ -1,7 +1,6 @@
 from pathlib import Path
 import socket
 
-LISTENER_IP_ADDRESS = socket.gethostbyname(socket.gethostname())
 PORT = 8090
 #used to create log file from messages
 # script_dir = Path(__file__).resolve().parent
@@ -23,4 +22,3 @@ try:
 
 except KeyboardInterrupt:
 	print("User closed program")
-	

@@ -7,7 +7,6 @@ Pid::Pid(double Kp, double Ki, double Kd, double maxOutput) : gains{Kp, Ki, Kd},
 void Pid::reset()
 {
 	prevError = 0;
-	totalTime = 0;
 	integralError = 0;
 }
 

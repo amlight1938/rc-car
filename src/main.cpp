@@ -59,15 +59,10 @@ void controlTask(void *params)
 	State lastState;
 
 	// initializing our measurement variables
-	ImuReading imuReading;
-	CarMotionState motion;
+
 	MeasurementState measurementState;
 	KalmanFilter ekf;
 	Vector<double, 7> pose; // x, y, v, a, theta, omega, dt
-	VelocityPid velPid(0.7, 6.4, 0.0);
-	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD);
-	Pid *pids[2] = {&velPid, &thetaPid}; // pointers since we cant have objects of Pid class
-	int currentPid = 0;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
@@ -76,8 +71,8 @@ void controlTask(void *params)
 	// this is expected to be used multiple times in the switch-case
 	auto getPose = [&]() -> Vector<double, 7>
 	{
-		imuReading = imu.getImuReading();
-		motion = car.getCarMotionState();
+		const ImuReading imuReading = imu.getImuReading();
+		const CarMotionState motion = car.getCarMotionState();
 		measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
 		measurementState.velocity = motion.forwardVelocity;
 		measurementState.acceleration = imuReading.accX;
@@ -184,7 +179,6 @@ void controlTask(void *params)
 				lastState = MANUAL;
 				stbyState = HIGH;
 				digitalWrite(STBY_PIN, stbyState);
-				// need to turn the btLED on (at least for the time being for indication)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 
@@ -231,6 +225,12 @@ void controlTask(void *params)
 
 		case AUTONOMOUS:
 		{
+			// instancating all of the PID variables
+			static VelocityPid velPid(0.7, 6.4, 0.0);
+			static TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD);
+			static Pid *pids[2] = {&velPid, &thetaPid}; // pointers since we cant have objects of Pid class
+			static int currentPid = 0;
+
 			static bool pidRunning = false;
 			static bool withinGoal = false;
 
@@ -286,7 +286,7 @@ void controlTask(void *params)
 			{
 				static const double LARGE_TRASHCAN_LID = 0.25;
 				static const double SMALL_TRASHCAN_LID = 0.03;
-				double HEADING_THRESHOLD_DEG = 20;
+				static const double HEADING_THRESHOLD_DEG = 20;
 
 				// converting pose into polar coordinates
 				double targetTheta = std::fmod(atan2(pose[1], pose[0]) + PI, 2 * PI); // getting heading from origin to us, adding 180 deg to get angle from us to origin, then mod 2PI
@@ -307,6 +307,7 @@ void controlTask(void *params)
 
 				// determining to drive toward the target if we are facing the correct direction
 				double velocityInput = 0.0;
+
 				// remainder is similar to modulo but it rounds to the nearest nth multiple of 2*PI instead of rounding down
 				double headingError = std::abs(std::remainder(targetTheta - pose[4], 2 * PI));
 				if (headingError < HEADING_THRESHOLD_DEG * DEG_TO_RAD)
@@ -317,15 +318,13 @@ void controlTask(void *params)
 				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
 				car.control(velocityInput, -thetaInput);
 
-				// if we made it to the goal set the flag
+				// stopping the autonomy once the car arrives at the destination
 				if (r < SMALL_TRASHCAN_LID)
 				{
 					withinGoal = true;
 				}
 
-				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
-				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
-				// logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
+				// logging data for troubleshooting
 				logger.log(true, "[%.2f]-tV: %-4.2f to: %-7.2f vi: %-7.2f ti: %-7.3f he: %-7.3f v: %-7.3f o: %-7.3f r: %-7.3f",
 						   millis() / 1000.0, targetVelocity, targetTheta, velocityInput, thetaInput, headingError, pose[2], pose[4], r);
 			}
@@ -348,8 +347,9 @@ void controlTask(void *params)
 				if (controllerState.buttonB)
 					currentPid = (currentPid + 1) % 2;
 
-				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f o: %-7.3f r: %-7.3f x: %-7.3f y: %-7.3f", 
-					millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd(), pose[4], r, pose[0], pose[1]);
+				// logging data for PID Gain tuning
+				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f o: %-7.3f r: %-7.3f x: %-7.3f y: %-7.3f",
+						   millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd(), pose[4], r, pose[0], pose[1]);
 			}
 
 			break;

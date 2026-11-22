@@ -66,7 +66,7 @@ void Logger::log(const std::string &message, bool rateLimit)
 
 bool Logger::connectToWifi()
 {
-	unsigned long timeout = 10000;
+	static const unsigned long TIMEOUT = 10000;
 
 	// Serial printing and not logging yet since wifi isn't connected
 	Serial.print("Connecting to WiFi.");
@@ -83,7 +83,7 @@ bool Logger::connectToWifi()
 		WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
 		unsigned long startTime = millis();
-		while (WiFi.status() != WL_CONNECTED && millis() - startTime < timeout)
+		while (WiFi.status() != WL_CONNECTED && millis() - startTime < TIMEOUT)
 		{
 			delay(500);
 			Serial.print(".");

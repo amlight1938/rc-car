@@ -30,7 +30,6 @@ private:
 	int64_t prevMotorCount;
 
 	unsigned long lastMeasurementTime;
-	double triggerRate;
 
 	std::deque<double> rollingAverageDeque;
 	const uint8_t DEQUE_MAX_SIZE = 5;
