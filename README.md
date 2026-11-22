@@ -46,14 +46,17 @@ PICTURES / VIDEOS GO HERE
 
  
 #### Embedded software design
-- Seperate prioritized FreeRTOS tasks for logging and control
-	- Allow task prioritization
-	- Deterministic fixed timing loop control task for EKF and PID
-	- Hardware abstraction accross motors, sensors, and vehicle classes
+- Deisgned with seperate FreeRTOS tasks for logging and control	
+	- Fixed memory, no `new`/`malloc` calls
+	- Allow task prioritization and allocation of operation time based on task priority (control task higher priority than logging)
+	- Deterministic fixed timing loop control task for EKF and PID 
+	- Ability to add future tasks to expand capabilities 
+- Hardware abstraction accross motors, sensors, and vehicle classes
+	- Build abstraction interfaces to make the system hardware agnositc, allowing us to easily interchange future hardware (IMUs, motors, encoders)
 
 #### Extended Kalman Filter
 - The Kalman Filter fused acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state
-- The following state vector $\bar{x}$ and differential drive physics model was defined to be:
+- The following state vector $\bar{x}$ and differential drive physics model are defined below. Since this motion model is nonlinear, an Extended Kalman Filter (EKF) was required. The Jacobian below was used to linearize the system
 
 ```math
 \begin{array}{rcl}
@@ -65,10 +68,22 @@ a_{k+1} & = & a_k \\[6pt]
 \theta_{k+1} & = & \theta_k + \omega_k\,\Delta t \\[6pt]
 \omega_{k+1} & = & \omega_k
 \end{array}
+\quad \xrightarrow{\ \ \partial A / \partial \bar{x}\ \ } \quad
+A_{jacobian} = \begin{bmatrix}
+1 & 0 & \Delta t\cos\theta & \Delta t^2\cos\theta/2 & -\left(v\,\Delta t + a\,\Delta t^2/2\right)\sin\theta & 0 \\[10pt]
+0 & 1 & \Delta t\sin\theta & \Delta t^2\sin\theta/2 & \left(v\,\Delta t + a\,\Delta t^2/2\right)\cos\theta & 0 \\[10pt]
+0 & 0 & 1 & \Delta t & 0 & 0 \\[6pt]
+0 & 0 & 0 & 1 & 0 & 0 \\[6pt]
+0 & 0 & 0 & 0 & 1 & \Delta t \\[6pt]
+0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}
 ```
 
-- This required an Extended Kalman Filter since the motion model was nonlinear
-- Although a fixed rate control loop was implemented, a jitter analysis was not performed, therefore a variable $$\Delta t$$ (measured at the time of measurement) was used in the prediction step of the EKF 
+- 
+
+
+- Although a fixed rate control loop was implemented, a jitter analysis was not performed, therefore a variable $$\Delta t$$ (measured at the time of measurement) was used in the prediction step of the EKF and PID loop
+- Regime adaptive filter variable Q/R matrices
 
 #### PID controllers
 - Abstract base class
@@ -99,6 +114,7 @@ PLOTS GO HERE
 ## Difficult bugs/challenges overcome
 - Wheel slippage
 - Ghost heading drift
+- Autonomous return to home once close to home didnt have enough input to overcome friction so we increased input response
 
 
 
