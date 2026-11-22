@@ -7,7 +7,6 @@ Pid::Pid(double Kp, double Ki, double Kd, double maxOutput) : gains{Kp, Ki, Kd},
 void Pid::reset()
 {
 	prevError = 0;
-	totalTime = 0;
 	integralError = 0;
 }
 
@@ -15,7 +14,7 @@ void Pid::reset()
 double Pid::calculateInput(double currentState, double targetState, double dt)
 {
 	double pidError = targetState - currentState;
-	
+
 	integralError += (pidError * dt);
 
 	double porportional = gains[P] * pidError;
@@ -29,31 +28,32 @@ double Pid::calculateInput(double currentState, double targetState, double dt)
 	return std::min(std::max(output, -maxOutput), maxOutput);
 }
 
-void Pid::toggleGainToAdjust(){
+void Pid::toggleGainToAdjust()
+{
 	currentToggleGain = (currentToggleGain + 1) % 3;
 }
 
 void Pid::incrementGain()
 {
-	gains[currentToggleGain] += 0.1; 
+	gains[currentToggleGain] += 0.1;
 }
 
 void Pid::decrementGain()
 {
-	gains[currentToggleGain] -= 0.1; 
+	gains[currentToggleGain] -= 0.1;
 }
 
-double Pid::getKp()
+double Pid::getKp() const
 {
 	return gains[P];
 }
 
-double Pid::getKi()
+double Pid::getKi() const
 {
 	return gains[I];
 }
 
-double Pid::getKd()
+double Pid::getKd() const
 {
 	return gains[D];
 }

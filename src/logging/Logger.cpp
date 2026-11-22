@@ -57,9 +57,7 @@ void Logger::log(const std::string &message, bool rateLimit)
 {
 	// skip log in order to rate limit the logging if boolean is true and we are not on the start of the rate limit cycle
 	if (rateLimit && rateLimitIterationCounter != 0)
-	{
 		return;
-	}
 
 	char buffer[QUEUE_ITEM_SIZE];
 	snprintf(buffer, QUEUE_ITEM_SIZE, "%s", message.c_str()); //%s so it doesnt accidentally interpret message as a format string
@@ -68,7 +66,7 @@ void Logger::log(const std::string &message, bool rateLimit)
 
 bool Logger::connectToWifi()
 {
-	unsigned long timeout = 10000;
+	static const unsigned long TIMEOUT = 10000;
 
 	// Serial printing and not logging yet since wifi isn't connected
 	Serial.print("Connecting to WiFi.");
@@ -76,9 +74,7 @@ bool Logger::connectToWifi()
 	for (size_t i = 0; i < 3; i++)
 	{
 		if (i > 0)
-		{
 			Serial.println("Timed out. Retrying...");
-		}
 
 		WiFi.disconnect(true); // forget previous networks
 		delay(500);
@@ -87,16 +83,14 @@ bool Logger::connectToWifi()
 		WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
 		unsigned long startTime = millis();
-		while (WiFi.status() != WL_CONNECTED && millis() - startTime < timeout)
+		while (WiFi.status() != WL_CONNECTED && millis() - startTime < TIMEOUT)
 		{
 			delay(500);
 			Serial.print(".");
 		}
 
 		if (WiFi.status() == WL_CONNECTED)
-		{
 			break; // exit early on success, don't burn remaining attempts
-		}
 	}
 
 	if (WiFi.status() == WL_CONNECTED)
@@ -117,13 +111,9 @@ bool Logger::connectToWifi()
 void Logger::incrementRateLimitCounter()
 {
 	if (rateLimitIterationCounter == RATE_LIMIT_COUNT_MAX - 1)
-	{
 		rateLimitIterationCounter = 0;
-	}
 	else
-	{
 		rateLimitIterationCounter++;
-	}
 }
 
 // defined outside the class becuase static members whose size are runtime dependent cant be defined inside the class

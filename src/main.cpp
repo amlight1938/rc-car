@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <cmath>
 #include "Pins.h"
 #include "Car/Car.h"
 #include "Controller/Controller.h"
@@ -58,15 +59,10 @@ void controlTask(void *params)
 	State lastState;
 
 	// initializing our measurement variables
-	ImuReading imuReading;
-	CarMotionState motion;
+
 	MeasurementState measurementState;
 	KalmanFilter ekf;
 	Vector<double, 7> pose; // x, y, v, a, theta, omega, dt
-	VelocityPid velPid(0.7, 6.4, 0.0);
-	TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD); 
-	Pid* pids[2] = {&velPid, &thetaPid}; //pointers since we cant have objects of Pid class
-	int currentPid = 0;
 
 	// set lastWakeTime once outside the loop and it will be set going forward by vTaskDelayUntil()
 	TickType_t lastWakeTime = xTaskGetTickCount();
@@ -75,8 +71,8 @@ void controlTask(void *params)
 	// this is expected to be used multiple times in the switch-case
 	auto getPose = [&]() -> Vector<double, 7>
 	{
-		imuReading = imu.getImuReading();
-		motion = car.getCarMotionState();
+		const ImuReading imuReading = imu.getImuReading();
+		const CarMotionState motion = car.getCarMotionState();
 		measurementState.timeSinceLastMeasurement = imuReading.timeSinceLastMeasurement;
 		measurementState.velocity = motion.forwardVelocity;
 		measurementState.acceleration = imuReading.accX;
@@ -94,14 +90,13 @@ void controlTask(void *params)
 
 		// enter pairing mode if controller disconnects
 		if (!controllerState.connected)
-		{
 			currentState = PAIRING;
-		}
 
 		// performing unique actions based on the cars state
 		switch (currentState)
 		{
 		case PAIRING:
+		{
 			// stopping the motors if the controller disconnects
 			if (lastState != PAIRING)
 			{
@@ -131,8 +126,10 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 
 		case DISARMED:
+		{
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
@@ -142,6 +139,9 @@ void controlTask(void *params)
 				stbyState = LOW;
 				digitalWrite(STBY_PIN, stbyState);
 				car.stop();
+
+				// resetting the throttle to default OFF
+				car.throttleOff();
 			}
 
 			// switching to MANUAL based on controller inputs
@@ -169,20 +169,24 @@ void controlTask(void *params)
 			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
 
 			break;
+		}
 
 		case MANUAL:
+		{
 			// turning the bluetooth LED ON and the standby LED ON when entering the state
 			if (lastState != MANUAL)
 			{
 				lastState = MANUAL;
 				stbyState = HIGH;
 				digitalWrite(STBY_PIN, stbyState);
-				// need to turn the btLED on (at least for the time being for indication)
 				btLedState = HIGH;
 				digitalWrite(BT_LED_PIN, btLedState);
 
 				// resetting the EKF without having to restart car
 				ekf.reset();
+
+				// resetting the throttle to default ON
+				car.throttleOn();
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -201,9 +205,7 @@ void controlTask(void *params)
 
 			// capping the motor throttle based on controller inputs
 			if (controllerState.buttonX)
-			{
 				car.throttleToggle();
-			}
 
 			// powering the motors with manual control
 			car.control(controllerState.leftStickY, controllerState.rightStickX);
@@ -212,16 +214,25 @@ void controlTask(void *params)
 			pose = getPose();
 
 			// logging data for troubleshooting
-			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
-			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+					   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
-					    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
+			// 		    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			break;
+		}
 
 		case AUTONOMOUS:
+		{
+			// instancating all of the PID variables
+			static VelocityPid velPid(0.7, 6.4, 0.0);
+			static TurnPid thetaPid(2.0, 0.3, 0.4, 0.0 * DEG_TO_RAD);
+			static Pid *pids[2] = {&velPid, &thetaPid}; // pointers since we cant have objects of Pid class
+			static int currentPid = 0;
+
 			static bool pidRunning = false;
+			static bool withinGoal = false;
 
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
@@ -233,6 +244,10 @@ void controlTask(void *params)
 				velPid.reset();
 				thetaPid.reset();
 				pidRunning = false;
+
+				// resetting the throttle to default OFF
+				car.throttleOff();
+				withinGoal = false;
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -258,31 +273,60 @@ void controlTask(void *params)
 				btLedState = !btLedState;
 			}
 
-			// future autonomous capabilities go here
-
 			// getting the measurements and updating the EKF using the lambda function
 			pose = getPose();
 
 			// turning on the velocity Pid control based on controller inputs
 			if (controllerState.buttonA)
-			{
 				pidRunning = !pidRunning;
-			}
-			if (pidRunning)
+
+			double r = std::hypot(pose[0], pose[1]);
+
+			if (pidRunning && !withinGoal)
 			{
-				double targetTheta = 90*DEG_TO_RAD;
+				static const double LARGE_TRASHCAN_LID = 0.25;
+				static const double SMALL_TRASHCAN_LID = 0.03;
+				static const double HEADING_THRESHOLD_DEG = 20;
+
+				// converting pose into polar coordinates
+				double targetTheta = std::fmod(atan2(pose[1], pose[0]) + PI, 2 * PI); // getting heading from origin to us, adding 180 deg to get angle from us to origin, then mod 2PI
+
 				double thetaInput = thetaPid.calculateInput(pose[4], targetTheta, pose[6]);
+				thetaInput = std::copysign(std::floor(std::abs(thetaInput)), thetaInput);
 
-				double targetVelocity = .3; // m/s
-				double velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
+				// setting the trashcan lid to slow down and stop at the target
+				double targetVelocity = 0.0;
+				if (r >= LARGE_TRASHCAN_LID) // large trashcan lid is 10cm
+				{
+					targetVelocity = 0.3; // m/s
+				}
+				else if (r >= SMALL_TRASHCAN_LID) // small trashcan lid is 5cm
+				{
+					targetVelocity = 0.05; // m/s
+				}
+
+				// determining to drive toward the target if we are facing the correct direction
+				double velocityInput = 0.0;
+
+				// remainder is similar to modulo but it rounds to the nearest nth multiple of 2*PI instead of rounding down
+				double headingError = std::abs(std::remainder(targetTheta - pose[4], 2 * PI));
+				if (headingError < HEADING_THRESHOLD_DEG * DEG_TO_RAD)
+				{
+					velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
+				}
+
 				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
-				car.control(0, -thetaInput); 
-				// car.control(velocityInput, 0, true); 
+				car.control(velocityInput, -thetaInput);
 
-				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
-				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
-				logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
-				// logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfVel: %-7.3f", millis() / 1000.0, velocityInput, pose[2]);
+				// stopping the autonomy once the car arrives at the destination
+				if (r < SMALL_TRASHCAN_LID)
+				{
+					withinGoal = true;
+				}
+
+				// logging data for troubleshooting
+				logger.log(true, "[%.2f]-tV: %-4.2f to: %-7.2f vi: %-7.2f ti: %-7.3f he: %-7.3f v: %-7.3f o: %-7.3f r: %-7.3f",
+						   millis() / 1000.0, targetVelocity, targetTheta, velocityInput, thetaInput, headingError, pose[2], pose[4], r);
 			}
 			else
 			{
@@ -290,32 +334,30 @@ void controlTask(void *params)
 				car.stop();
 
 				// allowing Kp, Ki, and Kd adjustments while Pid control is disabled
+				// increase current gain on current PID
 				if (controllerState.dpadUp)
-				{
-					//increase current gain on current PID
 					pids[currentPid]->incrementGain();
-				}
+				// decrease current gain on current PID
 				if (controllerState.dpadDown)
-				{
-					//decrease current gain on current PID
 					pids[currentPid]->decrementGain();
-				}
-				if (controllerState.buttonX){
-					//toggle which gain we are adjusting currently
+				// toggle which gain we are adjusting currently
+				if (controllerState.buttonX)
 					pids[currentPid]->toggleGainToAdjust();
-				}
+				// toggle which PID we are tuning when we hit the dpad up down buttons
 				if (controllerState.buttonB)
-				{	
-					//toggle which PID we are tuning when we hit the dpad up down buttons
 					currentPid = (currentPid + 1) % 2;
-				}
 
-				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd());
+				// logging data for PID Gain tuning
+				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f o: %-7.3f r: %-7.3f x: %-7.3f y: %-7.3f",
+						   millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd(), pose[4], r, pose[0], pose[1]);
 			}
 
 			break;
+		}
 
 		case IMU_CALIBRATION:
+		{
+
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != IMU_CALIBRATION)
@@ -343,8 +385,11 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 
 		case BIAS_CALIBRATION:
+		{
+
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != BIAS_CALIBRATION)
@@ -369,6 +414,7 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 		}
 
 		// increaseing the rate limit counter so the logger only operates every 10th cycle

@@ -1,10 +1,10 @@
 #include "Car/Car.h"
 
 Car::Car()
-    : leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN),
-      rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN),
-      leftEncoder(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN),
-      rightEncoder(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN)
+	: leftMotor(L_MOTOR_PLUS_PIN, L_MOTOR_MINUS_PIN, L_MOTOR_SPEED_PIN),
+	  rightMotor(R_MOTOR_PLUS_PIN, R_MOTOR_MINUS_PIN, R_MOTOR_SPEED_PIN),
+	  leftEncoder(L_ENCODER_PHASE_A_PIN, L_ENCODER_PHASE_B_PIN),
+	  rightEncoder(R_ENCODER_PHASE_A_PIN, R_ENCODER_PHASE_B_PIN)
 {
 }
 
@@ -48,4 +48,16 @@ void Car::throttleToggle()
 {
 	leftMotor.throttleToggle();
 	rightMotor.throttleToggle();
+}
+
+void Car::throttleOff()
+{
+	leftMotor.throttleOff();
+	rightMotor.throttleOff();
+}
+
+void Car::throttleOn()
+{
+	leftMotor.throttleOn();
+	rightMotor.throttleOn();
 }
