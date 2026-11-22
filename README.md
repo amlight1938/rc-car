@@ -55,8 +55,13 @@ PICTURES / VIDEOS GO HERE
 	- Build abstraction interfaces to make the system hardware agnositc, allowing us to easily interchange future hardware (IMUs, motors, encoders)
 
 #### Extended Kalman Filter
-- The Kalman Filter fused acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state
-- The following state vector $\bar{x}$ and differential drive physics model are defined below. Since this motion model is nonlinear, an Extended Kalman Filter (EKF) was required. The Jacobian below was used to linearize the system
+The Kalman Filter fuses acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state. The state vector $\bar{x}$ evolves as a function of the previous state: 
+
+```math
+\bar{x}_{k+1} = f(\bar{x}_k) 
+```
+
+Since this motion model is nonlinear, an Extended Kalman Filter (EKF) was required. The Jacobian below was used to linearize the system at the current state estimate
 
 ```math
 \begin{array}{rcl}
@@ -68,7 +73,7 @@ a_{k+1} & = & a_k \\[6pt]
 \theta_{k+1} & = & \theta_k + \omega_k\,\Delta t \\[6pt]
 \omega_{k+1} & = & \omega_k
 \end{array}
-\quad \xrightarrow{\ \ \partial A / \partial \bar{x}\ \ } \quad
+\quad \xrightarrow{\ \ \partial f / \partial \bar{x}\ \ } \quad
 A_{jacobian} = \begin{bmatrix}
 1 & 0 & \Delta t\cos\theta & \Delta t^2\cos\theta/2 & -\left(v\,\Delta t + a\,\Delta t^2/2\right)\sin\theta & 0 \\[10pt]
 0 & 1 & \Delta t\sin\theta & \Delta t^2\sin\theta/2 & \left(v\,\Delta t + a\,\Delta t^2/2\right)\cos\theta & 0 \\[10pt]
@@ -79,11 +84,13 @@ A_{jacobian} = \begin{bmatrix}
 \end{bmatrix}
 ```
 
-- 
+Measurement update timing, $\Delta t$
+- Although a fixed rate control loop was implemented, a jitter analysis was not performed, therefore a variable $\Delta t$ (measured at the time of measurement) was used in the prediction step of the EKF and PID loop to increase accuracy of the filter
 
-
-- Although a fixed rate control loop was implemented, a jitter analysis was not performed, therefore a variable $$\Delta t$$ (measured at the time of measurement) was used in the prediction step of the EKF and PID loop
-- Regime adaptive filter variable Q/R matrices
+Variable motion model and sensor noise matrices 
+- The car experienced varying amounts of wheel slippage which affected the filter's motion mode, $Q$, and encoder sensor noise, $R$, depending on how aggressively the car was being driven and the terrain it was being driven on. This increased the EKF's accuracy as its trust in the encoder sensors changed accordingly depending on the driving regime.
+- Driving intensely -> $Q \uparrow$ (motion noise increases due to wheel slip), $R_{encoders} \uparrow$ (trust encoders less)
+- Stationary -> $Q \downarrow$ (motion noise decreases due to no wheel slip), $R_{encoders} \downarrow$ (trust encoders more)
 
 #### PID controllers
 - Abstract base class
