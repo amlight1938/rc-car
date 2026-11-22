@@ -101,6 +101,7 @@ void controlTask(void *params)
 		switch (currentState)
 		{
 		case PAIRING:
+		{
 			// stopping the motors if the controller disconnects
 			if (lastState != PAIRING)
 			{
@@ -130,8 +131,10 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 
 		case DISARMED:
+		{
 			// turning the bluetooth LED ON and the standby LED OFF when entering the state
 			if (lastState != DISARMED)
 			{
@@ -171,8 +174,10 @@ void controlTask(void *params)
 			logger.log(true, "[%.1f]-current state: DISARMED", millis() / 1000.0);
 
 			break;
+		}
 
 		case MANUAL:
+		{
 			// turning the bluetooth LED ON and the standby LED ON when entering the state
 			if (lastState != MANUAL)
 			{
@@ -215,16 +220,19 @@ void controlTask(void *params)
 			pose = getPose();
 
 			// logging data for troubleshooting
-			// logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
-			// 		   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			logger.log(true, "x: %-7.3f y: %-7.3f v: %-7.3f a: %-7.3f theta: %-7.3f w: %-7.3f we: %-7.3f wg: %-7.3f",
+					   pose[0], pose[1], pose[2], pose[3], pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
-			logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
-					   millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
+			// logger.log(true, "[%.4f]-theta: %-9.5f w: %-9.5f we: %-9.5f wg: %-9.5f",
+			// 		    millis() / 1000.0, pose[4], pose[5], measurementState.omega_encoder, measurementState.omega_gyro);
 
 			break;
+		}
 
 		case AUTONOMOUS:
+		{
 			static bool pidRunning = false;
+			static bool withinGoal = false;
 
 			// turning the both motors off when entering the state
 			if (lastState != AUTONOMOUS)
@@ -239,6 +247,7 @@ void controlTask(void *params)
 
 				// resetting the throttle to default OFF
 				car.throttleOff();
+				withinGoal = false;
 			}
 
 			// switching to DISARMED based on controller inputs
@@ -271,43 +280,54 @@ void controlTask(void *params)
 			if (controllerState.buttonA)
 				pidRunning = !pidRunning;
 
-			if (pidRunning)
+			double r = std::hypot(pose[0], pose[1]);
+
+			if (pidRunning && !withinGoal)
 			{
+				static const double LARGE_TRASHCAN_LID = 0.25;
+				static const double SMALL_TRASHCAN_LID = 0.03;
+				double HEADING_THRESHOLD_DEG = 20;
+
 				// converting pose into polar coordinates
-				double targetTheta = -atan2(pose[1], pose[0]);
-				double r = std::hypot(pose[0], pose[1]);
+				double targetTheta = std::fmod(atan2(pose[1], pose[0]) + PI, 2 * PI); // getting heading from origin to us, adding 180 deg to get angle from us to origin, then mod 2PI
 
 				double thetaInput = thetaPid.calculateInput(pose[4], targetTheta, pose[6]);
+				thetaInput = std::copysign(std::floor(std::abs(thetaInput)), thetaInput);
 
 				// setting the trashcan lid to slow down and stop at the target
 				double targetVelocity = 0.0;
-				if (r >= 0.1) // large trashcan lid is 10cm
+				if (r >= LARGE_TRASHCAN_LID) // large trashcan lid is 10cm
 				{
 					targetVelocity = 0.3; // m/s
 				}
-				else if (r >= 0.05) // small trashcan lid is 5cm
+				else if (r >= SMALL_TRASHCAN_LID) // small trashcan lid is 5cm
 				{
 					targetVelocity = 0.05; // m/s
 				}
 
 				// determining to drive toward the target if we are facing the correct direction
 				double velocityInput = 0.0;
-				if (std::abs(std::remainder(targetTheta - pose[4], 2 * PI)) < 15 * DEG_TO_RAD)
-				{	
+				// remainder is similar to modulo but it rounds to the nearest nth multiple of 2*PI instead of rounding down
+				double headingError = std::abs(std::remainder(targetTheta - pose[4], 2 * PI));
+				if (headingError < HEADING_THRESHOLD_DEG * DEG_TO_RAD)
+				{
 					velocityInput = velPid.calculateInput(pose[2], targetVelocity, pose[6]);
 				}
 
-				// moving the car if the car is outside of the trashcan lid
-				if (r >= 0.05)
+				// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
+				car.control(velocityInput, -thetaInput);
+
+				// if we made it to the goal set the flag
+				if (r < SMALL_TRASHCAN_LID)
 				{
-					// negating thetaInput because a positive joystick input turns car to right and positive thetaInput calculation means turn to the left
-					car.control(velocityInput, -thetaInput);
+					withinGoal = true;
 				}
 
 				// Serial.printf("[%.2f] Pidv: %-7.3f EkfV: %-7.3f \n", millis()/1000.0, velInput, pose[2]);
 				// logger.log(true, "[%.2f]-PidV: %-7.3f EkfV: %-7.3f", millis() / 1000.0, velInput, pose[2]);
-				logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
-				// logger.log(true, "[%.2f]-PidOutput: %-7.3f EkfVel: %-7.3f", millis() / 1000.0, velocityInput, pose[2]);
+				// logger.log(true, "[%.2f]-PidOutput: %-9.5f EkfTheta: %-9.5f", millis() / 1000.0, thetaInput, pose[4]);
+				logger.log(true, "[%.2f]-tV: %-4.2f to: %-7.2f vi: %-7.2f ti: %-7.3f he: %-7.3f v: %-7.3f o: %-7.3f r: %-7.3f",
+						   millis() / 1000.0, targetVelocity, targetTheta, velocityInput, thetaInput, headingError, pose[2], pose[4], r);
 			}
 			else
 			{
@@ -328,12 +348,16 @@ void controlTask(void *params)
 				if (controllerState.buttonB)
 					currentPid = (currentPid + 1) % 2;
 
-				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f", millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd());
+				logger.log(true, "[%.2f]-PID:%-8s Kp: %-4.1f Ki: %-4.1f Kd: %-4.1f o: %-7.3f r: %-7.3f x: %-7.3f y: %-7.3f", 
+					millis() / 1000.0, pids[currentPid]->getName(), pids[currentPid]->getKp(), pids[currentPid]->getKi(), pids[currentPid]->getKd(), pose[4], r, pose[0], pose[1]);
 			}
 
 			break;
+		}
 
 		case IMU_CALIBRATION:
+		{
+
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != IMU_CALIBRATION)
@@ -361,8 +385,11 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 
 		case BIAS_CALIBRATION:
+		{
+
 			// turning the both motors off when entering the state
 			// this only occurs once as calibration causes the controlTask to wait and only calibrate once
 			if (lastState != BIAS_CALIBRATION)
@@ -387,6 +414,7 @@ void controlTask(void *params)
 			}
 
 			break;
+		}
 		}
 
 		// increaseing the rate limit counter so the logger only operates every 10th cycle

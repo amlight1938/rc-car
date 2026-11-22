@@ -1,0 +1,538 @@
+received message:   39.0- nV: 0.0700  nA: -0.0151 nE: -0.0000 nG: -0.4926 Px: 9.356e-04 Py: 1.090e-04 Pv: 4.786e-08 Pa: 2.802e-04 Po: 2.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.0- x: -0.0000 y: -0.0000 v: -0.0000 a: -0.0095 o: 0.0000  w: -0.0000
+received message:   39.1- nV: -0.0083 nA: -0.0303 nE: 0.0000  nG: 0.1556  Px: 9.456e-04 Py: 1.190e-04 Pv: 4.778e-08 Pa: 2.802e-04 Po: 3.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.1- x: -0.0000 y: -0.0000 v: 0.0000  a: -0.0095 o: 0.0000  w: 0.0000
+received message:   39.3- nV: -0.0862 nA: -0.0601 nE: 0.0000  nG: 0.1556  Px: 9.556e-04 Py: 1.290e-04 Pv: 4.775e-08 Pa: 2.802e-04 Po: 4.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.3- x: -0.0000 y: -0.0000 v: 0.0000  a: -0.0047 o: 0.0000  w: 0.0000
+received message:   39.3- nV: 0.0759  nA: 0.0302  nE: 0.0000  nG: 0.1556  Px: 9.656e-04 Py: 1.390e-04 Pv: 4.788e-08 Pa: 2.802e-04 Po: 5.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.4- x: -0.0000 y: -0.0000 v: -0.0000 a: 0.0048  o: 0.0000  w: 0.0000
+received message:   39.4- nV: 0.0857  nA: 0.0302  nE: -0.0000 nG: -0.4926 Px: 9.756e-04 Py: 1.490e-04 Pv: 4.777e-08 Pa: 2.802e-04 Po: 6.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.4- x: -0.0000 y: -0.0000 v: -0.0000 a: 0.0000  o: 0.0000  w: -0.0000
+received message:   39.5- nV: 0.0339  nA: -0.0302 nE: -0.0000 nG: 0.1556  Px: 9.856e-04 Py: 1.590e-04 Pv: 4.775e-08 Pa: 2.802e-04 Po: 7.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.5- x: -0.0000 y: -0.0000 v: -0.0000 a: -0.0143 o: 0.0000  w: 0.0000
+received message:   39.6- nV: 0.0799  nA: 0.0300  nE: -0.0000 nG: 0.4797  Px: 9.956e-04 Py: 1.690e-04 Pv: 4.774e-08 Pa: 2.802e-04 Po: 8.233e-03 Pw: 1.000e-15 R: 0
+received message:   39.6- x: -0.0000 y: -0.0000 v: -0.0000 a: -0.0048 o: 0.0000  w: 0.0000
+received message:   39.7- nV: 1.3888  nA: -0.0451 nE: 0.2813  nG: -0.0476 Px: 1.024e-03 Py: 1.970e-04 Pv: 3.641e-06 Pa: 2.802e-04 Po: 9.233e-03 Pw: 8.023e-07 R: 1
+received message:   39.7- x: 0.0000  y: 0.0000  v: 0.0053  a: 0.0145  o: 6.2832  w: -0.0016
+received message:   39.9- nV: -1.0989 nA: 0.0313  nE: -2.8888 nG: 0.0960  Px: 1.124e-03 Py: 2.987e-04 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.023e-02 Pw: 8.023e-07 R: 1
+received message:   39.9- x: 0.0133  y: 0.0001  v: 0.1677  a: 0.9389  o: 0.0060  w: -0.0123
+received message:   40.0- nV: -0.8741 nA: -0.0860 nE: 1.0060  nG: 2.5139  Px: 1.224e-03 Py: 4.133e-04 Pv: 3.665e-06 Pa: 2.802e-04 Po: 1.123e-02 Pw: 8.023e-07 R: 1
+received message:   40.0- x: 0.0401  y: 0.0001  v: 0.2169  a: 0.6659  o: 6.2826  w: -0.0262
+received message:   40.1- nV: 0.3843  nA: 0.1952  nE: -0.1309 nG: 1.5708  Px: 1.324e-03 Py: 5.495e-04 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.223e-02 Pw: 8.023e-07 R: 1
+received message:   40.1- x: 0.0706  y: 0.0001  v: 0.2389  a: 0.1675  o: 6.2816  w: 0.0516
+received message:   40.2- nV: 0.1167  nA: 0.2618  nE: -0.1702 nG: 0.0943  Px: 1.424e-03 Py: 6.964e-04 Pv: 3.661e-06 Pa: 2.802e-04 Po: 1.323e-02 Pw: 8.023e-07 R: 1
+received message:   40.2- x: 0.0958  y: 0.0001  v: 0.2576  a: 0.6465  o: 0.0030  w: 0.0431
+received message:   40.3- nV: -0.5497 nA: -0.2424 nE: 0.0097  nG: 1.3808  Px: 1.524e-03 Py: 8.647e-04 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.423e-02 Pw: 8.023e-07 R: 1
+received message:   40.3- x: 0.1226  y: 0.0002  v: 0.2532  a: 0.1919  o: 0.0032  w: -0.0208
+received message:   40.4- nV: -0.7002 nA: -0.2665 nE: 0.1929  nG: 1.6193  Px: 1.624e-03 Py: 1.046e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.523e-02 Pw: 8.023e-07 R: 1
+received message:   40.4- x: 0.1475  y: 0.0003  v: 0.2529  a: 0.1440  o: 0.0007  w: 0.0345
+received message:   40.5- nV: 0.0244  nA: 1.1927  nE: 0.4067  nG: 1.2347  Px: 1.724e-03 Py: 1.251e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.623e-02 Pw: 8.023e-07 R: 1
+received message:   40.5- x: 0.1735  y: 0.0003  v: 0.2524  a: 0.0325  o: 0.0006  w: -0.0208
+received message:   40.6- nV: -0.9310 nA: 0.5741  nE: -0.1036 nG: 0.8577  Px: 1.824e-03 Py: 1.474e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.723e-02 Pw: 8.023e-07 R: 1
+received message:   40.6- x: 0.1987  y: 0.0003  v: 0.2514  a: 0.5696  o: 0.0004  w: 0.0378
+received message:   40.8- nV: 1.7902  nA: 2.0345  nE: 0.3725  nG: -0.0507 Px: 1.924e-03 Py: 1.777e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.823e-02 Pw: 8.023e-07 R: 1
+received message:   40.8- x: 0.2331  y: 0.0003  v: 0.2436  a: 0.0078  o: 0.0013  w: -0.0378
+received message:   40.9- nV: -0.0938 nA: -0.1207 nE: -0.5767 nG: -5.0383 Px: 2.024e-03 Py: 2.109e-03 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.923e-02 Pw: 8.023e-07 R: 1
+received message:   40.9- x: 0.2655  y: 0.0003  v: 0.2461  a: -0.1723 o: 6.2823  w: -0.0206
+received message:   41.0- nV: -0.5718 nA: -0.8868 nE: -0.3338 nG: -2.9039 Px: 2.124e-03 Py: 2.486e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.023e-02 Pw: 8.023e-07 R: 1
+received message:   41.0- x: 0.2987  y: 0.0003  v: 0.2480  a: -0.4542 o: 6.2829  w: 0.0368
+received message:   41.1- nV: -1.6658 nA: -2.0963 nE: 0.0434  nG: 0.2859  Px: 2.224e-03 Py: 2.828e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.123e-02 Pw: 8.023e-07 R: 1
+received message:   41.1- x: 0.3240  y: 0.0003  v: 0.2478  a: -0.2376 o: 0.0043  w: 0.0389
+received message:   41.2- nV: -0.2028 nA: -2.6095 nE: -0.4910 nG: -0.9003 Px: 2.324e-03 Py: 3.182e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.223e-02 Pw: 8.023e-07 R: 1
+received message:   41.2- x: 0.3480  y: 0.0005  v: 0.2446  a: -0.2994 o: 0.0067  w: 0.0708
+received message:   41.3- nV: -0.3170 nA: -1.2061 nE: -0.6125 nG: 1.3343  Px: 2.424e-03 Py: 3.587e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.323e-02 Pw: 8.023e-07 R: 1
+received message:   41.4- x: 0.3741  y: 0.0007  v: 0.2566  a: 0.2167  o: 0.0071  w: 0.0367
+received message:   41.4- nV: -0.6197 nA: -1.9509 nE: -0.2882 nG: -2.5681 Px: 2.524e-03 Py: 4.017e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.423e-02 Pw: 8.023e-07 R: 1
+received message:   41.5- x: 0.3996  y: 0.0008  v: 0.2586  a: -0.4724 o: 0.0069  w: 0.0049
+received message:   41.6- nV: -0.8183 nA: -0.2012 nE: 1.4128  nG: 3.8504  Px: 2.624e-03 Py: 4.603e-03 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.523e-02 Pw: 8.023e-07 R: 1
+received message:   41.6- x: 0.4335  y: 0.0011  v: 0.2386  a: -0.3734 o: 0.0081  w: 0.0387
+received message:   41.7- nV: 1.0063  nA: -1.0370 nE: 0.4556  nG: -3.7644 Px: 2.724e-03 Py: 5.152e-03 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.623e-02 Pw: 8.023e-07 R: 1
+received message:   41.7- x: 0.4619  y: 0.0014  v: 0.2222  a: -0.4301 o: 0.0169  w: -0.1048
+received message:   41.8- nV: -4.3061 nA: -1.9433 nE: 1.2008  nG: 4.1853  Px: 2.824e-03 Py: 5.748e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.723e-02 Pw: 8.023e-07 R: 1
+received message:   41.8- x: 0.4905  y: 0.0018  v: 0.2390  a: 0.3323  o: 0.0118  w: -0.0316
+received message:   41.9- nV: -0.8240 nA: -1.3287 nE: -0.1345 nG: 2.2373  Px: 2.924e-03 Py: 6.387e-03 Pv: 3.661e-06 Pa: 2.802e-04 Po: 2.823e-02 Pw: 8.023e-07 R: 1
+received message:   41.9- x: 0.5189  y: 0.0022  v: 0.2508  a: -0.0131 o: 0.0118  w: 0.0974
+received message:   42.0- nV: -0.3483 nA: 0.8565  nE: -0.5415 nG: -0.6213 Px: 3.024e-03 Py: 7.002e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.923e-02 Pw: 8.023e-07 R: 1
+received message:   42.0- x: 0.5441  y: 0.0026  v: 0.2509  a: -0.0869 o: 0.0185  w: 0.0282
+received message:   42.1- nV: 0.7657  nA: -0.5109 nE: 0.3691  nG: -3.0958 Px: 3.124e-03 Py: 7.665e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.023e-02 Pw: 8.023e-07 R: 1
+received message:   42.2- x: 0.5698  y: 0.0030  v: 0.2533  a: -0.2869 o: 0.0168  w: -0.1197
+received message:   42.3- nV: 0.7416  nA: 1.3099  nE: -0.0443 nG: 1.7105  Px: 3.224e-03 Py: 8.394e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.123e-02 Pw: 8.023e-07 R: 1
+received message:   42.3- x: 0.5965  y: 0.0034  v: 0.2508  a: -0.0203 o: 0.0137  w: 0.0026
+received message:   42.4- nV: -0.6655 nA: 0.0150  nE: 0.3647  nG: 0.7147  Px: 3.324e-03 Py: 9.137e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.223e-02 Pw: 8.023e-07 R: 1
+received message:   42.4- x: 0.6221  y: 0.0037  v: 0.2504  a: -0.0526 o: 0.0118  w: -0.0155
+received message:   42.5- nV: -0.1911 nA: -0.2126 nE: -0.3369 nG: -0.0941 Px: 3.424e-03 Py: 9.924e-03 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.323e-02 Pw: 8.023e-07 R: 1
+received message:   42.5- x: 0.6477  y: 0.0040  v: 0.2503  a: -0.2009 o: 0.0123  w: 0.0389
+received message:   42.6- nV: -1.3937 nA: -1.9446 nE: 0.3325  nG: 1.4765  Px: 3.524e-03 Py: 1.074e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.423e-02 Pw: 8.023e-07 R: 1
+received message:   42.6- x: 0.6728  y: 0.0043  v: 0.2532  a: -0.1419 o: 0.0103  w: 0.0207
+received message:   42.7- nV: 0.0892  nA: -0.5901 nE: 0.0113  nG: -0.2855 Px: 3.624e-03 Py: 1.152e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.523e-02 Pw: 8.023e-07 R: 1
+received message:   42.7- x: 0.6956  y: 0.0046  v: 0.2476  a: -0.1767 o: 0.0087  w: 0.0154
+received message:   42.8- nV: -0.0765 nA: -0.4821 nE: -0.3452 nG: -2.0921 Px: 3.724e-03 Py: 1.249e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 3.623e-02 Pw: 8.023e-07 R: 1
+received message:   42.8- x: 0.7229  y: 0.0048  v: 0.2516  a: -0.1145 o: 0.0112  w: 0.0102
+received message:   42.9- nV: 0.4339  nA: 1.0736  nE: -0.4481 nG: -1.6642 Px: 3.824e-03 Py: 1.349e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.723e-02 Pw: 8.023e-07 R: 1
+received message:   42.9- x: 0.7493  y: 0.0051  v: 0.2530  a: 0.2578  o: 0.0139  w: 0.0283
+received message:   43.0- nV: -0.6560 nA: -1.6679 nE: -0.5321 nG: -0.1859 Px: 3.925e-03 Py: 1.453e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.823e-02 Pw: 8.023e-07 R: 1
+received message:   43.0- x: 0.7756  y: 0.0055  v: 0.2512  a: -0.5254 o: 0.0189  w: 0.0783
+received message:   43.1- nV: -1.0136 nA: -0.5446 nE: -0.0478 nG: -0.1428 Px: 4.025e-03 Py: 1.559e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 3.923e-02 Pw: 8.023e-07 R: 1
+received message:   43.1- x: 0.8011  y: 0.0060  v: 0.2501  a: -0.0090 o: 0.0192  w: 0.0154
+received message:   43.2- nV: -1.5419 nA: -0.6900 nE: -0.2238 nG: 1.3308  Px: 4.125e-03 Py: 1.674e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.023e-02 Pw: 8.023e-07 R: 1
+received message:   43.2- x: 0.8273  y: 0.0065  v: 0.2568  a: 0.4797  o: 0.0182  w: 0.0250
+received message:   43.3- nV: -1.1359 nA: -0.1069 nE: -0.0844 nG: 0.0978  Px: 4.225e-03 Py: 1.789e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.123e-02 Pw: 8.023e-07 R: 1
+received message:   43.3- x: 0.8524  y: 0.0070  v: 0.2564  a: 0.1870  o: 0.0180  w: 0.0282
+received message:   43.4- nV: -1.1033 nA: -2.4105 nE: -0.1607 nG: -2.7605 Px: 4.325e-03 Py: 1.915e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.223e-02 Pw: 8.023e-07 R: 1
+received message:   43.4- x: 0.8787  y: 0.0075  v: 0.2544  a: -0.1607 o: 0.0190  w: 0.0102
+received message:   43.5- nV: -0.5644 nA: -2.3705 nE: 0.4964  nG: 2.0925  Px: 4.426e-03 Py: 2.042e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 4.323e-02 Pw: 8.023e-07 R: 1
+received message:   43.5- x: 0.9040  y: 0.0079  v: 0.2558  a: -0.5583 o: 0.0168  w: -0.0028
+received message:   43.6- nV: 0.1135  nA: 0.4868  nE: 0.1631  nG: 0.7133  Px: 4.526e-03 Py: 2.182e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.423e-02 Pw: 8.023e-07 R: 1
+received message:   43.6- x: 0.9309  y: 0.0084  v: 0.2469  a: 0.1912  o: 0.0166  w: -0.0112
+received message:   43.7- nV: -0.2012 nA: 1.4468  nE: -0.3593 nG: 2.0992  Px: 4.626e-03 Py: 2.320e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.523e-02 Pw: 8.023e-07 R: 1
+received message:   43.7- x: 0.9563  y: 0.0088  v: 0.2534  a: 0.3389  o: 0.0175  w: 0.0675
+received message:   43.8- nV: -0.8208 nA: -1.5496 nE: -0.1527 nG: 1.0004  Px: 4.726e-03 Py: 2.472e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.623e-02 Pw: 8.023e-07 R: 1
+received message:   43.8- x: 0.9830  y: 0.0094  v: 0.2520  a: -0.1375 o: 0.0193  w: 0.0335
+received message:   43.9- nV: 0.6788  nA: 1.6632  nE: 0.4717  nG: 1.2819  Px: 4.827e-03 Py: 2.624e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 4.723e-02 Pw: 8.023e-07 R: 1
+received message:   43.9- x: 1.0087  y: 0.0099  v: 0.2558  a: 0.4728  o: 0.0200  w: -0.0826
+received message:   44.0- nV: 0.5514  nA: 1.6268  nE: -0.0649 nG: -0.5215 Px: 4.927e-03 Py: 2.814e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 4.823e-02 Pw: 8.023e-07 R: 1
+received message:   44.0- x: 1.0396  y: 0.0104  v: 0.2490  a: 0.1854  o: 0.0151  w: -0.0112
+received message:   44.1- nV: -0.0965 nA: -0.8286 nE: 0.3584  nG: -0.1893 Px: 5.028e-03 Py: 3.012e-02 Pv: 3.664e-06 Pa: 2.802e-04 Po: 4.923e-02 Pw: 8.023e-07 R: 1
+received message:   44.1- x: 1.0703  y: 0.0109  v: 0.2439  a: -0.1525 o: 0.0126  w: -0.0229
+received message:   44.3- nV: -0.5783 nA: -1.2686 nE: -0.0790 nG: -0.6656 Px: 5.128e-03 Py: 3.205e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.023e-02 Pw: 8.023e-07 R: 1
+received message:   44.3- x: 1.0988  y: 0.0112  v: 0.2434  a: -0.0898 o: 0.0113  w: 0.0069
+received message:   44.4- nV: 0.0244  nA: 0.0038  nE: -0.0543 nG: -0.8552 Px: 5.228e-03 Py: 3.431e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 5.123e-02 Pw: 8.023e-07 R: 1
+received message:   44.4- x: 1.1311  y: 0.0115  v: 0.2451  a: 0.1581  o: 0.0083  w: -0.0080
+received message:   44.5- nV: -0.2052 nA: -0.9222 nE: -0.0392 nG: 0.2372  Px: 5.328e-03 Py: 3.672e-02 Pv: 3.664e-06 Pa: 2.802e-04 Po: 5.223e-02 Pw: 8.023e-07 R: 1
+received message:   44.5- x: 1.1638  y: 0.0118  v: 0.2467  a: -0.2099 o: 0.0102  w: 0.0367
+received message:   44.7- nV: 1.0358  nA: 0.2407  nE: -0.1787 nG: -3.8078 Px: 5.429e-03 Py: 3.934e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 5.323e-02 Pw: 8.023e-07 R: 1
+received message:   44.7- x: 1.1979  y: 0.0122  v: 0.2457  a: -0.1343 o: 0.0154  w: -0.0260
+received message:   44.8- nV: 0.4184  nA: -0.6746 nE: 0.0307  nG: -0.8582 Px: 5.529e-03 Py: 4.165e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.423e-02 Pw: 8.023e-07 R: 1
+received message:   44.8- x: 1.2265  y: 0.0127  v: 0.2431  a: 0.0150  o: 0.0173  w: -0.0272
+received message:   44.9- nV: -0.8119 nA: -0.5689 nE: 0.1802  nG: 1.3339  Px: 5.630e-03 Py: 4.367e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.523e-02 Pw: 8.023e-07 R: 1
+received message:   44.9- x: 1.2504  y: 0.0131  v: 0.2543  a: 0.4844  o: 0.0153  w: -0.0176
+received message:   45.0- nV: -1.0129 nA: -0.7539 nE: -0.3597 nG: -0.4747 Px: 5.730e-03 Py: 4.662e-02 Pv: 3.667e-06 Pa: 2.802e-04 Po: 5.623e-02 Pw: 8.023e-07 R: 1
+received message:   45.0- x: 1.2846  y: 0.0135  v: 0.2491  a: -0.0807 o: 0.0136  w: 0.0048
+received message:   45.1- nV: -1.6757 nA: -0.4220 nE: 0.0825  nG: 2.2381  Px: 5.831e-03 Py: 4.949e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.723e-02 Pw: 8.023e-07 R: 1
+received message:   45.1- x: 1.3164  y: 0.0140  v: 0.2477  a: 0.2735  o: 0.0134  w: 0.0633
+received message:   45.2- nV: 0.9147  nA: 4.1049  nE: 0.5148  nG: 0.5210  Px: 5.931e-03 Py: 5.187e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.823e-02 Pw: 8.023e-07 R: 1
+received message:   45.2- x: 1.3417  y: 0.0144  v: 0.2507  a: 0.7101  o: 0.0146  w: -0.0964
+received message:   45.3- nV: 1.2495  nA: -0.8941 nE: 0.1189  nG: -1.2846 Px: 6.032e-03 Py: 5.436e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 5.923e-02 Pw: 8.023e-07 R: 1
+received message:   45.3- x: 1.3672  y: 0.0147  v: 0.2518  a: -0.4734 o: 0.0139  w: -0.0357
+received message:   45.4- nV: -0.0423 nA: 2.0654  nE: 0.0535  nG: 0.1916  Px: 6.132e-03 Py: 5.690e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.023e-02 Pw: 8.023e-07 R: 1
+received message:   45.4- x: 1.3926  y: 0.0151  v: 0.2493  a: 0.1898  o: 0.0132  w: 0.0250
+received message:   45.5- nV: -1.1728 nA: 0.0471  nE: -0.1074 nG: 0.2369  Px: 6.232e-03 Py: 5.946e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.123e-02 Pw: 8.023e-07 R: 1
+received message:   45.5- x: 1.4174  y: 0.0154  v: 0.2525  a: 0.2970  o: 0.0151  w: -0.0187
+received message:   45.6- nV: 0.0926  nA: -0.9690 nE: 0.5028  nG: -0.1437 Px: 6.333e-03 Py: 6.221e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.223e-02 Pw: 8.023e-07 R: 1
+received message:   45.6- x: 1.4432  y: 0.0158  v: 0.2530  a: -0.1380 o: 0.0165  w: -0.0730
+received message:   45.7- nV: -0.1633 nA: -0.4203 nE: -0.0764 nG: 0.0983  Px: 6.433e-03 Py: 6.502e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.323e-02 Pw: 8.023e-07 R: 1
+received message:   45.7- x: 1.4688  y: 0.0162  v: 0.2491  a: -0.1337 o: 0.0120  w: -0.0144
+received message:   45.8- nV: 0.0353  nA: -0.7545 nE: 0.4652  nG: -0.8592 Px: 6.534e-03 Py: 6.783e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.423e-02 Pw: 8.023e-07 R: 1
+received message:   45.8- x: 1.4938  y: 0.0165  v: 0.2482  a: -0.2819 o: 0.0110  w: -0.0474
+received message:   45.9- nV: 0.6797  nA: -0.1834 nE: -0.1288 nG: -0.3347 Px: 6.634e-03 Py: 7.065e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.523e-02 Pw: 8.023e-07 R: 1
+received message:   45.9- x: 1.5181  y: 0.0167  v: 0.2452  a: -0.4069 o: 0.0093  w: -0.0037
+received message:   46.1- nV: 1.4808  nA: 0.9225  nE: 0.1112  nG: -1.6651 Px: 6.734e-03 Py: 7.363e-02 Pv: 3.661e-06 Pa: 2.802e-04 Po: 6.623e-02 Pw: 8.023e-07 R: 1
+received message:   46.1- x: 1.5431  y: 0.0169  v: 0.2352  a: 0.1525  o: 0.0045  w: -0.0846
+received message:   46.2- nV: -0.3266 nA: -1.9589 nE: 0.5521  nG: -0.9969 Px: 6.835e-03 Py: 7.654e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.723e-02 Pw: 8.023e-07 R: 1
+received message:   46.2- x: 1.5669  y: 0.0170  v: 0.2388  a: -0.3335 o: 0.0008  w: -0.0623
+received message:   46.3- nV: -0.1758 nA: -0.2228 nE: 0.4866  nG: -0.2390 Px: 6.935e-03 Py: 7.965e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.823e-02 Pw: 8.023e-07 R: 1
+received message:   46.3- x: 1.5916  y: 0.0169  v: 0.2444  a: 0.1344  o: 6.2819  w: -0.0176
+received message:   46.4- nV: -1.4206 nA: -1.0728 nE: 0.5773  nG: 5.2361  Px: 7.034e-03 Py: 8.285e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 6.923e-02 Pw: 8.023e-07 R: 1
+received message:   46.4- x: 1.6163  y: 0.0169  v: 0.2533  a: 0.3171  o: 6.2820  w: 0.1132
+received message:   46.5- nV: -0.6047 nA: 1.6775  nE: 0.0597  nG: 0.2380  Px: 7.135e-03 Py: 8.621e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 7.023e-02 Pw: 8.023e-07 R: 1
+received message:   46.5- x: 1.6417  y: 0.0170  v: 0.2487  a: 0.5063  o: 0.0033  w: 0.0207
+received message:   46.6- nV: 0.3961  nA: 1.5066  nE: -0.0953 nG: -2.4248 Px: 7.235e-03 Py: 8.948e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 7.123e-02 Pw: 8.023e-07 R: 1
+received message:   46.6- x: 1.6658  y: 0.0171  v: 0.2493  a: 0.4586  o: 0.0055  w: -0.0473
+received message:   46.7- nV: -0.0162 nA: -0.2851 nE: -0.4733 nG: -2.4261 Px: 7.335e-03 Py: 9.311e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 7.223e-02 Pw: 8.023e-07 R: 1
+received message:   46.7- x: 1.6918  y: 0.0172  v: 0.2570  a: 0.2302  o: 0.0030  w: -0.0356
+received message:   46.8- nV: 0.7448  nA: -0.6823 nE: -0.4589 nG: -0.8577 Px: 7.435e-03 Py: 9.694e-02 Pv: 3.661e-06 Pa: 2.802e-04 Po: 7.323e-02 Pw: 8.023e-07 R: 1
+received message:   46.8- x: 1.7185  y: 0.0172  v: 0.2547  a: -0.3011 o: 0.0007  w: -0.0325
+received message:   46.9- nV: -1.3527 nA: -0.1957 nE: 0.3471  nG: 1.2353  Px: 7.535e-03 Py: 1.010e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 7.423e-02 Pw: 8.023e-07 R: 1
+received message:   46.9- x: 1.7458  y: 0.0172  v: 0.2522  a: -0.0237 o: 0.0002  w: -0.0113
+received message:   47.0- nV: -0.6005 nA: -1.2053 nE: 0.2784  nG: 0.3337  Px: 7.635e-03 Py: 1.054e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 7.523e-02 Pw: 8.023e-07 R: 1
+received message:   47.0- x: 1.7754  y: 0.0172  v: 0.2536  a: -0.3198 o: 6.2829  w: -0.0176
+received message:   47.1- nV: 3.6604  nA: -1.0016 nE: -3.1048 nG: -7.1904 Px: 7.735e-03 Py: 1.097e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 7.623e-02 Pw: 8.023e-07 R: 1
+received message:   47.1- x: 1.8030  y: 0.0172  v: 0.1246  a: -2.8395 o: 6.2815  w: -0.2815
+received message:   47.3- nV: -3.7843 nA: 1.4335  nE: -0.1111 nG: 1.1782  Px: 8.034e-03 Py: 1.117e-01 Pv: 3.016e-05 Pa: 2.802e-04 Po: 7.723e-02 Pw: 8.029e-07 R: 2
+received message:   47.3- x: 1.8141  y: 0.0168  v: 0.0443  a: 1.4789  o: 6.1614  w: -1.2619
+received message:   47.4- nV: -1.6661 nA: -5.3316 nE: -0.2472 nG: 3.9393  Px: 8.534e-03 Py: 1.127e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 7.823e-02 Pw: 8.029e-07 R: 2
+received message:   47.4- x: 1.8166  y: 0.0164  v: 0.0112  a: -0.8431 o: 5.9796  w: -1.2449
+received message:   47.5- nV: -1.0961 nA: -4.9650 nE: -0.4257 nG: 3.4676  Px: 9.034e-03 Py: 1.132e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 7.923e-02 Pw: 8.029e-07 R: 2
+received message:   47.5- x: 1.8161  y: 0.0166  v: -0.0093 a: -0.4554 o: 5.8490  w: -1.1043
+received message:   47.6- nV: -0.2164 nA: 1.0646  nE: -0.5256 nG: 0.6081  Px: 9.535e-03 Py: 1.134e-01 Pv: 3.090e-05 Pa: 2.802e-04 Po: 8.023e-02 Pw: 8.029e-07 R: 2
+received message:   47.6- x: 1.8145  y: 0.0174  v: -0.0180 a: 0.1716  o: 5.7279  w: -1.0030
+received message:   47.7- nV: 0.4708  nA: -2.4029 nE: -0.5148 nG: 0.4367  Px: 1.004e-02 Py: 1.136e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 8.123e-02 Pw: 8.029e-07 R: 2
+received message:   47.7- x: 1.8123  y: 0.0190  v: -0.0196 a: -0.8648 o: 5.5929  w: -1.0680
+received message:   47.9- nV: 0.5535  nA: -3.9393 nE: -0.4793 nG: 1.1426  Px: 1.054e-02 Py: 1.139e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 8.223e-02 Pw: 8.029e-07 R: 2
+received message:   47.9- x: 1.8109  y: 0.0203  v: -0.0099 a: -1.1940 o: 5.4525  w: -1.1287
+received message:   48.0- nV: -0.1235 nA: 0.5147  nE: -0.4145 nG: -2.1889 Px: 1.104e-02 Py: 1.143e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 8.323e-02 Pw: 8.029e-07 R: 2
+received message:   48.0- x: 1.8106  y: 0.0207  v: -0.0052 a: 0.1146  o: 5.3124  w: -1.2532
+received message:   48.1- nV: -2.7922 nA: 0.9137  nE: -0.1417 nG: 4.9504  Px: 1.154e-02 Py: 1.149e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 8.423e-02 Pw: 8.029e-07 R: 2
+received message:   48.1- x: 1.8113  y: 0.0192  v: 0.0230  a: 1.4746  o: 5.1063  w: -1.5102
+received message:   48.2- nV: -1.1336 nA: -2.8784 nE: -0.4545 nG: -1.2117 Px: 1.204e-02 Py: 1.154e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 8.523e-02 Pw: 8.029e-07 R: 2
+received message:   48.2- x: 1.8110  y: 0.0202  v: -0.0083 a: 0.3187  o: 4.9390  w: -1.1478
+received message:   48.4- nV: -1.3558 nA: -0.1041 nE: 0.9550  nG: 8.2398  Px: 1.246e-02 Py: 1.158e-01 Pv: 3.718e-06 Pa: 2.802e-04 Po: 8.623e-02 Pw: 8.023e-07 R: 1
+received message:   48.4- x: 1.8111  y: 0.0194  v: 0.0338  a: 0.2732  o: 4.7760  w: -1.1748
+received message:   48.5- nV: 0.7804  nA: 0.5199  nE: -0.0556 nG: 1.1893  Px: 1.255e-02 Py: 1.159e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 8.723e-02 Pw: 8.023e-07 R: 1
+received message:   48.5- x: 1.8112  y: 0.0166  v: -0.0003 a: -0.3022 o: 4.7247  w: 0.0271
+received message:   48.6- nV: -1.3171 nA: -0.6020 nE: 0.0000  nG: -0.4926 Px: 1.258e-02 Py: 1.160e-01 Pv: 4.779e-08 Pa: 2.802e-04 Po: 8.823e-02 Pw: 1.000e-15 R: 0
+received message:   48.6- x: 1.8112  y: 0.0167  v: 0.0001  a: -0.0569 o: 4.7249  w: -0.0000
+received message:   48.7- nV: 2.6258  nA: 0.5474  nE: 0.7970  nG: -0.6184 Px: 1.261e-02 Py: 1.160e-01 Pv: 3.640e-06 Pa: 2.802e-04 Po: 8.923e-02 Pw: 8.023e-07 R: 1
+received message:   48.7- x: 1.8112  y: 0.0166  v: 0.0158  a: 0.5600  o: 4.7249  w: -0.0144
+received message:   48.9- nV: 0.1548  nA: 1.7450  nE: 0.1953  nG: 1.5262  Px: 1.271e-02 Py: 1.161e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 9.023e-02 Pw: 8.023e-07 R: 1
+received message:   48.9- x: 1.8113  y: 0.0025  v: 0.1665  a: 1.0044  o: 4.7224  w: 0.0750
+received message:   49.0- nV: -1.3978 nA: -4.4538 nE: -0.6898 nG: 2.5223  Px: 1.290e-02 Py: 1.163e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 9.123e-02 Pw: 8.023e-07 R: 1
+received message:   49.0- x: 1.8117  y: -0.0233 v: 0.2244  a: -0.6810 o: 4.7276  w: 0.1197
+received message:   49.1- nV: 0.4234  nA: 0.2560  nE: -0.2479 nG: -2.0468 Px: 1.319e-02 Py: 1.164e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 9.223e-02 Pw: 8.023e-07 R: 1
+received message:   49.1- x: 1.8121  y: -0.0464 v: 0.2325  a: 0.0094  o: 4.7327  w: -0.0154
+received message:   49.2- nV: -0.2178 nA: 0.0767  nE: 0.1185  nG: 1.1866  Px: 1.359e-02 Py: 1.166e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 9.323e-02 Pw: 8.023e-07 R: 1
+received message:   49.2- x: 1.8126  y: -0.0712 v: 0.2272  a: -0.0575 o: 4.7342  w: 0.0271
+received message:   49.3- nV: 0.2675  nA: 1.0999  nE: 0.1598  nG: 1.0904  Px: 1.410e-02 Py: 1.168e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 9.423e-02 Pw: 8.023e-07 R: 1
+received message:   49.3- x: 1.8131  y: -0.0951 v: 0.2250  a: 0.1380  o: 4.7355  w: 0.0026
+received message:   49.4- nV: 0.8168  nA: 0.8457  nE: -0.0933 nG: -0.0042 Px: 1.471e-02 Py: 1.170e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 9.523e-02 Pw: 8.023e-07 R: 1
+received message:   49.4- x: 1.8137  y: -0.1190 v: 0.2329  a: 0.2436  o: 4.7369  w: 0.0005
+received message:   49.5- nV: 0.0512  nA: 1.2809  nE: 0.0030  nG: 0.0002  Px: 1.558e-02 Py: 1.172e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 9.623e-02 Pw: 8.023e-07 R: 1
+received message:   49.5- x: 1.8144  y: -0.1480 v: 0.2309  a: 0.1714  o: 4.7402  w: 0.0282
+received message:   49.7- nV: 0.9299  nA: 1.2243  nE: 0.3840  nG: 1.8058  Px: 1.675e-02 Py: 1.175e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 9.723e-02 Pw: 8.023e-07 R: 1
+received message:   49.7- x: 1.8153  y: -0.1810 v: 0.2309  a: 0.2097  o: 4.7381  w: -0.0049
+received message:   49.8- nV: 0.4302  nA: -0.1992 nE: -0.2692 nG: -2.2331 Px: 1.785e-02 Py: 1.177e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 9.823e-02 Pw: 8.023e-07 R: 1
+received message:   49.8- x: 1.8160  y: -0.2074 v: 0.2376  a: -0.2824 o: 4.7382  w: -0.0122
+received message:   49.9- nV: -1.1131 nA: 1.1739  nE: -0.0227 nG: -0.1880 Px: 1.903e-02 Py: 1.179e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 9.923e-02 Pw: 8.023e-07 R: 1
+received message:   49.9- x: 1.8166  y: -0.2323 v: 0.2458  a: 0.2768  o: 4.7381  w: 0.0090
+received message:   50.0- nV: -0.2156 nA: -1.5849 nE: -0.2041 nG: -0.5737 Px: 2.041e-02 Py: 1.181e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.002e-01 Pw: 8.023e-07 R: 1
+received message:   50.0- x: 1.8174  y: -0.2586 v: 0.2520  a: -0.2859 o: 4.7425  w: 0.0346
+received message:   50.1- nV: 1.3123  nA: 0.1041  nE: -0.1318 nG: -1.1862 Px: 2.216e-02 Py: 1.183e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.012e-01 Pw: 8.023e-07 R: 1
+received message:   50.1- x: 1.8183  y: -0.2893 v: 0.2480  a: -0.0671 o: 4.7409  w: -0.0069
+received message:   50.3- nV: 0.4298  nA: 1.2800  nE: -0.1333 nG: 3.0937  Px: 2.419e-02 Py: 1.185e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.022e-01 Pw: 8.023e-07 R: 1
+received message:   50.3- x: 1.8191  y: -0.3212 v: 0.2477  a: 0.1283  o: 4.7394  w: 0.0920
+received message:   50.4- nV: 0.2324  nA: -0.1965 nE: 0.1468  nG: 0.7619  Px: 2.594e-02 Py: 1.188e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.032e-01 Pw: 8.023e-07 R: 1
+received message:   50.4- x: 1.8199  y: -0.3461 v: 0.2531  a: -0.1099 o: 4.7432  w: -0.0187
+received message:   50.5- nV: -0.2700 nA: 0.3505  nE: 0.5035  nG: -1.2378 Px: 2.786e-02 Py: 1.190e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.042e-01 Pw: 8.023e-07 R: 1
+received message:   50.5- x: 1.8207  y: -0.3716 v: 0.2534  a: 0.3063  o: 4.7419  w: -0.0697
+received message:   50.6- nV: 0.7664  nA: -0.5291 nE: 0.3657  nG: -0.6610 Px: 3.007e-02 Py: 1.192e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.052e-01 Pw: 8.023e-07 R: 1
+received message:   50.6- x: 1.8214  y: -0.3991 v: 0.2568  a: -0.2342 o: 4.7362  w: -0.0229
+received message:   50.7- nV: -1.3709 nA: -0.1204 nE: 0.0265  nG: -0.5724 Px: 3.228e-02 Py: 1.194e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.062e-01 Pw: 8.023e-07 R: 1
+received message:   50.7- x: 1.8220  y: -0.4246 v: 0.2406  a: -0.0238 o: 4.7355  w: -0.0133
+received message:   50.8- nV: -0.8840 nA: 1.0107  nE: 0.2614  nG: 0.9968  Px: 3.448e-02 Py: 1.196e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.072e-01 Pw: 8.023e-07 R: 1
+received message:   50.8- x: 1.8225  y: -0.4486 v: 0.2328  a: 0.2578  o: 4.7330  w: -0.0560
+received message:   50.9- nV: -1.0841 nA: 0.9650  nE: -0.5898 nG: 2.6659  Px: 3.678e-02 Py: 1.198e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.082e-01 Pw: 8.023e-07 R: 1
+received message:   50.9- x: 1.8230  y: -0.4723 v: 0.2321  a: 0.1860  o: 4.7312  w: 0.1240
+received message:   51.0- nV: 0.6041  nA: 2.4337  nE: 0.3455  nG: -2.1931 Px: 3.969e-02 Py: 1.199e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.092e-01 Pw: 8.023e-07 R: 1
+received message:   51.0- x: 1.8236  y: -0.5008 v: 0.2324  a: 0.6110  o: 4.7325  w: -0.1123
+received message:   51.1- nV: 0.9526  nA: -0.4655 nE: -0.2984 nG: -0.2830 Px: 4.322e-02 Py: 1.201e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.102e-01 Pw: 8.023e-07 R: 1
+received message:   51.1- x: 1.8241  y: -0.5334 v: 0.2344  a: -0.3684 o: 4.7281  w: 0.0250
+received message:   51.3- nV: -0.1546 nA: -0.6080 nE: -0.2690 nG: -1.0016 Px: 4.695e-02 Py: 1.203e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.112e-01 Pw: 8.023e-07 R: 1
+received message:   51.3- x: 1.8247  y: -0.5657 v: 0.2350  a: -0.2772 o: 4.7335  w: 0.0165
+received message:   51.4- nV: -0.5470 nA: -2.3397 nE: -0.5874 nG: -0.9985 Px: 5.001e-02 Py: 1.205e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.122e-01 Pw: 8.023e-07 R: 1
+received message:   51.4- x: 1.8252  y: -0.5907 v: 0.2440  a: -0.3571 o: 4.7355  w: 0.0027
+received message:   51.5- nV: -0.1260 nA: -0.8148 nE: 0.1648  nG: -0.2382 Px: 5.304e-02 Py: 1.207e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.132e-01 Pw: 8.023e-07 R: 1
+received message:   51.5- x: 1.8257  y: -0.6144 v: 0.2435  a: -0.2004 o: 4.7315  w: -0.0474
+received message:   51.6- nV: 0.9070  nA: 0.4931  nE: 0.0771  nG: 0.1930  Px: 5.645e-02 Py: 1.209e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.142e-01 Pw: 8.023e-07 R: 1
+received message:   51.6- x: 1.8262  y: -0.6399 v: 0.2468  a: -0.0962 o: 4.7292  w: 0.0122
+received message:   51.7- nV: -1.9853 nA: -0.9185 nE: -0.1327 nG: -0.8065 Px: 6.121e-02 Py: 1.211e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 1.152e-01 Pw: 8.023e-07 R: 1
+received message:   51.7- x: 1.8268  y: -0.6740 v: 0.2449  a: 0.0536  o: 4.7299  w: 0.0027
+received message:   51.8- nV: -2.7816 nA: 0.6620  nE: 0.5890  nG: -0.7162 Px: 6.584e-02 Py: 1.212e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.162e-01 Pw: 8.023e-07 R: 1
+received message:   51.8- x: 1.8274  y: -0.7053 v: 0.2189  a: -0.0436 o: 4.7327  w: -0.0964
+received message:   52.0- nV: 9.0881  nA: 4.7234  nE: -2.9985 nG: -12.6586 Px: 6.891e-02 Py: 1.214e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 1.172e-01 Pw: 8.023e-07 R: 1
+received message:   52.0- x: 1.8277  y: -0.7254 v: 0.0821  a: -1.9010 o: 4.7153  w: -0.7564
+received message:   52.1- nV: 0.8041  nA: 1.2045  nE: -0.2401 nG: -2.8272 Px: 7.039e-02 Py: 1.217e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.182e-01 Pw: 8.029e-07 R: 2
+received message:   52.1- x: 1.8274  y: -0.7330 v: 0.0292  a: -0.3603 o: 4.5567  w: -1.4727
+received message:   52.2- nV: 0.9858  nA: 0.5129  nE: -0.2920 nG: -0.3362 Px: 7.117e-02 Py: 1.222e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.192e-01 Pw: 8.029e-07 R: 2
+received message:   52.2- x: 1.8269  y: -0.7349 v: 0.0090  a: -0.5129 o: 4.3579  w: -1.5185
+received message:   52.4- nV: 0.3638  nA: 2.5630  nE: -0.4267 nG: -1.9174 Px: 7.178e-02 Py: 1.226e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.202e-01 Pw: 8.029e-07 R: 2
+received message:   52.4- x: 1.8265  y: -0.7359 v: 0.0053  a: 0.3283  o: 4.1703  w: -1.3055
+received message:   52.5- nV: -3.7010 nA: 2.8505  nE: -0.2465 nG: -1.8871 Px: 7.234e-02 Py: 1.231e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.212e-01 Pw: 8.029e-07 R: 2
+received message:   52.5- x: 1.8265  y: -0.7360 v: -0.0158 a: 2.2872  o: 4.0303  w: -1.5313
+received message:   52.6- nV: 0.6109  nA: -1.4021 nE: -0.1978 nG: 1.0104  Px: 7.262e-02 Py: 1.238e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.222e-01 Pw: 8.029e-07 R: 2
+received message:   52.6- x: 1.8277  y: -0.7345 v: 0.0071  a: -0.6262 o: 3.8762  w: -1.6272
+received message:   52.7- nV: -0.1696 nA: -0.2692 nE: -0.0724 nG: -2.5925 Px: 7.317e-02 Py: 1.242e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.232e-01 Pw: 8.029e-07 R: 2
+received message:   52.7- x: 1.8275  y: -0.7347 v: -0.0137 a: -0.1051 o: 3.6964  w: -1.9307
+received message:   52.8- nV: 0.1170  nA: -2.0957 nE: -0.0866 nG: 0.1346  Px: 7.362e-02 Py: 1.248e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.242e-01 Pw: 8.029e-07 R: 2
+received message:   52.8- x: 1.8280  y: -0.7344 v: 0.0003  a: -0.5585 o: 3.4889  w: -2.0139
+received message:   52.9- nV: -0.2554 nA: 0.1996  nE: -0.0067 nG: 0.7083  Px: 7.410e-02 Py: 1.254e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.252e-01 Pw: 8.029e-07 R: 2
+received message:   52.9- x: 1.8286  y: -0.7343 v: -0.0037 a: 0.3208  o: 3.2391  w: -2.0800
+received message:   53.0- nV: -1.0378 nA: -0.7388 nE: -1.5486 nG: 6.4815  Px: 7.428e-02 Py: 1.256e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.262e-01 Pw: 8.023e-07 R: 1
+received message:   53.0- x: 1.8288  y: -0.7343 v: -0.0001 a: 0.3408  o: 3.1141  w: -0.1233
+received message:   53.2- nV: -3.1710 nA: -1.0592 nE: 1.8452  nG: 0.0439  Px: 7.434e-02 Py: 1.244e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 1.272e-01 Pw: 8.023e-07 R: 1
+received message:   53.2- x: 1.8208  y: -0.7340 v: 0.1426  a: 0.7003  o: 3.1035  w: -0.1199
+received message:   53.3- nV: 1.3085  nA: 1.3375  nE: 1.0050  nG: 4.8048  Px: 7.429e-02 Py: 1.211e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.282e-01 Pw: 8.023e-07 R: 1
+received message:   53.3- x: 1.7988  y: -0.7331 v: 0.1956  a: 0.2671  o: 3.0943  w: 0.0621
+received message:   53.4- nV: -0.9100 nA: -0.5562 nE: 0.3462  nG: -3.1904 Px: 7.418e-02 Py: 1.168e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.292e-01 Pw: 8.023e-07 R: 1
+received message:   53.4- x: 1.7689  y: -0.7317 v: 0.2291  a: 0.1921  o: 3.0942  w: -0.0963
+received message:   53.6- nV: 0.9644  nA: 0.9836  nE: -0.1758 nG: -0.9023 Px: 7.404e-02 Py: 1.123e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.302e-01 Pw: 8.023e-07 R: 1
+received message:   53.6- x: 1.7363  y: -0.7301 v: 0.2388  a: 0.1381  o: 3.0970  w: 0.0304
+received message:   53.7- nV: 0.2659  nA: 0.9065  nE: -0.4811 nG: -1.9507 Px: 7.395e-02 Py: 1.086e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.312e-01 Pw: 8.023e-07 R: 1
+received message:   53.7- x: 1.7069  y: -0.7289 v: 0.2467  a: 0.1286  o: 3.1026  w: 0.0208
+received message:   53.8- nV: -0.1932 nA: 0.6315  nE: -0.3416 nG: -0.1417 Px: 7.389e-02 Py: 1.055e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.322e-01 Pw: 8.023e-07 R: 1
+received message:   53.8- x: 1.6814  y: -0.7279 v: 0.2455  a: 0.1097  o: 3.1004  w: 0.0090
+received message:   53.9- nV: -0.3074 nA: -0.2519 nE: 0.5873  nG: 4.1371  Px: 7.383e-02 Py: 1.027e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.332e-01 Pw: 8.023e-07 R: 1
+received message:   53.9- x: 1.6565  y: -0.7268 v: 0.2478  a: 0.2302  o: 3.1006  w: 0.0558
+received message:   54.0- nV: -0.5792 nA: -0.1640 nE: 0.4809  nG: 2.8475  Px: 7.378e-02 Py: 9.987e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.342e-01 Pw: 8.023e-07 R: 1
+received message:   54.0- x: 1.6301  y: -0.7258 v: 0.2509  a: 0.1535  o: 3.1055  w: -0.0060
+received message:   54.1- nV: -0.5818 nA: 1.9686  nE: 0.0671  nG: 1.5726  Px: 7.374e-02 Py: 9.743e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.352e-01 Pw: 8.023e-07 R: 1
+received message:   54.1- x: 1.6056  y: -0.7249 v: 0.2527  a: 0.4821  o: 3.1042  w: 0.0612
+received message:   54.2- nV: -0.5844 nA: -1.8687 nE: 0.3460  nG: -4.5718 Px: 7.370e-02 Py: 9.508e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.362e-01 Pw: 8.023e-07 R: 1
+received message:   54.2- x: 1.5802  y: -0.7240 v: 0.2393  a: -0.5348 o: 3.1064  w: -0.1037
+received message:   54.3- nV: -0.8856 nA: -2.1294 nE: -0.0938 nG: 0.1912  Px: 7.366e-02 Py: 9.300e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.372e-01 Pw: 8.023e-07 R: 1
+received message:   54.3- x: 1.5560  y: -0.7231 v: 0.2499  a: -0.2663 o: 3.1017  w: -0.0080
+received message:   54.4- nV: -0.6406 nA: 1.2618  nE: 0.1997  nG: 1.4314  Px: 7.361e-02 Py: 9.096e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.382e-01 Pw: 8.023e-07 R: 1
+received message:   54.4- x: 1.5304  y: -0.7220 v: 0.2487  a: 0.3678  o: 3.1010  w: 0.0686
+received message:   54.5- nV: 0.4582  nA: -2.2386 nE: 0.0760  nG: -0.5704 Px: 7.356e-02 Py: 8.912e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.392e-01 Pw: 8.023e-07 R: 1
+received message:   54.5- x: 1.5050  y: -0.7211 v: 0.2512  a: -0.5344 o: 3.1046  w: -0.0197
+received message:   54.6- nV: -0.7360 nA: -0.0657 nE: -0.1386 nG: -4.5677 Px: 7.349e-02 Py: 8.713e-02 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.402e-01 Pw: 8.023e-07 R: 1
+received message:   54.6- x: 1.4743  y: -0.7200 v: 0.2471  a: -0.0095 o: 3.1076  w: -0.0675
+received message:   54.7- nV: -0.0766 nA: -1.7239 nE: -0.3230 nG: 1.2373  Px: 7.342e-02 Py: 8.540e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.412e-01 Pw: 8.023e-07 R: 1
+received message:   54.7- x: 1.4438  y: -0.7188 v: 0.2490  a: -0.2283 o: 3.1011  w: 0.0740
+received message:   54.9- nV: 0.4726  nA: 2.1898  nE: 0.2238  nG: 2.6599  Px: 7.331e-02 Py: 8.374e-02 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.422e-01 Pw: 8.023e-07 R: 1
+received message:   54.9- x: 1.4090  y: -0.7174 v: 0.2499  a: 0.5202  o: 3.1036  w: 0.0729
+received message:   55.0- nV: 1.0500  nA: 0.9942  nE: 0.0028  nG: -1.9991 Px: 7.324e-02 Py: 8.258e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.432e-01 Pw: 8.023e-07 R: 1
+received message:   55.0- x: 1.3784  y: -0.7163 v: 0.2486  a: -0.1828 o: 3.1031  w: -0.0580
+received message:   55.1- nV: -0.7176 nA: -0.9953 nE: 0.2682  nG: -1.3788 Px: 7.318e-02 Py: 8.182e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.442e-01 Pw: 8.023e-07 R: 1
+received message:   55.1- x: 1.3524  y: -0.7152 v: 0.2424  a: -0.1428 o: 3.1000  w: -0.0463
+received message:   55.2- nV: 0.7861  nA: 0.7982  nE: 0.3814  nG: -0.7157 Px: 7.313e-02 Py: 8.128e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.452e-01 Pw: 8.023e-07 R: 1
+received message:   55.2- x: 1.3279  y: -0.7142 v: 0.2473  a: 0.0425  o: 3.0975  w: -0.0517
+received message:   55.3- nV: -0.3502 nA: -0.4796 nE: 0.0794  nG: 0.5246  Px: 7.305e-02 Py: 8.090e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.462e-01 Pw: 8.023e-07 R: 1
+received message:   55.3- x: 1.3022  y: -0.7130 v: 0.2446  a: 0.2544  o: 3.0963  w: 0.0111
+received message:   55.4- nV: -0.4754 nA: -0.7226 nE: -0.6350 nG: 1.1496  Px: 7.299e-02 Py: 8.072e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.472e-01 Pw: 8.023e-07 R: 1
+received message:   55.4- x: 1.2770  y: -0.7119 v: 0.2397  a: 0.2546  o: 3.0976  w: 0.0921
+received message:   55.5- nV: 0.3761  nA: 1.0518  nE: -0.5486 nG: -1.9071 Px: 7.294e-02 Py: 8.073e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.482e-01 Pw: 8.023e-07 R: 1
+received message:   55.5- x: 1.2541  y: -0.7109 v: 0.2413  a: -0.0200 o: 3.1014  w: 0.0091
+received message:   55.6- nV: 0.2830  nA: 0.1934  nE: -0.0390 nG: 4.7574  Px: 7.289e-02 Py: 8.090e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.492e-01 Pw: 8.023e-07 R: 1
+received message:   55.6- x: 1.2297  y: -0.7099 v: 0.2386  a: 0.0190  o: 3.0965  w: 0.0632
+received message:   55.7- nV: -0.7849 nA: 0.0728  nE: -0.2164 nG: -2.3773 Px: 7.284e-02 Py: 8.125e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.502e-01 Pw: 8.023e-07 R: 1
+received message:   55.7- x: 1.2051  y: -0.7089 v: 0.2446  a: -0.0240 o: 3.1005  w: -0.0047
+received message:   55.8- nV: 0.3233  nA: 2.0033  nE: 0.1885  nG: -0.0486 Px: 7.276e-02 Py: 8.188e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.512e-01 Pw: 8.023e-07 R: 1
+received message:   55.8- x: 1.1761  y: -0.7077 v: 0.2503  a: 0.3623  o: 3.1040  w: 0.0122
+received message:   56.0- nV: 1.0837  nA: 0.6197  nE: 0.0307  nG: -3.2818 Px: 7.269e-02 Py: 8.286e-02 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.522e-01 Pw: 8.023e-07 R: 1
+received message:   56.0- x: 1.1443  y: -0.7065 v: 0.2469  a: -0.1490 o: 3.1056  w: -0.0196
+received message:   56.1- nV: 1.3667  nA: 4.8364  nE: 0.1172  nG: 1.8528  Px: 7.261e-02 Py: 8.417e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.532e-01 Pw: 8.023e-07 R: 1
+received message:   56.1- x: 1.1119  y: -0.7053 v: 0.2404  a: 0.7526  o: 3.1031  w: 0.0377
+received message:   56.2- nV: 1.0668  nA: -0.4973 nE: -0.0861 nG: 0.9037  Px: 7.256e-02 Py: 8.551e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.542e-01 Pw: 8.023e-07 R: 1
+received message:   56.2- x: 1.0853  y: -0.7042 v: 0.2514  a: 0.0292  o: 3.1023  w: -0.0059
+received message:   56.3- nV: 0.1913  nA: 1.1626  nE: 0.3703  nG: 0.0973  Px: 7.251e-02 Py: 8.707e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.552e-01 Pw: 8.023e-07 R: 1
+received message:   56.3- x: 1.0585  y: -0.7032 v: 0.2468  a: 0.2481  o: 3.1054  w: -0.0208
+received message:   56.4- nV: 1.4633  nA: 1.5243  nE: 0.0841  nG: -4.2856 Px: 7.248e-02 Py: 8.879e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.562e-01 Pw: 8.023e-07 R: 1
+received message:   56.4- x: 1.0328  y: -0.7023 v: 0.2542  a: 0.2238  o: 3.1085  w: -0.0835
+received message:   56.5- nV: -0.5265 nA: 0.3481  nE: -0.1101 nG: 1.7154  Px: 7.243e-02 Py: 9.083e-02 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.572e-01 Pw: 8.023e-07 R: 1
+received message:   56.5- x: 1.0055  y: -0.7013 v: 0.2463  a: 0.3255  o: 3.1013  w: 0.0803
+received message:   56.6- nV: 0.4595  nA: 0.8410  nE: -0.0321 nG: 0.3324  Px: 7.238e-02 Py: 9.306e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.582e-01 Pw: 8.023e-07 R: 1
+received message:   56.6- x: 0.9787  y: -0.7003 v: 0.2582  a: 0.4400  o: 3.1032  w: -0.0187
+received message:   56.7- nV: -0.8217 nA: 0.9641  nE: -0.0573 nG: -0.1428 Px: 7.233e-02 Py: 9.566e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.592e-01 Pw: 8.023e-07 R: 1
+received message:   56.7- x: 0.9506  y: -0.6992 v: 0.2554  a: 0.4495  o: 3.1041  w: 0.0197
+received message:   56.8- nV: 0.1728  nA: 0.2102  nE: 0.3114  nG: -0.0471 Px: 7.229e-02 Py: 9.829e-02 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.602e-01 Pw: 8.023e-07 R: 1
+received message:   56.8- x: 0.9245  y: -0.6982 v: 0.2509  a: 0.0909  o: 3.1025  w: -0.0240
+received message:   57.0- nV: -0.6834 nA: 0.3961  nE: 0.1108  nG: -2.1844 Px: 7.223e-02 Py: 1.011e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.612e-01 Pw: 8.023e-07 R: 1
+received message:   57.0- x: 0.8983  y: -0.6972 v: 0.2513  a: 0.5122  o: 3.0998  w: -0.0420
+received message:   57.1- nV: -0.4523 nA: 0.4652  nE: -0.0173 nG: -1.3262 Px: 7.217e-02 Py: 1.043e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.622e-01 Pw: 8.023e-07 R: 1
+received message:   57.1- x: 0.8715  y: -0.6960 v: 0.2471  a: 0.2487  o: 3.0969  w: 0.0027
+received message:   57.2- nV: -0.0496 nA: 1.3825  nE: 0.0891  nG: 2.6658  Px: 7.210e-02 Py: 1.077e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.632e-01 Pw: 8.023e-07 R: 1
+received message:   57.2- x: 0.8451  y: -0.6948 v: 0.2541  a: 0.2623  o: 3.0971  w: 0.0462
+received message:   57.3- nV: -0.4156 nA: -2.3562 nE: -0.4219 nG: 1.2842  Px: 7.204e-02 Py: 1.112e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.642e-01 Pw: 8.023e-07 R: 1
+received message:   57.3- x: 0.8191  y: -0.6937 v: 0.2482  a: -0.5104 o: 3.1027  w: 0.1049
+received message:   57.4- nV: 0.3985  nA: 0.5142  nE: -0.6543 nG: -1.9493 Px: 7.198e-02 Py: 1.155e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.652e-01 Pw: 8.023e-07 R: 1
+received message:   57.4- x: 0.7887  y: -0.6926 v: 0.2502  a: 0.2535  o: 3.1051  w: 0.0656
+received message:   57.5- nV: 0.8030  nA: -0.0922 nE: 0.1704  nG: 7.7984  Px: 7.192e-02 Py: 1.204e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 1.662e-01 Pw: 8.023e-07 R: 1
+received message:   57.5- x: 0.7569  y: -0.6915 v: 0.2359  a: -0.1627 o: 3.1067  w: 0.1302
+received message:   57.7- nV: 1.2620  nA: 1.8609  nE: 0.1231  nG: 0.8557  Px: 7.188e-02 Py: 1.259e-01 Pv: 3.667e-06 Pa: 2.802e-04 Po: 1.672e-01 Pw: 8.023e-07 R: 1
+received message:   57.7- x: 0.7235  y: -0.6905 v: 0.2415  a: 0.1900  o: 3.1109  w: -0.0379
+received message:   57.8- nV: 0.6584  nA: -0.0624 nE: 0.1989  nG: -0.5227 Px: 7.184e-02 Py: 1.314e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.682e-01 Pw: 8.023e-07 R: 1
+received message:   57.8- x: 0.6920  y: -0.6895 v: 0.2496  a: -0.2346 o: 3.1093  w: -0.0463
+received message:   57.9- nV: -0.4138 nA: 0.5264  nE: 0.0227  nG: -4.9011 Px: 7.178e-02 Py: 1.377e-01 Pv: 3.667e-06 Pa: 2.802e-04 Po: 1.692e-01 Pw: 8.023e-07 R: 1
+received message:   57.9- x: 0.6586  y: -0.6884 v: 0.2442  a: 0.2104  o: 3.1088  w: -0.0590
+received message:   58.1- nV: -0.7199 nA: -1.4576 nE: -0.1920 nG: -0.5238 Px: 7.173e-02 Py: 1.438e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.702e-01 Pw: 8.023e-07 R: 1
+received message:   58.1- x: 0.6273  y: -0.6873 v: 0.2504  a: 0.0636  o: 3.1091  w: 0.0176
+received message:   58.2- nV: -0.4276 nA: -1.7358 nE: -0.0852 nG: 3.8561  Px: 7.169e-02 Py: 1.506e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.712e-01 Pw: 8.023e-07 R: 1
+received message:   58.2- x: 0.5948  y: -0.6863 v: 0.2494  a: -0.4151 o: 3.1111  w: 0.1112
+received message:   58.3- nV: -0.6914 nA: -0.9795 nE: 0.0197  nG: -0.2385 Px: 7.166e-02 Py: 1.576e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.722e-01 Pw: 8.023e-07 R: 1
+received message:   58.3- x: 0.5629  y: -0.6853 v: 0.2502  a: 0.0057  o: 3.1093  w: -0.0325
+received message:   58.5- nV: 1.0803  nA: 2.1249  nE: 0.0080  nG: 3.1399  Px: 7.161e-02 Py: 1.655e-01 Pv: 3.661e-06 Pa: 2.802e-04 Po: 1.732e-01 Pw: 8.023e-07 R: 1
+received message:   58.5- x: 0.5287  y: -0.6842 v: 0.2471  a: 0.2185  o: 3.1100  w: 0.0888
+received message:   58.6- nV: -0.9470 nA: -2.2721 nE: 0.5135  nG: 3.6610  Px: 7.160e-02 Py: 1.718e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.742e-01 Pw: 8.023e-07 R: 1
+received message:   58.6- x: 0.5026  y: -0.6835 v: 0.2556  a: 0.3565  o: 3.1108  w: -0.0220
+received message:   58.7- nV: -0.1762 nA: -0.2418 nE: -0.1366 nG: -0.1411 Px: 7.159e-02 Py: 1.779e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.752e-01 Pw: 8.023e-07 R: 1
+received message:   58.7- x: 0.4781  y: -0.6827 v: 0.2474  a: 0.1152  o: 3.1099  w: 0.0218
+received message:   58.7- nV: 0.2971  nA: -0.4065 nE: 0.3886  nG: -1.9982 Px: 7.158e-02 Py: 1.842e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.762e-01 Pw: 8.023e-07 R: 1
+received message:   58.8- x: 0.4541  y: -0.6819 v: 0.2528  a: 0.0387  o: 3.1084  w: -0.0719
+received message:   58.9- nV: 0.6271  nA: 0.0439  nE: 0.2146  nG: 0.8060  Px: 7.156e-02 Py: 1.911e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.772e-01 Pw: 8.023e-07 R: 1
+received message:   58.9- x: 0.4284  y: -0.6810 v: 0.2484  a: -0.0670 o: 3.1066  w: -0.0198
+received message:   59.0- nV: 2.3658  nA: 1.3216  nE: -0.6037 nG: -2.7548 Px: 7.154e-02 Py: 1.984e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.782e-01 Pw: 8.023e-07 R: 1
+received message:   59.0- x: 0.4019  y: -0.6802 v: 0.2535  a: -0.3508 o: 3.1113  w: 0.0475
+received message:   59.1- nV: -0.7610 nA: -0.0504 nE: -0.5407 nG: 2.6234  Px: 7.152e-02 Py: 2.060e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.792e-01 Pw: 8.023e-07 R: 1
+received message:   59.1- x: 0.3753  y: -0.6793 v: 0.2542  a: -0.0047 o: 3.1109  w: 0.1698
+received message:   59.2- nV: -1.4028 nA: -1.0236 nE: 0.2007  nG: 2.7144  Px: 7.152e-02 Py: 2.136e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.802e-01 Pw: 8.023e-07 R: 1
+received message:   59.2- x: 0.3496  y: -0.6786 v: 0.2522  a: 0.2261  o: 3.1079  w: -0.0411
+received message:   59.3- nV: 0.4003  nA: 1.5435  nE: 0.8108  nG: 1.4231  Px: 7.150e-02 Py: 2.216e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.812e-01 Pw: 8.023e-07 R: 1
+received message:   59.3- x: 0.3235  y: -0.6777 v: 0.2438  a: 0.4729  o: 3.1095  w: -0.0762
+received message:   59.4- nV: -0.8420 nA: 0.0287  nE: 0.3918  nG: -1.1450 Px: 7.149e-02 Py: 2.299e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.822e-01 Pw: 8.023e-07 R: 1
+received message:   59.4- x: 0.2970  y: -0.6769 v: 0.2482  a: 0.1725  o: 3.1130  w: -0.0612
+received message:   59.5- nV: 0.6922  nA: 2.7877  nE: 0.2973  nG: 0.8558  Px: 7.148e-02 Py: 2.383e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.832e-01 Pw: 8.023e-07 R: 1
+received message:   59.5- x: 0.2713  y: -0.6761 v: 0.2503  a: 0.3473  o: 3.1085  w: -0.0166
+received message:   59.6- nV: -0.9545 nA: -2.0772 nE: 0.3643  nG: -3.4733 Px: 7.146e-02 Py: 2.471e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.842e-01 Pw: 8.023e-07 R: 1
+received message:   59.6- x: 0.2450  y: -0.6752 v: 0.2514  a: -0.0939 o: 3.1071  w: -0.1240
+received message:   59.7- nV: -0.1109 nA: -1.8140 nE: 0.4205  nG: -1.1463 Px: 7.144e-02 Py: 2.555e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.852e-01 Pw: 8.023e-07 R: 1
+received message:   59.7- x: 0.2204  y: -0.6743 v: 0.2538  a: -0.5109 o: 3.1041  w: -0.0666
+received message:   59.8- nV: -0.0753 nA: 0.9523  nE: -0.4690 nG: 1.2392  Px: 7.141e-02 Py: 2.641e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.862e-01 Pw: 8.023e-07 R: 1
+received message:   59.8- x: 0.1961  y: -0.6734 v: 0.2479  a: 0.1238  o: 3.1030  w: 0.0772
+received message:   59.9- nV: 0.2139  nA: -0.5122 nE: -0.1048 nG: 0.2859  Px: 7.139e-02 Py: 2.733e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.872e-01 Pw: 8.023e-07 R: 1
+received message:   59.9- x: 0.1706  y: -0.6724 v: 0.2571  a: 0.1538  o: 3.1076  w: 0.0026
+received message:   60.0- nV: 1.3144  nA: 0.2235  nE: 0.6134  nG: 0.0929  Px: 7.137e-02 Py: 2.835e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.882e-01 Pw: 8.023e-07 R: 1
+received message:   60.0- x: 0.1433  y: -0.6716 v: 0.2546  a: -0.1726 o: 3.1096  w: -0.0751
+received message:   60.1- nV: 0.6956  nA: 0.0157  nE: -0.3058 nG: -1.5224 Px: 7.134e-02 Py: 2.936e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.892e-01 Pw: 8.023e-07 R: 1
+received message:   60.1- x: 0.1166  y: -0.6706 v: 0.2515  a: -0.0047 o: 3.1046  w: -0.0282
+received message:   60.2- nV: 1.0868  nA: 1.1561  nE: 0.2067  nG: 0.6658  Px: 7.132e-02 Py: 3.035e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.902e-01 Pw: 8.023e-07 R: 1
+received message:   60.2- x: 0.0916  y: -0.6697 v: 0.2511  a: -0.1542 o: 3.1079  w: 0.0356
+received message:   60.3- nV: 0.4010  nA: 1.8102  nE: 0.8748  nG: -1.1508 Px: 7.131e-02 Py: 3.139e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.912e-01 Pw: 8.023e-07 R: 1
+received message:   60.3- x: 0.0655  y: -0.6689 v: 0.2445  a: 0.0943  o: 3.1127  w: -0.1251
+received message:   60.4- nV: 1.4260  nA: 2.2095  nE: 0.6772  nG: 1.2848  Px: 7.130e-02 Py: 3.244e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.922e-01 Pw: 8.023e-07 R: 1
+received message:   60.4- x: 0.0398  y: -0.6681 v: 0.2513  a: 0.0412  o: 3.1059  w: -0.0496
+received message:   60.5- nV: -0.4657 nA: -0.6040 nE: 0.1525  nG: 0.3805  Px: 7.127e-02 Py: 3.355e-01 Pv: 3.661e-06 Pa: 2.802e-04 Po: 1.932e-01 Pw: 8.023e-07 R: 1
+received message:   60.5- x: 0.0136  y: -0.6671 v: 0.2529  a: 0.0772  o: 3.1035  w: -0.0304
+received message:   60.6- nV: -0.2018 nA: 1.5088  nE: 0.0211  nG: 1.0425  Px: 7.124e-02 Py: 3.470e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.942e-01 Pw: 8.023e-07 R: 1
+received message:   60.6- x: -0.0130 y: -0.6661 v: 0.2551  a: 0.4107  o: 3.1030  w: -0.0059
+received message:   60.7- nV: -1.7004 nA: -0.2599 nE: -0.2414 nG: -0.0939 Px: 7.119e-02 Py: 3.600e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 1.952e-01 Pw: 8.023e-07 R: 1
+received message:   60.7- x: -0.0424 y: -0.6650 v: 0.2441  a: -0.1913 o: 3.1071  w: 0.0410
+received message:   60.9- nV: 8.8368  nA: 2.3365  nE: -1.4185 nG: -2.8698 Px: 7.119e-02 Py: 3.694e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 1.962e-01 Pw: 8.023e-07 R: 1
+received message:   60.9- x: -0.0636 y: -0.6643 v: 0.0851  a: -1.5300 o: 3.0737  w: -1.2127
+received message:   61.0- nV: -2.3908 nA: 1.0372  nE: -0.1134 nG: 1.5495  Px: 7.158e-02 Py: 3.729e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.972e-01 Pw: 8.029e-07 R: 2
+received message:   61.0- x: -0.0698 y: -0.6635 v: 0.0047  a: 1.4170  o: 2.8678  w: -1.5346
+received message:   61.1- nV: 1.1488  nA: -0.9261 nE: -0.5120 nG: -2.0533 Px: 7.218e-02 Py: 3.726e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.982e-01 Pw: 8.029e-07 R: 2
+received message:   61.1- x: -0.0672 y: -0.6645 v: -0.0318 a: -0.8182 o: 2.7127  w: -0.9742
+received message:   61.3- nV: -1.7366 nA: -3.8539 nE: -0.4845 nG: 1.7816  Px: 7.287e-02 Py: 3.719e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 1.992e-01 Pw: 8.029e-07 R: 2
+received message:   61.3- x: -0.0645 y: -0.6659 v: -0.0185 a: -0.4228 o: 2.5865  w: -0.9881
+received message:   61.4- nV: -0.8167 nA: 1.5845  nE: -0.3725 nG: -3.3294 Px: 7.351e-02 Py: 3.717e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.002e-01 Pw: 8.029e-07 R: 2
+received message:   61.4- x: -0.0631 y: -0.6669 v: 0.0073  a: 1.4309  o: 2.4443  w: -1.3022
+received message:   61.5- nV: -0.7647 nA: -7.5265 nE: -0.2443 nG: -0.7098 Px: 7.394e-02 Py: 3.724e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.012e-01 Pw: 8.029e-07 R: 2
+received message:   61.5- x: -0.0637 y: -0.6663 v: 0.0230  a: -1.6075 o: 2.3070  w: -1.5132
+received message:   61.6- nV: -1.4615 nA: -5.1284 nE: -0.1664 nG: 0.6716  Px: 7.426e-02 Py: 3.734e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.022e-01 Pw: 8.029e-07 R: 2
+received message:   61.6- x: -0.0648 y: -0.6648 v: 0.0084  a: -0.6181 o: 2.1311  w: -1.6677
+received message:   61.7- nV: 1.7068  nA: 2.4460  nE: -0.3256 nG: 0.0312  Px: 7.466e-02 Py: 3.740e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.032e-01 Pw: 8.029e-07 R: 2
+received message:   61.7- x: -0.0652 y: -0.6640 v: 0.0179  a: -0.3518 o: 1.9659  w: -1.4621
+received message:   61.9- nV: 2.1812  nA: -0.8770 nE: 0.0962  nG: 5.2905  Px: 7.488e-02 Py: 3.744e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.042e-01 Pw: 8.023e-07 R: 1
+received message:   61.9- x: -0.0653 y: -0.6639 v: 0.0061  a: -0.4686 o: 1.8473  w: 0.0248
+received message:   62.0- nV: 2.2923  nA: -0.0585 nE: 3.4001  nG: -2.5763 Px: 7.443e-02 Py: 3.750e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.052e-01 Pw: 8.023e-07 R: 1
+received message:   62.0- x: -0.0667 y: -0.6592 v: 0.1175  a: 1.1689  o: 1.8462  w: -0.1613
+received message:   62.1- nV: -2.8966 nA: -1.7611 nE: 1.1704  nG: -0.3822 Px: 7.170e-02 Py: 3.782e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.062e-01 Pw: 8.023e-07 R: 1
+received message:   62.1- x: -0.0733 y: -0.6368 v: 0.1983  a: 0.5525  o: 1.8712  w: -0.2093
+received message:   62.3- nV: -1.4762 nA: -0.1493 nE: 0.1948  nG: 0.1465  Px: 6.865e-02 Py: 3.821e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.072e-01 Pw: 8.023e-07 R: 1
+received message:   62.3- x: -0.0815 y: -0.6096 v: 0.2266  a: 0.2541  o: 1.8632  w: 0.0112
+received message:   62.4- nV: 0.0166  nA: 0.1791  nE: -0.4210 nG: 1.8539  Px: 6.587e-02 Py: 3.860e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.082e-01 Pw: 8.023e-07 R: 1
+received message:   62.4- x: -0.0898 y: -0.5817 v: 0.1850  a: -0.2683 o: 1.8421  w: -0.3362
+received message:   62.5- nV: 1.5853  nA: -2.7743 nE: -0.4108 nG: -1.3789 Px: 6.437e-02 Py: 3.881e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.092e-01 Pw: 8.023e-07 R: 1
+received message:   62.5- x: -0.0941 y: -0.5647 v: 0.0794  a: -1.3531 o: 1.7345  w: -1.4024
+received message:   62.7- nV: -2.2468 nA: -2.8373 nE: -3.3857 nG: -0.0443 Px: 6.313e-02 Py: 3.887e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 2.102e-01 Pw: 8.023e-07 R: 1
+received message:   62.7- x: -0.0954 y: -0.5494 v: 0.1536  a: 0.3091  o: 1.6336  w: 0.1837
+received message:   62.8- nV: 0.4779  nA: 0.7649  nE: -0.2912 nG: 0.1940  Px: 6.141e-02 Py: 3.895e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.112e-01 Pw: 8.023e-07 R: 1
+received message:   62.8- x: -0.0969 y: -0.5266 v: 0.2136  a: 0.4257  o: 1.6378  w: 0.0772
+received message:   62.9- nV: -0.7754 nA: -0.2469 nE: -1.5789 nG: 2.2515  Px: 5.995e-02 Py: 3.903e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.122e-01 Pw: 8.023e-07 R: 1
+received message:   62.9- x: -0.0984 y: -0.5042 v: 0.2367  a: 0.2781  o: 1.6351  w: 0.2050
+received message:   63.0- nV: -0.2716 nA: 0.7270  nE: 0.2638  nG: 0.8555  Px: 5.857e-02 Py: 3.912e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.132e-01 Pw: 8.023e-07 R: 1
+received message:   63.0- x: -0.1001 y: -0.4795 v: 0.2480  a: 0.3730  o: 1.6392  w: -0.0432
+received message:   63.1- nV: -0.5521 nA: 0.5256  nE: -0.5768 nG: 0.2883  Px: 5.741e-02 Py: 3.922e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.142e-01 Pw: 8.023e-07 R: 1
+received message:   63.1- x: -0.1018 y: -0.4540 v: 0.2554  a: 0.2439  o: 1.6387  w: 0.0516
+received message:   63.2- nV: -0.5298 nA: -1.1008 nE: -0.0566 nG: 1.1405  Px: 5.652e-02 Py: 3.931e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.152e-01 Pw: 8.023e-07 R: 1
+received message:   63.2- x: -0.1036 y: -0.4281 v: 0.2560  a: -0.1427 o: 1.6402  w: 0.0037
+received message:   63.3- nV: 2.0175  nA: 1.7238  nE: -0.6546 nG: -5.6184 Px: 5.593e-02 Py: 3.941e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.162e-01 Pw: 8.023e-07 R: 1
+received message:   63.3- x: -0.1054 y: -0.4026 v: 0.2403  a: -0.5427 o: 1.6488  w: -0.0600
+received message:   63.5- nV: -0.4877 nA: -0.8755 nE: 0.1481  nG: -1.7592 Px: 5.553e-02 Py: 3.954e-01 Pv: 3.668e-06 Pa: 2.802e-04 Po: 2.172e-01 Pw: 8.023e-07 R: 1
+received message:   63.5- x: -0.1082 y: -0.3665 v: 0.2494  a: -0.1764 o: 1.6476  w: -0.0047
+received message:   63.6- nV: 2.1188  nA: -0.2855 nE: -0.1170 nG: -0.5715 Px: 5.570e-02 Py: 3.968e-01 Pv: 3.667e-06 Pa: 2.802e-04 Po: 2.182e-01 Pw: 8.023e-07 R: 1
+received message:   63.6- x: -0.1109 y: -0.3302 v: 0.2478  a: -0.3781 o: 1.6444  w: -0.0378
+received message:   63.7- nV: -0.4081 nA: -0.5008 nE: -0.5986 nG: 0.2333  Px: 5.632e-02 Py: 3.979e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.192e-01 Pw: 8.023e-07 R: 1
+received message:   63.7- x: -0.1131 y: -0.2985 v: 0.2286  a: -0.5887 o: 1.6347  w: -0.0410
+received message:   63.9- nV: -0.3854 nA: 0.2531  nE: -0.6507 nG: -0.6161 Px: 5.733e-02 Py: 3.989e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.202e-01 Pw: 8.023e-07 R: 1
+received message:   63.9- x: -0.1148 y: -0.2682 v: 0.1929  a: -0.2972 o: 1.6151  w: -0.2423
+received message:   64.0- nV: -1.0097 nA: -0.4262 nE: 0.2192  nG: 0.9977  Px: 5.867e-02 Py: 3.995e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.212e-01 Pw: 8.023e-07 R: 1
+received message:   64.0- x: -0.1159 y: -0.2395 v: 0.2103  a: -0.2486 o: 1.6047  w: 0.0037
+received message:   64.1- nV: 1.3511  nA: 0.8409  nE: 1.0548  nG: 2.8088  Px: 6.008e-02 Py: 3.999e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.222e-01 Pw: 8.023e-07 R: 1
+received message:   64.1- x: -0.1166 y: -0.2155 v: 0.2076  a: 0.1861  o: 1.5888  w: -0.1434
+received message:   64.3- nV: -0.0374 nA: 0.6909  nE: -1.9945 nG: 2.8967  Px: 6.211e-02 Py: 4.002e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.232e-01 Pw: 8.023e-07 R: 1
+received message:   64.3- x: -0.1170 y: -0.1866 v: 0.1812  a: -0.2017 o: 1.5787  w: -0.0795
+received message:   64.4- nV: -2.1202 nA: -0.2080 nE: 1.4425  nG: 4.1369  Px: 6.431e-02 Py: 4.003e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 2.242e-01 Pw: 8.023e-07 R: 1
+received message:   64.4- x: -0.1169 y: -0.1598 v: 0.2167  a: 0.4218  o: 1.5559  w: -0.0486
+received message:   64.6- nV: 1.6435  nA: -0.2704 nE: -0.0596 nG: 2.1851  Px: 6.694e-02 Py: 4.001e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.252e-01 Pw: 8.023e-07 R: 1
+received message:   64.6- x: -0.1164 y: -0.1322 v: 0.2087  a: 0.2111  o: 1.5494  w: 0.0121
+received message:   64.7- nV: -0.5794 nA: 2.3505  nE: -0.0697 nG: 0.7632  Px: 7.023e-02 Py: 3.999e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.262e-01 Pw: 8.023e-07 R: 1
+received message:   64.7- x: -0.1157 y: -0.1015 v: 0.2260  a: 0.3524  o: 1.5482  w: 0.0314
+received message:   64.8- nV: 1.2242  nA: -0.4824 nE: 0.1031  nG: 3.5195  Px: 7.429e-02 Py: 3.996e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.272e-01 Pw: 8.023e-07 R: 1
+received message:   64.8- x: -0.1150 y: -0.0682 v: 0.2253  a: -0.2869 o: 1.5455  w: 0.0409
+received message:   65.0- nV: -0.2456 nA: -0.3479 nE: -0.2639 nG: 1.2857  Px: 7.817e-02 Py: 3.994e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.282e-01 Pw: 8.023e-07 R: 1
+received message:   65.0- x: -0.1143 y: -0.0397 v: 0.2294  a: 0.0674  o: 1.5477  w: 0.0559
+received message:   65.1- nV: 3.7980  nA: -4.0075 nE: -0.1074 nG: -3.0388 Px: 8.200e-02 Py: 3.993e-01 Pv: 3.015e-05 Pa: 2.802e-04 Po: 2.292e-01 Pw: 8.029e-07 R: 2
+received message:   65.1- x: -0.1137 y: -0.0145 v: 0.0949  a: -2.8992 o: 1.5211  w: -1.3022
+received message:   65.2- nV: 0.2412  nA: 0.6680  nE: -0.1669 nG: 0.9081  Px: 8.373e-02 Py: 3.993e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.302e-01 Pw: 8.029e-07 R: 2
+received message:   65.2- x: -0.1125 y: -0.0054 v: 0.0405  a: -0.1059 o: 1.3012  w: -1.7178
+received message:   65.4- nV: -3.0396 nA: 0.6651  nE: -0.0366 nG: 5.6721  Px: 8.455e-02 Py: 3.992e-01 Pv: 3.666e-06 Pa: 2.802e-04 Po: 2.312e-01 Pw: 8.023e-07 R: 1
+received message:   65.4- x: -0.1118 y: -0.0032 v: -0.0072 a: 0.9623  o: 1.0986  w: -0.7912
+received message:   65.5- nV: 0.1037  nA: 0.1190  nE: 0.0065  nG: 0.7606  Px: 8.481e-02 Py: 3.990e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.322e-01 Pw: 8.023e-07 R: 1
+received message:   65.5- x: -0.1114 y: -0.0024 v: 0.0292  a: 0.3592  o: 1.0600  w: -0.0112
+received message:   65.7- nV: -0.0566 nA: -0.8756 nE: -0.1477 nG: -0.4752 Px: 8.584e-02 Py: 3.976e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.332e-01 Pw: 8.023e-07 R: 1
+received message:   65.7- x: -0.1081 y: 0.0035  v: 0.0573  a: -0.1381 o: 1.0571  w: -0.0421
+received message:   65.8- nV: 2.5599  nA: 0.6025  nE: -1.1950 nG: -0.7670 Px: 8.701e-02 Py: 3.959e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.342e-01 Pw: 8.023e-07 R: 1
+received message:   65.8- x: -0.1042 y: 0.0103  v: 0.0552  a: -0.7238 o: 1.0477  w: -0.1870
+received message:   65.9- nV: 0.6701  nA: -0.4251 nE: -2.9283 nG: 0.5243  Px: 8.806e-02 Py: 3.944e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.352e-01 Pw: 8.023e-07 R: 1
+received message:   65.9- x: -0.1007 y: 0.0163  v: 0.0450  a: -0.2965 o: 1.0215  w: -0.0922
+received message:   66.1- nV: -0.1699 nA: 0.1367  nE: -4.2158 nG: 0.5693  Px: 8.911e-02 Py: 3.928e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.362e-01 Pw: 8.023e-07 R: 1
+received message:   66.1- x: -0.0971 y: 0.0220  v: 0.0510  a: 0.0478  o: 1.0181  w: -0.0112
+received message:   66.2- nV: 0.6725  nA: -0.7261 nE: -5.7937 nG: 0.2861  Px: 9.023e-02 Py: 3.912e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.372e-01 Pw: 8.023e-07 R: 1
+received message:   66.2- x: -0.0933 y: 0.0282  v: 0.0672  a: -0.1430 o: 1.0186  w: -0.0006
+received message:   66.3- nV: 0.0043  nA: -0.7173 nE: -0.4532 nG: -4.5128 Px: 9.174e-02 Py: 3.895e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.382e-01 Pw: 8.029e-07 R: 2
+received message:   66.4- x: -0.0888 y: 0.0354  v: 0.0464  a: -0.3633 o: 0.9857  w: -0.7408
+received message:   66.5- nV: -0.1346 nA: -0.2681 nE: -0.2157 nG: -2.1207 Px: 9.254e-02 Py: 3.894e-01 Pv: 3.090e-05 Pa: 2.802e-04 Po: 2.392e-01 Pw: 8.029e-07 R: 2
+received message:   66.5- x: -0.0879 y: 0.0368  v: -0.0095 a: -0.8188 o: 0.8401  w: -1.4578
+received message:   66.6- nV: 2.7413  nA: 5.1949  nE: 3.8716  nG: 6.8586  Px: 9.288e-02 Py: 3.897e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.402e-01 Pw: 8.023e-07 R: 1
+received message:   66.6- x: -0.0873 y: 0.0371  v: 0.0516  a: 2.0695  o: 0.6306  w: -0.8530
+received message:   66.8- nV: -5.0130 nA: -1.6289 nE: 2.3587  nG: 1.9569  Px: 9.455e-02 Py: 3.838e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.412e-01 Pw: 8.023e-07 R: 1
+received message:   66.8- x: -0.0744 y: 0.0459  v: 0.1684  a: 1.1846  o: 0.5807  w: 0.0218
+received message:   66.9- nV: -5.6376 nA: -6.5134 nE: -3.3912 nG: 0.1907  Px: 9.723e-02 Py: 3.743e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.422e-01 Pw: 8.023e-07 R: 1
+received message:   66.9- x: -0.0535 y: 0.0597  v: 0.1247  a: -2.6910 o: 0.5890  w: 0.0111
+received message:   67.0- nV: -0.1858 nA: -1.3809 nE: -0.2016 nG: 0.3700  Px: 9.823e-02 Py: 3.715e-01 Pv: 3.080e-05 Pa: 2.802e-04 Po: 2.432e-01 Pw: 8.029e-07 R: 2
+received message:   67.0- x: -0.0461 y: 0.0643  v: 0.0475  a: -0.5496 o: 0.4843  w: -1.1958
+received message:   67.2- nV: 0.1463  nA: 2.4438  nE: -0.2985 nG: -1.6155 Px: 9.903e-02 Py: 3.705e-01 Pv: 3.091e-05 Pa: 2.802e-04 Po: 2.442e-01 Pw: 8.029e-07 R: 2
+received message:   67.2- x: -0.0425 y: 0.0660  v: 0.0132  a: 0.3667  o: 0.3127  w: -1.3225
+received message:   67.3- nV: -2.2286 nA: -2.2811 nE: -1.0357 nG: 2.0032  Px: 9.918e-02 Py: 3.710e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.452e-01 Pw: 8.023e-07 R: 1
+received message:   67.3- x: -0.0444 y: 0.0655  v: -0.0141 a: 0.4715  o: 0.2234  w: -0.0017
+received message:   67.4- nV: -0.2634 nA: 0.0442  nE: -0.5663 nG: -0.6640 Px: 9.926e-02 Py: 3.714e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.462e-01 Pw: 8.023e-07 R: 1
+received message:   67.4- x: -0.0448 y: 0.0654  v: -0.0006 a: 0.0000  o: 0.2232  w: -0.0091
+received message:   67.5- nV: -0.9243 nA: -0.6193 nE: 0.4463  nG: 3.0043  Px: 9.934e-02 Py: 3.716e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.472e-01 Pw: 8.023e-07 R: 1
+received message:   67.5- x: -0.0452 y: 0.0653  v: 0.0020  a: 0.1970  o: 0.1977  w: 0.0281
+received message:   67.7- nV: 0.2159  nA: -0.0910 nE: -0.3699 nG: -0.1426 Px: 9.940e-02 Py: 3.717e-01 Pv: 3.641e-06 Pa: 2.802e-04 Po: 2.482e-01 Pw: 8.023e-07 R: 1
+received message:   67.7- x: -0.0451 y: 0.0653  v: 0.0005  a: -0.0717 o: 0.1983  w: -0.0016
+received message:   67.8- nV: 0.8096  nA: 0.1676  nE: -0.4724 nG: -5.9493 Px: 9.949e-02 Py: 3.718e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.492e-01 Pw: 8.023e-07 R: 1
+received message:   67.8- x: -0.0451 y: 0.0654  v: 0.0002  a: -0.0480 o: 0.1213  w: -1.2265
+received message:   67.9- nV: -0.4227 nA: 0.3019  nE: 0.5846  nG: 8.0957  Px: 9.960e-02 Py: 3.716e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.502e-01 Pw: 8.023e-07 R: 1
+received message:   67.9- x: -0.0444 y: 0.0654  v: 0.0077  a: 0.4022  o: 6.2819  w: -0.1553
+received message:   68.1- nV: 0.3192  nA: 0.7704  nE: -0.1558 nG: -1.0460 Px: 9.970e-02 Py: 3.714e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.512e-01 Pw: 8.023e-07 R: 1
+received message:   68.1- x: -0.0440 y: 0.0654  v: 0.0025  a: 0.2341  o: 6.2794  w: -0.0240
+received message:   68.2- nV: -2.3967 nA: -0.0622 nE: 0.1778  nG: -2.9070 Px: 9.979e-02 Py: 3.677e-01 Pv: 3.665e-06 Pa: 2.802e-04 Po: 2.522e-01 Pw: 8.023e-07 R: 1
+received message:   68.2- x: -0.0352 y: 0.0653  v: 0.1120  a: 0.6324  o: 6.2815  w: -0.0953
+received message:   68.3- nV: -5.5462 nA: -0.3030 nE: 0.7499  nG: 3.8531  Px: 9.988e-02 Py: 3.597e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.532e-01 Pw: 8.023e-07 R: 1
+received message:   68.3- x: -0.0167 y: 0.0653  v: 0.1047  a: -0.3781 o: 6.2796  w: 0.0707
+received message:   68.5- nV: -2.3929 nA: 0.0523  nE: 1.7526  nG: 2.9587  Px: 9.998e-02 Py: 3.566e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.542e-01 Pw: 8.023e-07 R: 1
+received message:   68.5- x: -0.0089 y: 0.0653  v: 0.0342  a: 0.3928  o: 0.0170  w: 0.5735
+received message:   68.6- nV: -2.5831 nA: -0.2702 nE: 0.0000  nG: 1.1279  Px: 1.000e-01 Py: 3.562e-01 Pv: 4.790e-08 Pa: 2.802e-04 Po: 2.552e-01 Pw: 1.000e-15 R: 0
+received message:   68.6- x: -0.0079 y: 0.0653  v: 0.0001  a: 0.0721  o: 0.0401  w: 0.0000
+received message:   68.7- nV: 0.4397  nA: -0.0003 nE: 0.1504  nG: -0.0476 Px: 1.001e-01 Py: 3.562e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.562e-01 Pw: 8.023e-07 R: 1
+received message:   68.7- x: -0.0078 y: 0.0653  v: 0.0027  a: -0.0191 o: 0.0401  w: -0.0006
+received message:   68.9- nV: -0.2496 nA: -0.7702 nE: -0.3407 nG: 0.4795  Px: 1.002e-01 Py: 3.549e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.572e-01 Pw: 8.023e-07 R: 1
+received message:   68.9- x: -0.0043 y: 0.0654  v: 0.0422  a: 0.1061  o: 0.0392  w: 0.0229
+received message:   69.0- nV: 3.2264  nA: 1.4819  nE: -0.5897 nG: -6.5247 Px: 1.003e-01 Py: 3.539e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.582e-01 Pw: 8.023e-07 R: 1
+received message:   69.0- x: -0.0018 y: 0.0655  v: 0.0025  a: -0.4994 o: 0.0426  w: -0.1377
+received message:   69.1- nV: -4.0220 nA: -0.0480 nE: -0.1820 nG: 0.0894  Px: 1.005e-01 Py: 3.521e-01 Pv: 3.664e-06 Pa: 2.802e-04 Po: 2.592e-01 Pw: 8.023e-07 R: 1
+received message:   69.1- x: 0.0027  y: 0.0657  v: 0.0227  a: -0.1771 o: 0.0392  w: -0.0304
+received message:   69.3- nV: -0.2690 nA: 0.3921  nE: 0.4500  nG: -0.2386 Px: 1.005e-01 Py: 3.522e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.602e-01 Pw: 8.023e-07 R: 1
+received message:   69.3- x: 0.0030  y: 0.0657  v: -0.0012 a: 0.1865  o: 0.0395  w: -0.0570
+received message:   69.4- nV: -0.2474 nA: -0.0599 nE: -0.1726 nG: -0.0000 Px: 1.006e-01 Py: 3.522e-01 Pv: 3.662e-06 Pa: 2.802e-04 Po: 2.612e-01 Pw: 8.023e-07 R: 1
+received message:   69.4- x: 0.0032  y: 0.0657  v: -0.0017 a: 0.0193  o: 0.0382  w: 0.0005
+received message:   69.5- nV: -0.2104 nA: 0.1359  nE: -0.0883 nG: -0.0476 Px: 1.007e-01 Py: 3.522e-01 Pv: 3.663e-06 Pa: 2.802e-04 Po: 2.622e-01 Pw: 8.023e-07 R: 1
+received message:   69.5- x: 0.0033  y: 0.0657  v: -0.0023 a: 0.0191  o: 0.0382  w: -0.0006
+received message:   69.7- nV: -0.1004 nA: -0.1208 nE: 0.0000  nG: -0.1685 Px: 1.008e-01 Py: 3.523e-01 Pv: 4.775e-08 Pa: 2.802e-04 Po: 2.632e-01 Pw: 9.999e-16 R: 0
+received message:   69.7- x: 0.0032  y: 0.0657  v: 0.0000  a: -0.0238 o: 0.0383  w: -0.0000
+received message:   69.7- nV: 0.0998  nA: 0.0302  nE: -0.0000 nG: 0.1556  Px: 1.008e-01 Py: 3.523e-01 Pv: 4.779e-08 Pa: 2.802e-04 Po: 2.642e-01 Pw: 1.000e-15 R: 0
+received message:   69.7- x: 0.0032  y: 0.0657  v: -0.0000 a: 0.0000  o: 0.0383  w: 0.0000
+received message:   69.8- nV: -0.0532 nA: -0.0301 nE: -0.0000 nG: 0.1556  Px: 1.008e-01 Py: 3.523e-01 Pv: 4.774e-08 Pa: 2.802e-04 Po: 2.652e-01 Pw: 1.000e-15 R: 0
+received message:   69.8- x: 0.0032  y: 0.0657  v: 0.0000  a: 0.0001  o: 0.0383  w: 0.0000
+received message:   69.9- nV: 0.0037  nA: 0.0001  nE: 0.0000  nG: 0.1556  Px: 1.008e-01 Py: 3.523e-01 Pv: 4.775e-08 Pa: 2.802e-04 Po: 2.662e-01 Pw: 1.000e-15 R: 0
+received message:   69.9- x: 0.0032  y: 0.0657  v: -0.0000 a: 0.0001  o: 0.0383  w: 0.0000
+received message:   70.0- nV: 0.0415  nA: 0.0152  nE: 0.0000  nG: 0.1556  Px: 1.008e-01 Py: 3.523e-01 Pv: 4.776e-08 Pa: 2.802e-04 Po: 2.672e-01 Pw: 1.000e-15 R: 0
+received message:   70.0- x: 0.0032  y: 0.0657  v: -0.0000 a: 0.0000  o: 0.0383  w: 0.0000
+received message:   70.1- nV: 0.1083  nA: 0.0301  nE: 0.0000  nG: 0.1556  Px: 1.008e-01 Py: 3.524e-01 Pv: 4.776e-08 Pa: 2.802e-04 Po: 2.682e-01 Pw: 1.000e-15 R: 0
+received message:   70.1- x: 0.0032  y: 0.0657  v: -0.0000 a: -0.0048 o: 0.0383  w: 0.0000
+received message:   70.2- nV: 0.0950  nA: 0.0603  nE: 0.0000  nG: -0.4926 Px: 1.008e-01 Py: 3.524e-01 Pv: 4.775e-08 Pa: 2.802e-04 Po: 2.692e-01 Pw: 9.999e-16 R: 0
+received message:   70.2- x: 0.0032  y: 0.0657  v: -0.0000 a: 0.0048  o: 0.0383  w: -0.0000
+received message:   70.3- nV: 0.1007  nA: -0.0154 nE: -0.0000 nG: 0.4797  Px: 1.008e-01 Py: 3.524e-01 Pv: 4.776e-08 Pa: 2.802e-04 Po: 2.702e-01 Pw: 1.000e-15 R: 0
+received message:   70.3- x: 0.0032  y: 0.0657  v: -0.0000 a: -0.0191 o: 0.0383  w: 0.0000
