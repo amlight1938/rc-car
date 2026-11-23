@@ -104,37 +104,32 @@ Verification and Validation
 	- Matched semi-known paths
 - P diagonal plots
 
-<!-- ![Small Rectangle With Curved Corners State and Normalized Innovation](./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg)
-![Small Rectangle With Curved Corners P Matrix Diagonals](./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG)
-![Small Rectangle Variable Regime State and Normalized Innovation](./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-State-and-Normalized-Innovation.jpeg)
-![Small Rectangle Variable Regime P Matrix Diagonals](./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-P-Matrix-Diagonals.jpeg) -->
-
-<!-- <p align="center">
-  <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" height="240"/>
-  <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" height="240"/>
-</p> -->
-
-<!-- <table>
-  <tr>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF states and normalized innovation"/><br/><sub>States and normalized innovation driving in a small rectangle with curves</sub></td>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" width="100%" alt="EKF P matrix diagonals"/><br/><sub>P matrix diagonals</sub></td>
-  </tr>
-</table> -->
-
 <table>
   <tr>
-    <th colspan="2" align="center">Regime-Adaptive EKF: States and Consistency</th>
+    <th colspan="2" align="center">Regime-Adaptive EKF Driving in Small Rectangle: States, Normalized Innovation, and Covariance (P) Diagonals </th>
   </tr>
   <tr>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF states and normalized innovation"/></td>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF P matrix diagonals"/></td>
+    <td align="center">
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-State-and-Normalized-Innovation.jpeg" width="100%" />
+      <br/><sub><b>Figure 1.</b> Estimated states and normalized innovation</sub>
+    </td>
+    <td align="center">
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-P-Matrix-Diagonals.jpeg" width="100%" />
+      <br/><sub><b>Figure 2.</b> Covariance (P matrix) diagonals</sub>
+    </td>
   </tr>
   <tr>
-    <th colspan="2" align="center">Velocity PI Step Responses</th>
+    <th colspan="2" align="center">Single Regime EKF Driving in Small Rectangle With Curved Corners: States, Normalized Innovation, and Covariance (P) Diagonals</th>
   </tr>
   <tr>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="..."/></td>
-    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="..."/></td>
+    <td align="center">
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" />
+      <br/><sub><b>Figure 3.</b> Estimated states and normalized innovation</sub>
+    </td>
+    <td align="center">
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" width="100%"/>
+      <br/><sub><b>Figure 4.</b> Covariance (P matrix) diagonals</sub>
+    </td>
   </tr>
 </table>
 
