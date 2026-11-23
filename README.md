@@ -1,16 +1,24 @@
 ## Features / Overview
-- A fixed-rate, fault-tolerant embedded control system in C++ on a resource constrained ESP32 microcontroller with FreeRTOS priority-scheduled tasks, a fixed rate control loop, and hardware abstraction across motors, sensors, and vehicle classes
-- State machine architecture that safely handles faults, state transitions, and hardware fail-safes on communication loss
-- UDP telemetry pipeline for remote logging with pre-allocated queuing and a dedicated FreeRTOS task to separate logging from the time constrained, prioritized control loop 
 - Extended Kalman Filter (EKF) estimates pose in real time by fusing IMU and odometry measurements
 - Autonomous obstacle-free return to home by dead reckoning navigation capability using EKF state estimation and PID controller in a Sense -> Estimate -> Control cycle 
+- State machine architecture that safely handles faults, state transitions, and hardware fail-safes on communication loss
+- UDP telemetry pipeline for remote logging with pre-allocated queuing and a dedicated FreeRTOS task to separate logging from the time constrained, prioritized control loop 
+- A fault-tolerant embedded control system in C++ on a resource constrained ESP32 microcontroller with FreeRTOS priority-scheduled tasks, a fixed rate control loop, and hardware abstraction across motors, sensors, and vehicle classes
 - Remote control manual operation via Bluetooth
 - Python tools that parse logs and plot EKF and PID performance across runs on a shared time axis
 
 
 
-PICTURES / VIDEOS GO HERE
-
+<p align="center">
+  <img src="./Design/Images/DAR-C/IMG_2332.jpeg" width="32%"/>
+  <img src="./Design/Images/DAR-C/IMG_2328.jpeg" width="32%"/>
+  <img src="./Design/Images/DAR-C/IMG_2334.jpeg" width="32%"/>
+</p>
+<p align="center">
+  <img src="./Design/Images/DAR-C/IMG_2315.MOV" width="32%"/>
+  <img src="./Design/Images/DAR-C/IMG_2326.MOV" width="32%"/>
+  <img src="./Design/Images/DAR-C/IMG_2313.MOV" width="32%"/>
+</p>
 
 
 ## Skills developed
@@ -29,8 +37,10 @@ PICTURES / VIDEOS GO HERE
 The Kalman Filter fuses acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state. The state vector $\bar{x}$ evolves as a function of the previous state: 
 
 ```math
+\begin{array}{c}
 \bar{x} = [x,\ y,\ v,\ a,\ \theta,\ \omega]^T \\[6pt]
 \bar{x}_{k+1} = f(\bar{x}_k) 
+\end{array}
 ```
 
 Since this motion model is nonlinear, an Extended Kalman Filter (EKF) was required. The Jacobian below was used to linearize the system at the current state estimate
@@ -117,7 +127,7 @@ Deadband Compensation in Autonomous Return to Home
 - To solve this, the heading PID output is thresholded so the steering command is only ever left (-1), right (+1), or none (0), which means the car turns at a fixed rate when the PID demand saturates and drives straight otherwise. This is effectively on/off steering with a deadband around the target heading
 - The trade-off is that the controller can no longer approach the target smoothly, so heading accuracy is limited by the deadband and fixed turn rate, but this is acceptable for the purposes of this project
 
-Verification and Validation
+Verification
 - Step response data was recorded and plotted for analysis in tuning the PID controllers. Example response plots without the thresholded steering are shown below
 
 <p align="center">
