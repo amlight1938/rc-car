@@ -156,7 +156,7 @@ def process_file(filepath: Path):
 		ax_regime.set_yticks(list(REGIME_STYLE))
 		ax_regime.set_yticklabels([s["name"] for s in REGIME_STYLE.values()])
 		ax_regime.tick_params(axis="y", labelsize=8)
-		ax_regime.set_ylim(-0.5, 2.5)
+		ax_regime.set_ylim(-0.5, 1.5)
 		ax_regime.set_ylabel("Regime")
 		ax_regime.set_xlabel("Time (s)")
 
