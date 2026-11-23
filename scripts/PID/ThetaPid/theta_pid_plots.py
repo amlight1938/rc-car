@@ -75,7 +75,7 @@ def plot_all_in_dir(dfs: list[tuple[str,pd.DataFrame]]):
 	ax.legend(loc="lower right")
 	ax.set_ylabel("Angle (rad)")
 	ax.set_xlabel("Time (s)")
-	ax.set_title("Varying Kp, Ki, Kd Gains for a Target Velocity")
+	ax.set_title("Varying Kp, Ki, Kd Gains for a Target Heading")
 	fig.tight_layout()
 	plt.show()
 

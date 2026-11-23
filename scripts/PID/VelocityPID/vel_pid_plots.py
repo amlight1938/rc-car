@@ -10,7 +10,7 @@ import pandas as pd
 
 # this script can either take a single file as input or a folder that contains multiple data files to plot them all on the same axes for comparison
 
-FIELDS = ["PidV", "EkfVel"] # the fields in the data files to read
+FIELDS = ["PidV", "EkfV"] # the fields in the data files to read
 
 def main():
 	parser = argparse.ArgumentParser(description="A script that processes a CSV file of EKF data and creates plots")

@@ -33,7 +33,7 @@ PICTURES / VIDEOS GO HERE
 - Log messages sent over UDP for its low overhead as opposed to TCP since a delivery acknowledgment was not necessary and an occasionally dropped log was acceptable
 - Formatted consistently with timestamp so python scripts can parse logged data for analysis and tuning 
 
-#### State machine and fault tolerance
+#### State Machine and Fault Tolerance
 - Explicit state machine with states: Manual, Autonomous, Bluetooth Pairing, Connected and Disarmed, Sensor Calibration
 - State transitions handled explicitly and each mode runs its own per-cycle operations, including on entry setup
 - Safety critical arming: a connection or reconnection always lands in Connected and Disarmed, forcing an operator to arm the system once it's connected in order to operate it
@@ -45,7 +45,7 @@ PICTURES / VIDEOS GO HERE
 
 
  
-#### Embedded software design
+#### Embedded Software Design
 - Deisgned with seperate FreeRTOS tasks for logging and control	
 	- Fixed memory, no `new`/`malloc` calls
 	- Allow task prioritization and allocation of operation time based on task priority (control task higher priority than logging)
@@ -111,7 +111,7 @@ PLOTS GO HERE
 
 
 
-#### PID controllers
+#### PID Controllers
 - The car ran two autonomous controllers, one PI controller for the car's forward velocity and one PID controller for its heading
 - The two controllers' outputs were fed to the car's control class concurrently allowing it to move forward and steer simultaneously towards its destination
 
@@ -129,8 +129,8 @@ Deadband Compensation
 Verification and Validation
 - Step response data was recorded and plotted for analysis in tuning the PID controllers. Example response plots are below
 
-PLOTS GO HERE
-
+![Velocity Controller](Images/Plots/VelocityPID.JPG)
+![Heading Controller](Images/Plots/VelocityPID.JPG)
 
 
 
