@@ -93,6 +93,7 @@ Variable motion model and sensor noise matrices
 - The car experienced varying amounts of wheel slippage which affected the filter's motion mode, $Q$, and encoder sensor noise, $R$, depending on how aggressively the car was being driven and the terrain it was being driven on. This increased the EKF's accuracy as its trust in the encoder sensors changed accordingly depending on the driving regime.
 - Driving intensely -> $Q \uparrow$ (motion noise increases due to wheel slip), $R_{encoders} \uparrow$ (trust encoders less)
 - Stationary -> $Q \downarrow$ (motion noise decreases due to no wheel slip), $R_{encoders} \downarrow$ (trust encoders more)
+- This change also prevents unbounded drift in the car's heading estimate. This drift came from integrating the gyro's turn rate measurements which had a slight bias that was difficult to remove entirely. This bias was near constant (proved to grow over time very slowly with python analysis), and therefore, when integrated, produced a linearly increasing drift in the car's heading estimate, even when completely stationary. The variable $R$ and $Q$ matrices changed how much the gyro measurement was trusted when the car was completely stationary, preventing the intgeration drift
 
 Verification and Validation
 - Tuned R with data recorded from sensors
@@ -111,19 +112,24 @@ PLOTS GO HERE
 
 
 #### PID controllers
-- Abstract base class
-- 1 pid for velocity
-- 1 pid for heading
+- The car ran two autonomous controllers, one PI controller for the car's forward velocity and one PID controller for its heading
+- The two controllers' outputs were fed to the car's control class concurrently allowing it to move forward and steer simultaneously towards its destination
+
+Velocity PI Controller
+- Only proportional and integral gains were used for speed control. Adding a derivative gain to this controller caused large spikes in the step response. This is attributed to noisy accelerometer data feeding velocity estimates and quantized velocity measurements. Since the wheel encoders are only capable of measuring in steps, and our $\Delta t$ was very small, the velocity estimate could jump up and down and the derivative gain would see accelerations much higher or lower than the true acceleration. 
+
+Heading PID Controller
+- A derivative gain was useful in this case because the turn rate estimate was dominated by the IMU gyro (gyro had a much smaller value in $R$ matrix), which had small noise compared with the real turn rate, allowing the derivative term to differentiate a smooth error curve, leading to a successful damping effect.
+
+Deadband Compensation
+- As the heading error became small the PID output wasn't strong enough to overcome friction and the car would was unable to close the error completely. This wasnt a big problem when testing the velocity and heading controllers individually, but when combining inputs in the autonomous return to home navigation, the problem became apparent
+- To solve this, the heading PID output is thresholded so the steering command is only ever left, right, or none, which means the car turns at a fixed rate when the PID demand saturates and drives straight otherwise. This is effectively on/off steering with a deadband around the target heading
+- The trade-off is that the controller can no longer approach the target smoothly, so heading accuracy is limited by the deadband and fixed turn rate, but this is acceptable for the purposes of this project
 
 Verification and Validation
+- Step response data was recorded and plotted for analysis in tuning the PID controllers. Example response plots are below
+
 PLOTS GO HERE
-
-
-
-## Difficult bugs/challenges overcome
-- Wheel slippage
-- Ghost heading drift
-- Autonomous return to home once close to home didnt have enough input to overcome friction so we increased input response
 
 
 
