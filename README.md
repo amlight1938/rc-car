@@ -25,36 +25,7 @@ PICTURES / VIDEOS GO HERE
 
 
 ## Design Considerations
-#### Remote Logging
-- Singleton design pattern to ensure one logger and one log queue
-- Separate logging FreeRTOS task with lower priority than control task to ensure control is not held up by telemetry
-- Non-blocking queue, if the queue is full messages are purposely dropped so the control task is not held up 
-- Pre-allocated memory for log message queue to prevent dynamic memory allocation faults with queue size being determined by available RAM, expected log rate, and message size
-- Log messages sent over UDP for its low overhead as opposed to TCP since a delivery acknowledgment was not necessary and an occasionally dropped log was acceptable
-- Formatted consistently with timestamp so python scripts can parse logged data for analysis and tuning 
-
-#### State Machine and Fault Tolerance
-- Explicit state machine with states: Manual, Autonomous, Bluetooth Pairing, Connected and Disarmed, Sensor Calibration
-- State transitions handled explicitly and each mode runs its own per-cycle operations, including on entry setup
-- Safety critical arming: a connection or reconnection always lands in Connected and Disarmed, forcing an operator to arm the system once it's connected in order to operate it
-- Fault handling such as a sudden disconnect forces Pairing mode and stops the motors
-- Operator can switch to Manual at any time during Autonomous control with single button push
-- Status LEDs show the mode (slow blink while pairing, fast blink in autonomous, red LED while armed, yellow while calibrating sensors)
-- Bounded WiFi connection retries 
-
-
-
- 
-#### Embedded Software Design
-- Deisgned with seperate FreeRTOS tasks for logging and control	
-	- Fixed memory, no `new`/`malloc` calls
-	- Allow task prioritization and allocation of operation time based on task priority (control task higher priority than logging)
-	- Deterministic fixed timing loop control task for EKF and PID 
-	- Ability to add future tasks to expand capabilities 
-- Hardware abstraction accross motors, sensors, and vehicle classes
-	- Build abstraction interfaces to make the system hardware agnositc, allowing us to easily interchange future hardware (IMUs, motors, encoders)
-
-#### Extended Kalman Filter
+### Extended Kalman Filter
 The Kalman Filter fuses acceleration and gyro data from an IMU and wheel encoder data from the motors to estimate the car's state. The state vector $\bar{x}$ evolves as a function of the previous state: 
 
 ```math
@@ -95,14 +66,12 @@ Variable motion model and sensor noise matrices
 - Stationary -> $Q \downarrow$ (motion noise decreases due to no wheel slip), $R_{encoders} \downarrow$ (trust encoders more)
 - This change also prevents unbounded drift in the car's heading estimate. This drift came from integrating the gyro's turn rate measurements which had a slight bias that was difficult to remove entirely. This bias was near constant (proved to grow over time very slowly with python analysis), and therefore, when integrated, produced a linearly increasing drift in the car's heading estimate, even when completely stationary. The variable $R$ and $Q$ matrices changed how much the gyro measurement was trusted when the car was completely stationary, preventing the intgeration drift
 
-Verification and Validation
-- Tuned R with data recorded from sensors
-- Tuned Q empirically using plots
-- NI plots
-	- Mean of 0, NI std of 1
-- State plots
-	- Matched semi-known paths
-- P diagonal plots
+Tuning and Verification
+- Initial guesses for $R$ were selected by calculating variances of the accelerometer and gyroscope using recorded stationary data 
+- $Q$ was tuned empirically starting with educated guesses about terrain and wheel slip
+- Normalized innovation, $v$, was calculated using the following formula: $ v=y/\sqrt{S}$, where $y$ is the innovation $y=z-Hx_{predicted}$, and $S$ is the innovation's predicted variance, calculated as $S=HPH^T+R$.
+- When tuning, the normalized innovation was centered around 0 (mean = 0), indicating the filter did not have any biases, and the standard deviation was aimed to be equal to 1 (the innovation or "surprise" was exactly what the filter predicted it should be based on $P$, $Q$, and $R$).
+- On each iteration, the estimated state and diagonal values of $P$ (uncertainties of each state variable) were plotted and compared against a semi-known path of travel. Example plots are shown below:
 
 <table>
   <tr>
@@ -133,12 +102,12 @@ Verification and Validation
   </tr>
 </table>
 
-#### PID Controllers
+### PID Controllers
 - The car ran two autonomous controllers, one PI controller for the car's forward velocity and one PID controller for its heading
 - The two controllers' outputs were fed to the car's control class concurrently allowing it to move forward and steer simultaneously towards its destination
 
 Velocity PI Controller
-- Only proportional and integral gains were used for speed control. Adding a derivative gain to this controller caused large spikes in the step response. This is attributed to noisy accelerometer data feeding velocity estimates and quantized velocity measurements. Since the wheel encoders are only capable of measuring in steps, and our $\Delta t$ was very small, the velocity estimate could jump up and down and the derivative gain would see accelerations much higher or lower than the true acceleration. 
+- Only proportional and integral gains were used for speed control. Adding a derivative gain to this controller caused large spikes in the step response. This is attributed to noisy accelerometer data feeding velocity estimates and quantized velocity measurements. The stationary accelerometer noise compared to its typical signal is ~16% ($var = 0.027 (m/s^2)^2 \rightarrow \sigma = 0.164 m/s^2$ compared to a normal signal of $1 m/s^2$). Whereas with the stationary gyro, its noise compared to its typical signal is ~0.08% ($var = 8.035852e-07 (rad/s)^2 \rightarrow \sigma = 8.96e-4 rad/s$ and a normal signal of $1 rad/s$). This is enough to cause significant jitter in velocity estimate and less jitter in the heading estimate. The EKF state plots confirm this. Furthermore, since the wheel encoders are only capable of measuring in steps, and our $\Delta t$ was very small, the velocity estimate could jump up and down and the derivative gain would see accelerations much higher or lower than the true acceleration. 
 
 Heading PID Controller
 - A derivative gain was useful in this case because the turn rate estimate was dominated by the IMU gyro (gyro had a much smaller value in $R$ matrix), which had small noise compared with the real turn rate, allowing the derivative term to differentiate a smooth error curve, leading to a successful damping effect.
@@ -153,6 +122,35 @@ Verification and Validation
 
 ![Velocity Controller](./Design/Images/Plots/VelocityPID.JPG)
 ![Heading Controller](./Design/Images/Plots/ThetaPID.JPG)
+
+
+### Remote Logging
+- Singleton design pattern to ensure one logger and one log queue
+- Separate logging FreeRTOS task with lower priority than control task to ensure control is not held up by telemetry
+- Non-blocking queue, if the queue is full messages are purposely dropped so the control task is not held up 
+- Pre-allocated memory for log message queue to prevent dynamic memory allocation faults with queue size being determined by available RAM, expected log rate, and message size
+- Log messages sent over UDP for its low overhead as opposed to TCP since a delivery acknowledgment was not necessary and an occasionally dropped log was acceptable
+- Formatted consistently with timestamp so python scripts can parse logged data for analysis and tuning 
+
+### State Machine and Fault Tolerance
+- Explicit state machine with states: Manual, Autonomous, Bluetooth Pairing, Connected and Disarmed, Sensor Calibration
+- State transitions handled explicitly and each mode runs its own per-cycle operations, including on entry setup
+- Safety critical arming: a connection or reconnection always lands in Connected and Disarmed, forcing an operator to arm the system once it's connected in order to operate it
+- Fault handling such as a sudden disconnect forces Pairing mode and stops the motors
+- Operator can switch to Manual at any time during Autonomous control with single button push
+- Status LEDs show the mode (slow blink while pairing, fast blink in autonomous, red LED while armed, yellow while calibrating sensors)
+- Bounded WiFi connection retries 
+ 
+### Embedded Software Design
+- Deisgned with seperate FreeRTOS tasks for logging and control	
+	- Fixed memory, no `new`/`malloc` calls
+	- Allow task prioritization and allocation of operation time based on task priority (control task higher priority than logging)
+	- Deterministic fixed timing loop control task for EKF and PID 
+	- Ability to add future tasks to expand capabilities 
+- Hardware abstraction accross motors, sensors, and vehicle classes
+	- Build abstraction interfaces to make the system hardware agnositc, allowing us to easily interchange future hardware (IMUs, motors, encoders)
+
+
 
 
 
