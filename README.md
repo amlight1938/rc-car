@@ -79,11 +79,11 @@ Tuning and Verification
   </tr>
   <tr>
     <td align="center">
-      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-State-and-Normalized-Innovation.jpeg" width="100%" />
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-State-and-Normalized-Innovation.png" width="100%" />
       <br/><sub><b>Figure 1.</b> Estimated states and normalized innovation</sub>
     </td>
     <td align="center">
-      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-P-Matrix-Diagonals.jpeg" width="100%" />
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-P-Matrix-Diagonals.png" width="100%" />
       <br/><sub><b>Figure 2.</b> Covariance (P matrix) diagonals</sub>
     </td>
   </tr>
@@ -92,11 +92,11 @@ Tuning and Verification
   </tr>
   <tr>
     <td align="center">
-      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" />
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.png" width="100%" />
       <br/><sub><b>Figure 3.</b> Estimated states and normalized innovation</sub>
     </td>
     <td align="center">
-      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" width="100%"/>
+      <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.png" width="100%"/>
       <br/><sub><b>Figure 4.</b> Covariance (P matrix) diagonals</sub>
     </td>
   </tr>
@@ -120,9 +120,10 @@ Deadband Compensation in Autonomous Return to Home
 Verification and Validation
 - Step response data was recorded and plotted for analysis in tuning the PID controllers. Example response plots without the thresholded steering are shown below
 
-![Velocity Controller](./Design/Images/Plots/VelocityPID.JPG)
-![Heading Controller](./Design/Images/Plots/ThetaPID.JPG)
-
+<p align="center">
+  <img src="./Design/Images/Plots/VelocityPID.png" width="49%"/>
+  <img src="./Design/Images/Plots/ThetaPID.png" width="49%"/>
+</p>
 
 ### Remote Logging
 - Singleton design pattern to ensure one logger and one log queue
