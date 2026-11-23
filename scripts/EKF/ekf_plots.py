@@ -16,7 +16,7 @@ USE_R_MATRIX_REGIMES = True
 REGIME_STYLE = {
 	0: dict(name="Stationary", marker="*", s=45),
 	1: dict(name="Gradual",    marker="s", s=14),
-	2: dict(name="Intense",    marker="o", s=14),
+	# 2: dict(name="Intense",    marker="o", s=14),
 }
 
 def main():
@@ -76,10 +76,10 @@ def process_file(filepath: Path):
 		mosiac_grid_list = [
 			["Position",     "Res_Stationary", "Stats_Stationary"],
 			["Velocity",     "Res_Stationary", "Stats_Stationary"],
-			["Acceleration", "Res_Gradual",    "Stats_Gradual"],
+			["Acceleration", "Res_Stationary", "Stats_Stationary"],
 			["Heading",      "Res_Gradual",    "Stats_Gradual"],
-			["Turn_Rate",    "Res_Intense",    "Stats_Intense"],
-			["Regime",       "Res_Intense",    "Stats_Intense"],
+			["Turn_Rate",    "Res_Gradual",    "Stats_Gradual"],
+			["Regime",       "Res_Gradual",    "Stats_Gradual"],
 		]
 		fig_1, axes_dict = plt.subplot_mosaic(
 			mosiac_grid_list,
@@ -166,6 +166,7 @@ def process_file(filepath: Path):
 	LIM = 6
 	cols = {"Velocity":"nV", "Acceleration":"nA", "ω Encoder":"nE", "ω Gyro":"nG"}
 
+	########### use this chunk if we're plotting with regimes (later tests) #################
 	for code, st in REGIME_STYLE.items():
 		name = st["name"]
 		ax = axes_dict[f"Res_{name}"]
@@ -205,7 +206,10 @@ def process_file(filepath: Path):
 		ax_stats.text(0.0, 0.5, text, transform=ax_stats.transAxes,
 					family="monospace", fontsize=8, va="center", ha="left",
 					bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
+	################### end of chunk with regimes #######################
+
 	
+	########### use this chunk if we're not plotting with regimes (earlier tests) #################
 	# # Residual
 	# ax_residual = axes_dict["Residual"]
 	# LIM = 6
@@ -243,7 +247,7 @@ def process_file(filepath: Path):
 	# ax_stats.text(0.0, 0.5, text, transform=ax_stats.transAxes,
     #           family="monospace", fontsize=9, va="center", ha="left",
     #           bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
-
+	################### end of chunk without regimes #######################
 	
 	#P matrix 
 	if USE_P_MATRIX: 

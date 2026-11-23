@@ -104,12 +104,39 @@ Verification and Validation
 	- Matched semi-known paths
 - P diagonal plots
 
-PLOTS GO HERE
+<!-- ![Small Rectangle With Curved Corners State and Normalized Innovation](./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg)
+![Small Rectangle With Curved Corners P Matrix Diagonals](./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG)
+![Small Rectangle Variable Regime State and Normalized Innovation](./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-State-and-Normalized-Innovation.jpeg)
+![Small Rectangle Variable Regime P Matrix Diagonals](./Design/Images/Plots/EKF-Small-Rectangle-Variable-Regime-P-Matrix-Diagonals.jpeg) -->
 
+<!-- <p align="center">
+  <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" height="240"/>
+  <img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" height="240"/>
+</p> -->
 
+<!-- <table>
+  <tr>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF states and normalized innovation"/><br/><sub>States and normalized innovation driving in a small rectangle with curves</sub></td>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-P-Matrix-Diagonals.JPG" width="100%" alt="EKF P matrix diagonals"/><br/><sub>P matrix diagonals</sub></td>
+  </tr>
+</table> -->
 
-
-
+<table>
+  <tr>
+    <th colspan="2" align="center">Regime-Adaptive EKF: States and Consistency</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF states and normalized innovation"/></td>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="EKF P matrix diagonals"/></td>
+  </tr>
+  <tr>
+    <th colspan="2" align="center">Velocity PI Step Responses</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="..."/></td>
+    <td align="center"><img src="./Design/Images/Plots/EKF-Small-Rectangle-With-Curves-Single-Regime-State-and-Normalized-Innovation.jpeg" width="100%" alt="..."/></td>
+  </tr>
+</table>
 
 #### PID Controllers
 - The car ran two autonomous controllers, one PI controller for the car's forward velocity and one PID controller for its heading
@@ -129,8 +156,8 @@ Deadband Compensation
 Verification and Validation
 - Step response data was recorded and plotted for analysis in tuning the PID controllers. Example response plots are below
 
-![Velocity Controller](Images/Plots/VelocityPID.JPG)
-![Heading Controller](Images/Plots/VelocityPID.JPG)
+![Velocity Controller](./Design/Images/Plots/VelocityPID.JPG)
+![Heading Controller](./Design/Images/Plots/ThetaPID.JPG)
 
 
 
