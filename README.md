@@ -7,18 +7,17 @@
 - Remote control manual operation via Bluetooth
 - Python tools that parse logs and plot EKF and PID performance across runs on a shared time axis
 
-
-
 <p align="center">
   <img src="./Design/Images/DAR-C/IMG_2332.jpeg" width="32%"/>
   <img src="./Design/Images/DAR-C/IMG_2328.jpeg" width="32%"/>
   <img src="./Design/Images/DAR-C/IMG_2334.jpeg" width="32%"/>
 </p>
-<p align="center">
-  <img src="./Design/Images/DAR-C/IMG_2315.MOV" width="32%"/>
-  <img src="./Design/Images/DAR-C/IMG_2326.MOV" width="32%"/>
-  <img src="./Design/Images/DAR-C/IMG_2313.MOV" width="32%"/>
-</p>
+
+https://github.com/user-attachments/assets/d5b72bf7-f268-4b66-aeb9-6d17970775e9
+
+https://github.com/user-attachments/assets/d52f3077-a2a9-420c-96de-9e00e28c038f
+
+https://github.com/user-attachments/assets/f118bfb4-4f4a-4d74-a1b2-34342b7d11e6
 
 
 ## Skills developed
