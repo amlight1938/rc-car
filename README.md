@@ -2,8 +2,8 @@
 - Extended Kalman Filter (EKF) estimates pose in real time by fusing IMU and odometry measurements
 - Autonomous obstacle-free return to home by dead reckoning navigation capability using EKF state estimation and PID controller in a Sense -> Estimate -> Control cycle 
 - State machine architecture that safely handles faults, state transitions, and hardware fail-safes on communication loss
-- UDP telemetry pipeline for remote logging with pre-allocated queuing and a dedicated FreeRTOS task to separate logging from the time constrained, prioritized control loop 
-- A fault-tolerant embedded control system in C++ on a resource constrained ESP32 microcontroller with FreeRTOS priority-scheduled tasks, a fixed rate control loop, and hardware abstraction across motors, sensors, and vehicle classes
+- UDP telemetry pipeline for remote logging with pre-allocated queuing and a dedicated FreeRTOS task to separate logging from the time-constrained, prioritized control loop 
+- A fault-tolerant embedded control system in C++ on a resource-constrained ESP32 microcontroller with FreeRTOS priority-scheduled tasks, a fixed rate control loop, and hardware abstraction across motors, sensors, and vehicle classes
 - Remote control manual operation via Bluetooth
 - Python tools that parse logs and plot EKF and PID performance across runs on a shared time axis
 
@@ -80,7 +80,7 @@ Tuning and Verification
 - $Q$ was tuned empirically starting with educated guesses about terrain and wheel slip
 - Normalized innovation, $\nu$, was calculated using the following formula: $\nu=y/\sqrt{S}$, where $y$ is the innovation $y=z-Hx_{predicted}$, and $S$ is the innovation's predicted variance, calculated as $S=HPH^T+R$.
 - When tuning, the normalized innovation was centered around 0 (mean = 0), indicating the innovations for turn rate, velocity, and acceleration were unbiased. The standard deviation was aimed to be equal to 1 (the innovation or "surprise" was exactly what the filter predicted it should be based on $P$, $Q$, and $R$).
-- On each iteration, the estimated state and diagonal values of $P$ (uncertainties of each state variable) were plotted and compared against a semi-known path of travel. Example plots are shown below:
+- On each iteration, the estimated state and diagonal values of $P$ (uncertainties of each state variable) were plotted and compared against a visually confirmed approximate path of travel. Example plots are shown below:
 
 <table>
   <tr>
@@ -167,7 +167,7 @@ Verification
 - Analysis - tuning PID controllers - both the speed controller and the heading controllers' step responses were plotted with varying gains and at varying step responses
 - Test - removing sensor bias - tested a calibration function that removes sensor bias by confirming that sensor bias was decreased after applying the bias removal function
 - Test - coordinate axes - tilted the car up, down, left, and right while logging acceleration and gyroscope data to verify the coordinate axes aligned with the design
-- Demonstration - state machine - verified that all state transistions were expected and the car followed the intended state machine design without problems or unexpected behavior 
+- Demonstration - state machine - verified that all state transitions were expected and the car followed the intended state machine design without problems or unexpected behavior 
 - Demonstration - fault tolerance - verified that when the controller disconnects, the car stops and enters the pairing state
 
 
@@ -180,7 +180,7 @@ Verification
 
 ## Project Limitations
 - The biggest limitation of this project was reduced sensor capabilities. The car operated with an IMU that measured acceleration (g), a gyroscope that measured turn rate (rad/s), and wheel encoders that allowed indirect calculation of velocity (m/s). In addition to the accelerometer, the IMU had a magnetometer that indicated heading, but was not consistently providing accurate data, even with calibration efforts. To estimate heading, velocity, and position, the gyroscope measurements were integrated once, and the accelerometer measurements were integrated twice. This led to unbounded error growth because the car did not have a sensor that directly measured heading or position, which would have decreased uncertainty in the EKF
-- Another limitation in EKF tuning was the inability to track the driving path exactly and compare it to the filter's estimated state. To compensate, driving paths were measured and marked ahead of time to produce a semi-known path of travel to compare the filter against
+- Another limitation in EKF tuning was the inability to track the driving path exactly and compare it to the filter's estimated state. To compensate, driving paths were measured and marked ahead of time to produce a known approximate path of travel to compare the filter against
 
 
 
